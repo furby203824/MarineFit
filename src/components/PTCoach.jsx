@@ -192,7 +192,7 @@ const PTCoach = () => {
 
   return (
     <div className="space-y-8">
-      <header className="flex items-center justify-between gap-4 pb-6 border-b border-gray-200">
+      <header className="flex items-center justify-between gap-4 pb-6 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-marine-red/10 rounded-xl">
             <Activity className="w-8 h-8 text-marine-red" />
@@ -204,22 +204,22 @@ const PTCoach = () => {
         </div>
         
         {/* Tab Switcher */}
-        <div className="flex bg-gray-100 p-1 rounded-lg flex-wrap">
+        <div className="flex bg-gray-100 dark:bg-gray-700 p-1 rounded-lg flex-wrap">
           <button
             onClick={() => setActiveTab('generator')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'generator' ? 'bg-white text-marine-red shadow-sm' : 'text-gray-600 hover:text-gray-900'}`}
+            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'generator' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
           >
             <RefreshCw size={16} /> Generator
           </button>
           <button
             onClick={() => setActiveTab('library')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'library' ? 'bg-white text-marine-red shadow-sm' : 'text-gray-600 hover:text-gray-900'}`}
+            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'library' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
           >
             <BookOpen size={16} /> Exercise Library
           </button>
           <button
             onClick={() => setActiveTab('history')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'history' ? 'bg-white text-marine-red shadow-sm' : 'text-gray-600 hover:text-gray-900'}`}
+            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'history' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
           >
             <History size={16} /> History
           </button>
@@ -240,8 +240,8 @@ const PTCoach = () => {
                 {/* Controls Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   {/* Time Selection */}
-                  <div className="bg-gray-50 p-3 rounded-lg">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                  <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2 flex items-center gap-2">
                       <Clock size={16} /> Duration
                     </label>
                     <div className="flex gap-2">
@@ -250,7 +250,7 @@ const PTCoach = () => {
                           key={val}
                           onClick={() => setTime(val)}
                           className={`flex-1 py-2 rounded-md text-sm font-medium transition-all ${
-                            time === val ? 'bg-marine-red text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200'
+                            time === val ? 'bg-marine-red text-white shadow-sm' : 'bg-white dark:bg-gray-600 text-gray-600 dark:text-gray-200 border border-gray-200 dark:border-gray-500'
                           }`}
                         >
                           {val} Min
@@ -260,14 +260,14 @@ const PTCoach = () => {
                   </div>
 
                   {/* Goal Selection */}
-                  <div className="bg-gray-50 p-3 rounded-lg">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                  <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2 flex items-center gap-2">
                       <Target size={16} /> Training Goal
                     </label>
-                    <select 
+                    <select
                       value={goal}
                       onChange={(e) => setGoal(e.target.value)}
-                      className="w-full bg-white border border-gray-200 rounded-md py-2 px-3 text-sm focus:ring-marine-red focus:border-marine-red"
+                      className="w-full bg-white dark:bg-gray-600 border border-gray-200 dark:border-gray-500 rounded-md py-2 px-3 text-sm text-gray-900 dark:text-gray-100 focus:ring-marine-red focus:border-marine-red"
                     >
                       {Object.values(goals).map(g => (
                         <option key={g} value={g}>{g}</option>
@@ -277,8 +277,8 @@ const PTCoach = () => {
                 </div>
 
                 {/* Equipment Selection */}
-                <div className="bg-gray-50 p-3 rounded-lg mb-6">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg mb-6">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2 flex items-center gap-2">
                     <Filter size={16} /> Available Equipment
                   </label>
                   <div className="flex flex-wrap gap-2">
@@ -289,7 +289,7 @@ const PTCoach = () => {
                         className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
                           selectedEquipment.includes(eq)
                             ? 'bg-marine-red text-white border-marine-red'
-                            : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'
+                            : 'bg-white dark:bg-gray-600 text-gray-600 dark:text-gray-200 border-gray-200 dark:border-gray-500 hover:border-gray-300 dark:hover:border-gray-400'
                         }`}
                       >
                         {eq}
@@ -339,13 +339,13 @@ const PTCoach = () => {
                               initial={{ opacity: 0, x: -10 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: idx * 0.05 }}
-                              className="p-3 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-sm transition-shadow"
+                              className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-100 dark:border-gray-600 hover:shadow-sm transition-shadow"
                             >
                               <div className="flex items-center justify-between">
                                 <div className="flex-1">
                                   <div className="flex items-center gap-2 flex-wrap">
                                     <span className="font-semibold text-gray-900">{ex.name}</span>
-                                    <span className="text-xs bg-white px-2 py-0.5 rounded border border-gray-200 text-gray-500">
+                                    <span className="text-xs bg-white dark:bg-gray-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-500 text-gray-500">
                                       {ex.equipment}
                                     </span>
                                   </div>
@@ -414,22 +414,22 @@ const PTCoach = () => {
                             </p>
                          </div>
                       ) : (
-                        <motion.div 
+                        <motion.div
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
-                          className="bg-gray-50 p-4 rounded-lg text-center"
+                          className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center"
                         >
                           <p className="font-semibold text-gray-900 mb-3">How was the mission?</p>
                           <div className="flex justify-center gap-4">
-                            <button 
+                            <button
                               onClick={() => handleFeedback('good')}
-                              className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:border-marine-red hover:text-marine-red transition-all"
+                              className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-600 border border-gray-200 dark:border-gray-500 rounded-lg hover:border-marine-red hover:text-marine-red transition-all"
                             >
                               <ThumbsUp size={18} /> Good to Go
                             </button>
-                            <button 
+                            <button
                               onClick={() => handleFeedback('hard')}
-                              className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:border-red-500 hover:text-red-500 transition-all"
+                              className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-600 border border-gray-200 dark:border-gray-500 rounded-lg hover:border-red-500 hover:text-red-500 transition-all"
                             >
                               <ThumbsDown size={18} /> Too Hard
                             </button>
@@ -440,9 +440,9 @@ const PTCoach = () => {
                     </div>
                   </motion.div>
                 ) : (
-                  <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                    <Dumbbell className="mx-auto h-12 w-12 text-gray-300 mb-3" />
-                    <p className="text-gray-500 font-medium">Configure parameters to generate your mission card.</p>
+                  <div className="text-center py-12 bg-gray-50 dark:bg-gray-700 rounded-xl border border-dashed border-gray-200 dark:border-gray-600">
+                    <Dumbbell className="mx-auto h-12 w-12 text-gray-300 dark:text-gray-500 mb-3" />
+                    <p className="text-gray-500 dark:text-gray-400 font-medium">Configure parameters to generate your mission card.</p>
                   </div>
                 )}
               </AnimatePresence>
@@ -468,12 +468,12 @@ const PTCoach = () => {
                     placeholder="Search exercises by name..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-10 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-marine-red focus:border-transparent"
+                    className="w-full pl-10 pr-10 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-2 focus:ring-marine-red focus:border-transparent"
                   />
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                     >
                       <X size={16} />
                     </button>
@@ -485,7 +485,7 @@ const PTCoach = () => {
                   <select
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="bg-white border border-gray-200 rounded-md py-2 px-3 text-sm focus:ring-marine-red focus:border-marine-red"
+                    className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-md py-2 px-3 text-sm text-gray-900 dark:text-gray-100 focus:ring-marine-red focus:border-marine-red"
                   >
                     <option value="">All Categories</option>
                     {allCategories.map(cat => (
@@ -496,7 +496,7 @@ const PTCoach = () => {
                   <select
                     value={equipmentFilter}
                     onChange={(e) => setEquipmentFilter(e.target.value)}
-                    className="bg-white border border-gray-200 rounded-md py-2 px-3 text-sm focus:ring-marine-red focus:border-marine-red"
+                    className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-md py-2 px-3 text-sm text-gray-900 dark:text-gray-100 focus:ring-marine-red focus:border-marine-red"
                   >
                     <option value="">All Equipment</option>
                     {allEquipment.map(eq => (
@@ -507,7 +507,7 @@ const PTCoach = () => {
                   <select
                     value={difficultyFilter}
                     onChange={(e) => setDifficultyFilter(e.target.value)}
-                    className="bg-white border border-gray-200 rounded-md py-2 px-3 text-sm focus:ring-marine-red focus:border-marine-red"
+                    className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-md py-2 px-3 text-sm text-gray-900 dark:text-gray-100 focus:ring-marine-red focus:border-marine-red"
                   >
                     <option value="">All Difficulties</option>
                     {allDifficulties.map(d => (
@@ -528,9 +528,9 @@ const PTCoach = () => {
 
               {/* Exercise Grid */}
               {filteredExercises.length === 0 ? (
-                <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                  <Search className="mx-auto h-12 w-12 text-gray-300 mb-3" />
-                  <p className="text-gray-500 font-medium">No exercises match your filters.</p>
+                <div className="text-center py-12 bg-gray-50 dark:bg-gray-700 rounded-xl border border-dashed border-gray-200 dark:border-gray-600">
+                  <Search className="mx-auto h-12 w-12 text-gray-300 dark:text-gray-500 mb-3" />
+                  <p className="text-gray-500 dark:text-gray-400 font-medium">No exercises match your filters.</p>
                   <button
                     onClick={clearLibraryFilters}
                     className="mt-2 text-sm text-marine-red hover:underline"
@@ -593,9 +593,9 @@ const PTCoach = () => {
             // HISTORY TAB
             <div className="space-y-4">
               {savedWorkouts.length === 0 ? (
-                <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                  <History className="mx-auto h-12 w-12 text-gray-300 mb-3" />
-                  <p className="text-gray-500 font-medium">No saved missions yet.</p>
+                <div className="text-center py-12 bg-gray-50 dark:bg-gray-700 rounded-xl border border-dashed border-gray-200 dark:border-gray-600">
+                  <History className="mx-auto h-12 w-12 text-gray-300 dark:text-gray-500 mb-3" />
+                  <p className="text-gray-500 dark:text-gray-400 font-medium">No saved missions yet.</p>
                 </div>
               ) : (
                 savedWorkouts.map((w) => (
