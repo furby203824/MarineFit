@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Activity, ExternalLink, Phone, Mail, Dumbbell, RefreshCw, Filter, PlayCircle, Printer, Clock, Target, Save, ThumbsUp, ThumbsDown, History, Trash2, CheckCircle, Search, BookOpen, X, Plus, GripVertical, ChevronDown, ChevronUp, Edit3, PlusCircle } from 'lucide-react';
+import { Activity, ExternalLink, Phone, Mail, Dumbbell, RefreshCw, Filter, PlayCircle, Printer, Clock, Target, Save, ThumbsUp, ThumbsDown, History, Trash2, CheckCircle, Search, BookOpen, X, Plus, GripVertical, ChevronDown, ChevronUp, Edit3, PlusCircle, FileText, FileSpreadsheet, File, Download } from 'lucide-react';
 import { equipmentTags, goals, hittExercises, categories } from '../data/hittData';
 import { generateWorkout } from '../utils/workoutGenerator';
+import { exportToPDF, exportToExcel, exportToWord } from '../utils/workoutExport';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const PTCoach = () => {
@@ -9,6 +10,8 @@ const PTCoach = () => {
   const [showFeedback, setShowFeedback] = useState(false);
   const [activeTab, setActiveTab] = useState('generator'); // 'generator', 'history', 'library', or 'custom'
   const [savedWorkouts, setSavedWorkouts] = useState([]);
+  const [showExportMenu, setShowExportMenu] = useState(false); // For export dropdown
+  const [showCustomExportMenu, setShowCustomExportMenu] = useState(false); // For custom workout export
 
   // Custom Workout Builder State
   const [customWorkout, setCustomWorkout] = useState({
@@ -482,17 +485,49 @@ const PTCoach = () => {
                     exit={{ opacity: 0, y: -10 }}
                     className="space-y-6"
                   >
-                    <div className="flex justify-between items-center border-b border-gray-100 pb-2">
+                    <div className="flex justify-between items-center border-b border-gray-100 dark:border-gray-600 pb-2">
                       <h3 className="text-lg font-bold text-gray-800">
                         {workout.title}
                       </h3>
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 items-center">
                         <button onClick={saveWorkout} className="p-2 text-gray-500 hover:text-marine-red transition-colors" title="Save Workout">
                           <Save size={18} />
                         </button>
                         <button onClick={() => window.print()} className="p-2 text-gray-500 hover:text-marine-red transition-colors" title="Print Card">
                           <Printer size={18} />
                         </button>
+                        {/* Export Dropdown */}
+                        <div className="relative">
+                          <button
+                            onClick={() => setShowExportMenu(!showExportMenu)}
+                            className="p-2 text-gray-500 hover:text-marine-red transition-colors flex items-center gap-1"
+                            title="Export Workout"
+                          >
+                            <Download size={18} />
+                          </button>
+                          {showExportMenu && (
+                            <div className="absolute right-0 top-full mt-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 py-1 z-50 min-w-[140px]">
+                              <button
+                                onClick={() => { exportToPDF(workout); setShowExportMenu(false); }}
+                                className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                              >
+                                <FileText size={16} className="text-red-600" /> PDF
+                              </button>
+                              <button
+                                onClick={() => { exportToExcel(workout); setShowExportMenu(false); }}
+                                className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                              >
+                                <FileSpreadsheet size={16} className="text-green-600" /> Excel
+                              </button>
+                              <button
+                                onClick={() => { exportToWord(workout); setShowExportMenu(false); }}
+                                className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                              >
+                                <File size={16} className="text-blue-600" /> Word
+                              </button>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                     
@@ -762,11 +797,11 @@ const PTCoach = () => {
             // CUSTOM WORKOUT BUILDER TAB
             <div className="space-y-4">
               <div className="card border-t-4 border-t-marine-gold">
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
                   <h2 className="text-xl font-bold text-gray-900 m-0 flex items-center gap-2">
                     <PlusCircle className="text-marine-red" /> Custom Workout Builder
                   </h2>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 items-center">
                     <button
                       onClick={resetCustomWorkout}
                       className="px-3 py-1.5 text-sm text-gray-500 hover:text-red-600 transition-colors"
@@ -777,8 +812,52 @@ const PTCoach = () => {
                       onClick={saveCustomWorkout}
                       className="btn flex items-center gap-2 text-sm"
                     >
-                      <Save size={16} /> Save Workout
+                      <Save size={16} /> Save
                     </button>
+                    {/* Export Dropdown for Custom Workout */}
+                    <div className="relative">
+                      <button
+                        onClick={() => setShowCustomExportMenu(!showCustomExportMenu)}
+                        className="btn flex items-center gap-2 text-sm"
+                        title="Export Workout"
+                      >
+                        <Download size={16} /> Export
+                      </button>
+                      {showCustomExportMenu && (
+                        <div className="absolute right-0 top-full mt-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 py-1 z-50 min-w-[140px]">
+                          <button
+                            onClick={() => {
+                              const workoutToExport = { ...customWorkout, date: new Date().toISOString() };
+                              exportToPDF(workoutToExport);
+                              setShowCustomExportMenu(false);
+                            }}
+                            className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                          >
+                            <FileText size={16} className="text-red-600" /> PDF
+                          </button>
+                          <button
+                            onClick={() => {
+                              const workoutToExport = { ...customWorkout, date: new Date().toISOString() };
+                              exportToExcel(workoutToExport);
+                              setShowCustomExportMenu(false);
+                            }}
+                            className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                          >
+                            <FileSpreadsheet size={16} className="text-green-600" /> Excel
+                          </button>
+                          <button
+                            onClick={() => {
+                              const workoutToExport = { ...customWorkout, date: new Date().toISOString() };
+                              exportToWord(workoutToExport);
+                              setShowCustomExportMenu(false);
+                            }}
+                            className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                          >
+                            <File size={16} className="text-blue-600" /> Word
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
