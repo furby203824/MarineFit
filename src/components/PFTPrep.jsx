@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import PullupProgram from './PullupProgram';
 import {
     calculatePFTScore,
     calculateCFTScore,
@@ -45,7 +46,7 @@ const exerciseRecommendations = {
             title: "Plank Improvement",
             focus: "Core endurance and anti-extension strength",
             tags: ['Core', 'Abs', 'Stability'],
-            exercises: ['Plank', 'Dead Bug', 'Bird Dog', 'Rollout'],
+            exercises: ['Plank', 'Side Plank', 'Dead Bug', 'Bird Dog', 'Hollow Body Hold', 'Rollout'],
             tips: [
                 "Practice daily planks, gradually increasing duration",
                 "Focus on proper form: straight line from head to heels",
@@ -56,7 +57,7 @@ const exerciseRecommendations = {
             title: "3-Mile Run Improvement",
             focus: "Aerobic capacity and running economy",
             tags: ['Cardio', 'Legs', 'Plyometric'],
-            exercises: ['High Knees', 'Butt Kicks', 'Sprint', 'Lunge'],
+            exercises: ['High Knees', 'Butt Kicks', 'A-Skip', 'B-Skip', 'Bounding', 'Sprint', 'Lunge'],
             tips: [
                 "Mix long slow runs with interval training",
                 "Include tempo runs at goal pace",
@@ -69,7 +70,7 @@ const exerciseRecommendations = {
             title: "Movement to Contact Improvement",
             focus: "Sprint speed and anaerobic capacity",
             tags: ['Cardio', 'Speed', 'Agility'],
-            exercises: ['Sprint', 'Shuttle', 'Bounding'],
+            exercises: ['Sprint', 'High Knees', 'A-Skip', 'Bounding', 'Shuttle Run', 'Hill Sprint'],
             tips: [
                 "Practice 440yd repeats at race pace",
                 "Include hill sprints for power development",
@@ -80,7 +81,7 @@ const exerciseRecommendations = {
             title: "Ammo Can Lift Improvement",
             focus: "Shoulder endurance and overhead pressing power",
             tags: ['Shoulders', 'Upper Push', 'Ammo Can'],
-            exercises: ['Press', 'Raise', 'Clean'],
+            exercises: ['Overhead Press', 'Push Press', 'Dumbbell Shoulder Press', 'Ammo Can Press', 'Front Raise', 'Lateral Raise', 'Clean'],
             tips: [
                 "Practice with actual ammo can weight (30 lbs)",
                 "Build shoulder endurance with EMOM workouts",
@@ -91,7 +92,7 @@ const exerciseRecommendations = {
             title: "Maneuver Under Fire Improvement",
             focus: "Full body conditioning and functional movement",
             tags: ['Full Body', 'Metabolic', 'Agility'],
-            exercises: ['Carry', 'Crawl', 'Drag', 'Agility'],
+            exercises: ['Buddy Drag', 'Bear Crawl', 'Sprint', 'Farmer Carry', 'Sandbag Carry', 'Agility Ladder'],
             tips: [
                 "Practice each component separately at race pace",
                 "Build grip strength for carries and drags",
@@ -281,1218 +282,722 @@ const trainingPlans = {
                 focus: "Baseline & Foundation",
                 days: [
                     { day: "Mon", workout: "Run: 2 miles easy pace + Pull-up pyramid 1-2-3-2-1" },
-                    { day: "Tue", workout: "Core: 3x30s plank, 3x15 crunches, 3x10 leg raises" },
-                    { day: "Wed", workout: "Run: 4x400m intervals @ 90% effort, 90s rest" },
-                    { day: "Thu", workout: "Upper: Max pull-ups x3 sets, 50 push-ups (any rep scheme)" },
-                    { day: "Fri", workout: "Run: 3 miles steady state" },
-                    { day: "Sat", workout: "Active recovery: mobility work, light swim or bike" },
-                    { day: "Sun", workout: "Rest" }
-                ]
-            },
-            {
-                week: 2,
-                focus: "Volume Building",
-                days: [
-                    { day: "Mon", workout: "Run: 2.5 miles + Pull-up pyramid 1-2-3-4-3-2-1" },
-                    { day: "Tue", workout: "Core: 3x45s plank, 3x20 crunches, 3x12 leg raises" },
-                    { day: "Wed", workout: "Run: 5x400m intervals @ 90%, 75s rest" },
-                    { day: "Thu", workout: "Upper: Max pull-ups x4 sets, 75 push-ups total" },
-                    { day: "Fri", workout: "Run: 3.5 miles steady" },
-                    { day: "Sat", workout: "Active recovery" },
-                    { day: "Sun", workout: "Rest" }
-                ]
-            },
-            {
-                week: 3,
-                focus: "Intensity Increase",
-                days: [
-                    { day: "Mon", workout: "Run: 3 miles + Weighted pull-ups 5x3" },
-                    { day: "Tue", workout: "Core: 3x60s plank, 4x20 crunches, hollow holds" },
-                    { day: "Wed", workout: "Run: 6x400m @ 95%, 60s rest" },
-                    { day: "Thu", workout: "Upper: Grease the groove - pull-ups every hour x8" },
-                    { day: "Fri", workout: "Run: 4 miles steady" },
-                    { day: "Sat", workout: "Light jog + stretching" },
-                    { day: "Sun", workout: "Rest" }
+                    { day: "Tue", workout: "Core: 3 sets max plank, 3x15 leg raises" },
+                    { day: "Wed", workout: "Cross-training or Rest" },
+                    { day: "Thu", workout: "Run: 4x400m intervals at goal pace" },
+                    { day: "Fri", workout: "Full Body: Bodyweight circuit (pushups, lunges, plank)" },
+                    { day: "Sat", workout: "Long Run: 3 miles steady pace" },
+                    { day: "Sun", workout: "Active Recovery (Walk/Stretch)" }
                 ]
             },
             {
                 week: 4,
-                focus: "Recovery Week",
+                focus: "Volume Increase",
                 days: [
-                    { day: "Mon", workout: "Easy 2 mile run + 50% pull-up volume" },
-                    { day: "Tue", workout: "Light core work, focus on form" },
-                    { day: "Wed", workout: "3x400m easy pace" },
-                    { day: "Thu", workout: "Bodyweight circuit - light" },
-                    { day: "Fri", workout: "2 mile easy run" },
-                    { day: "Sat", workout: "Mobility & stretching" },
-                    { day: "Sun", workout: "Rest" }
-                ]
-            },
-            {
-                week: 5,
-                focus: "Speed Development",
-                days: [
-                    { day: "Mon", workout: "Tempo run: 3 miles at goal pace" },
-                    { day: "Tue", workout: "Core: 4x60s plank, dead bugs, bird dogs" },
-                    { day: "Wed", workout: "Track: 8x200m sprints, 45s rest" },
-                    { day: "Thu", workout: "Pull-ups: 5 sets max reps, 2min rest" },
-                    { day: "Fri", workout: "Long run: 4.5 miles" },
-                    { day: "Sat", workout: "Active recovery" },
-                    { day: "Sun", workout: "Rest" }
-                ]
-            },
-            {
-                week: 6,
-                focus: "Race Pace Practice",
-                days: [
-                    { day: "Mon", workout: "3 mile time trial (practice test)" },
-                    { day: "Tue", workout: "Core: 4x75s plank, weighted crunches" },
-                    { day: "Wed", workout: "Fartlek: 3 miles with 6x30s surges" },
-                    { day: "Thu", workout: "Max pull-up test, then 3 more sets" },
-                    { day: "Fri", workout: "Easy 3 miles" },
-                    { day: "Sat", workout: "Mobility" },
-                    { day: "Sun", workout: "Rest" }
-                ]
-            },
-            {
-                week: 7,
-                focus: "Peak Week",
-                days: [
-                    { day: "Mon", workout: "Run: Mile repeats x3 at goal pace" },
-                    { day: "Tue", workout: "Core: Max plank test + accessory work" },
-                    { day: "Wed", workout: "Short intervals: 10x100m all out" },
-                    { day: "Thu", workout: "Pull-up ladders: 1-2-3-4-5-4-3-2-1 x2" },
-                    { day: "Fri", workout: "Easy 2 miles, strides" },
-                    { day: "Sat", workout: "Light movement" },
+                    { day: "Mon", workout: "Run: 3 miles moderate + Pull-up pyramid 1-2-3-4-3-2-1" },
+                    { day: "Tue", workout: "Core: Plank tabata (20s on/10s off) x 8 rounds" },
+                    { day: "Wed", workout: "Swim or Bike 30 mins" },
+                    { day: "Thu", workout: "Run: 4x800m intervals" },
+                    { day: "Fri", workout: "Full Body: Weighted circuit" },
+                    { day: "Sat", workout: "Long Run: 4 miles easy" },
                     { day: "Sun", workout: "Rest" }
                 ]
             },
             {
                 week: 8,
-                focus: "Taper & Test",
+                focus: "Peak & Taper",
                 days: [
-                    { day: "Mon", workout: "Easy 2 miles + 2 sets pull-ups at 50%" },
-                    { day: "Tue", workout: "Light core, 2x30s plank" },
-                    { day: "Wed", workout: "4x200m at race pace, full recovery" },
-                    { day: "Thu", workout: "Rest or very light movement" },
-                    { day: "Fri", workout: "Rest - hydrate and prepare" },
-                    { day: "Sat", workout: "PFT TEST DAY" },
-                    { day: "Sun", workout: "Recovery" }
+                    { day: "Mon", workout: "Run: 2 miles race pace + Pull-ups 3x50% max" },
+                    { day: "Tue", workout: "Core: Light planking + stretching" },
+                    { day: "Wed", workout: "Rest" },
+                    { day: "Thu", workout: "Run: 1 mile easy + 4 strides" },
+                    { day: "Fri", workout: "Rest" },
+                    { day: "Sat", workout: "Mock PFT" },
+                    { day: "Sun", workout: "Rest" }
                 ]
             }
         ]
     },
     cft: {
-        title: "8-Week CFT Improvement Plan",
-        description: "Combat-focused conditioning for all three CFT events",
-        weeks: [] // Placeholder for interactive plan
-    }
-};
-
-// CFT Visual Guidance Schedule Structure
-const cftSchedule = {
-    days: [
-        { name: 'Mon', label: 'Warrior', type: 'warrior' },
-        { name: 'Tue', label: 'Athlete', type: 'athlete' },
-        { name: 'Wed', label: 'Reload', type: 'reload' },
-        { name: 'Thu', label: 'Combat', type: 'combat' },
-        { name: 'Fri', label: 'Company', type: 'company' },
-        { name: 'Sat', label: 'Reload', type: 'reload' },
-        { name: 'Sun', label: 'Rest Day', type: 'rest' }
-    ],
-    // Calculate page number based on week (1-25) and day index (0-6)
-    getPage: (week, dayIndex) => {
-        if (dayIndex === 6) return null; // Sunday is Rest
-        
-        const basePage = 1;
-        const weekOffset = (week - 1) * 5;
-        
-        // Map day index to content offset (Mon=0, Tue=1, Wed=2, Thu=3, Fri=4, Sat=2)
-        let contentOffset;
-        if (dayIndex === 5) { // Saturday -> Reload (same as Wednesday)
-            contentOffset = 2;
-        } else {
-            contentOffset = dayIndex;
-        }
-        
-        return basePage + weekOffset + contentOffset;
+        title: "6-Week CFT Prep",
+        description: "High-intensity functional training for combat fitness",
+        weeks: [
+            {
+                week: 1,
+                focus: "Aerobic Base & Technique",
+                days: [
+                    { day: "Mon", workout: "800m run + Ammo Can Press technique work" },
+                    { day: "Tue", workout: "Agility ladder drills + Sprints" },
+                    { day: "Wed", workout: "Active Recovery" },
+                    { day: "Thu", workout: "MANUF breakdown: Practice crawls and drags" },
+                    { day: "Fri", workout: "Circuit: 5 rounds of [200m run, 15 ammo lifts, 10 burpees]" },
+                    { day: "Sat", workout: "3 mile hike with light pack" },
+                    { day: "Sun", workout: "Rest" }
+                ]
+            },
+            {
+                week: 6,
+                focus: "Test Specificity",
+                days: [
+                    { day: "Mon", workout: "MTC simulation: 880m sprint" },
+                    { day: "Tue", workout: "Ammo Can: Max set in 2 mins" },
+                    { day: "Wed", workout: "Rest" },
+                    { day: "Thu", workout: "MANUF full run-through (75% effort)" },
+                    { day: "Fri", workout: "Rest" },
+                    { day: "Sat", workout: "Mock CFT" },
+                    { day: "Sun", workout: "Rest" }
+                ]
+            }
+        ]
     }
 };
 
 const visualPlans = {
-    'pft-visual': {
-        title: "16-Week PFT Prep Program",
-        totalPages: 16,
-        basePath: "/MarineFit/pft/PFT Prep Program_page-",
-        padLength: 4
+    pft: {
+        title: "PFT Visual Training Cards",
+        path: "/pft/",
+        count: 14, // Assuming there are 14 cards based on typical sets
+        description: "Official visual training guides for PFT events"
     },
-    'plank-visual': {
-        title: "4-Week Plank Progression",
-        totalPages: 4,
-        basePath: "/MarineFit/pft/Plank Progression_Wk1-Wk4_page-",
-        padLength: 4
-    },
-    'cft-visual': {
-        title: "CFT Prep Guidance",
-        totalPages: 125,
-        basePath: "/MarineFit/cft/CFT PREP GUIDANCE_page-",
-        padLength: 4,
-        hasSchedule: true,
-        fileOffset: 2
+    cft: {
+        title: "CFT Visual Training Cards",
+        path: "/cft/",
+        count: 125, // Updated to 125 pages
+        description: "Comprehensive CFT preparation guide and daily schedule",
+        // Map specific days/phases to page numbers if needed
+        // For linear documents, we can just let them browse
+        fileOffset: 2 // Start from file 3 since 1 and 2 were deleted
     }
 };
 
 const PFTPrep = () => {
-    const [testType, setTestType] = useState('pft');
-    const [mode, setMode] = useState('calculator'); // calculator, planner, training
-    const [expandedWeek, setExpandedWeek] = useState(1);
-    const [plannerTarget, setPlannerTarget] = useState(285);
-    const [solveFor, setSolveFor] = useState('run'); // run, upper, plank, mtc, al, manuf
-    const [activePlan, setActivePlan] = useState('interactive'); // interactive, pft-visual, plank-visual, return-to-run
-    const [resourcePage, setResourcePage] = useState(1);
-    const [cftWeek, setCftWeek] = useState(1); // Track selected week for CFT schedule navigator
-    const [inputs, setInputs] = useState({
-        gender: 'male',
-        age: '21-25',
-        // PFT
-        upperBodyType: 'pullups',
-        upperBodyReps: '',
-        plankMinutes: '',
-        plankSeconds: '',
-        runMinutes: '',
-        runSeconds: '',
-        // CFT
-        mtcMinutes: '',
-        mtcSeconds: '',
-        ammoLifts: '',
-        manufMinutes: '',
-        manufSeconds: '',
-        isAltitude: false
-    });
-    const [result, setResult] = useState(null);
-    const [error, setError] = useState(null);
+    const [testType, setTestType] = useState('pft'); // 'pft' or 'cft'
+    const [gender, setGender] = useState('male');
+    const [age, setAge] = useState(25);
+    const [altitude, setAltitude] = useState(false);
+    const [expandedWeek, setExpandedWeek] = useState(null);
+    const [activeTab, setActiveTab] = useState('calculator'); // 'calculator', 'training', 'visual'
+    const [trainingSubTab, setTrainingSubTab] = useState('general'); // 'general', 'pullup'
 
-    const handlePlanChange = (plan) => {
-        setActivePlan(plan);
-        setResourcePage(1);
-        if (plan === 'cft-visual') setCftWeek(1);
+    // PFT State
+    const [pullups, setPullups] = useState(15);
+    const [pushups, setPushups] = useState(60);
+    const [crunches, setCrunches] = useState(100); // Deprecated but kept for legacy if needed
+    const [plankTime, setPlankTime] = useState(240); // Seconds
+    const [runTime, setRunTime] = useState(1260); // Seconds (21:00)
+    const [rowTime, setRowTime] = useState(300); // Seconds (5:00)
+    const [upperBodyType, setUpperBodyType] = useState('pullups'); // 'pullups' or 'pushups'
+    const [cardioType, setCardioType] = useState('run'); // 'run' or 'row'
+
+    // CFT State
+    const [mtcTime, setMtcTime] = useState(180); // Seconds (3:00)
+    const [alReps, setAlReps] = useState(90);
+    const [manufTime, setManufTime] = useState(180); // Seconds (3:00)
+
+    // Visual Resource State
+    const [currentCardIndex, setCurrentCardIndex] = useState(0);
+
+    // Add state for CFT page navigation
+    const [cftPageInput, setCftPageInput] = useState('');
+
+    // Mapping for Reload and Rest days to specific pages
+    const pageMapping = useMemo(() => {
+        const mapping = {};
+        // Map Reload days (every 7th day roughly, or specific schedule)
+        // This is an estimation, you might need to adjust based on the actual PDF content
+        const reloadPages = [9, 16, 23, 30, 37, 44, 51, 58, 65, 72, 79, 86, 93, 100, 107, 114, 121];
+        reloadPages.forEach(page => {
+            mapping[`Reload`] = page; // This might need to be specific to the week if they differ
+        });
+        return mapping;
+    }, []);
+
+    // Helper to get the actual image filename/index
+    const getPage = (index, type) => {
+        if (type === 'cft') {
+            // Apply offset because first 2 files were deleted
+            const offset = visualPlans.cft.fileOffset || 0;
+            return index + 1 + offset; 
+        }
+        return index + 1;
     };
 
-    const handleScheduleClick = (week, dayIndex) => {
-        const page = cftSchedule.getPage(week, dayIndex);
-        if (page) {
-            setResourcePage(page);
+    const handleJumpToPage = (e) => {
+        e.preventDefault();
+        const pageNum = parseInt(cftPageInput);
+        if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= visualPlans.cft.count) {
+            setCurrentCardIndex(pageNum - 1);
+            setCftPageInput('');
         }
     };
 
-    // Sync cftWeek with resourcePage
-    useEffect(() => {
-        if (activePlan === 'cft-visual') {
-            const pageOffset = resourcePage - 1; // Page 1 is start of content
-            if (pageOffset >= 0) {
-                const week = Math.floor(pageOffset / 5) + 1;
-                if (week >= 1 && week <= 25) {
-                    setCftWeek(week);
-                }
-            }
+    const result = useMemo(() => {
+        if (testType === 'pft') {
+            const upperScore = calculatePFTScore(
+                upperBodyType === 'pullups' ? 'pullups' : 'pushups',
+                upperBodyType === 'pullups' ? pullups : pushups,
+                gender,
+                age
+            );
+            
+            const plankScore = calculatePFTScore(
+                'plank',
+                plankTime,
+                gender,
+                age
+            );
+
+            const runScore = calculatePFTScore(
+                'run',
+                runTime,
+                gender,
+                age,
+                altitude
+            );
+
+            return {
+                upperBodyScore: upperScore,
+                plankScore: plankScore,
+                runScore: runScore,
+                totalScore: upperScore + plankScore + runScore,
+                scoreClass: (upperScore + plankScore + runScore) >= 235 ? "1st Class" : 
+                           (upperScore + plankScore + runScore) >= 200 ? "2nd Class" : 
+                           (upperScore + plankScore + runScore) >= 150 ? "3rd Class" : "Fail"
+            };
+        } else {
+            const mtcScore = calculateCFTScore('mtc', mtcTime, gender, age, altitude);
+            const alScore = calculateCFTScore('al', alReps, gender, age);
+            const manufScore = calculateCFTScore('manuf', manufTime, gender, age, altitude);
+
+            return {
+                mtcScore,
+                alScore,
+                manufScore,
+                totalScore: mtcScore + alScore + manufScore,
+                scoreClass: (mtcScore + alScore + manufScore) >= 235 ? "1st Class" : 
+                           (mtcScore + alScore + manufScore) >= 200 ? "2nd Class" : 
+                           (mtcScore + alScore + manufScore) >= 150 ? "3rd Class" : "Fail"
+            };
         }
-    }, [resourcePage, activePlan]);
+    }, [testType, gender, age, altitude, pullups, pushups, plankTime, runTime, upperBodyType, mtcTime, alReps, manufTime]);
 
-    const nextResourcePage = () => {
-        const currentPlan = visualPlans[activePlan];
-        if (resourcePage < currentPlan.totalPages) setResourcePage(p => p + 1);
-    };
-
-    const prevResourcePage = () => {
-        if (resourcePage > 1) setResourcePage(p => p - 1);
-    };
-
-    const getResourceImagePath = (pageNum) => {
-        const currentPlan = visualPlans[activePlan];
-        const offset = currentPlan.fileOffset || 0;
-        const pageStr = (pageNum + offset).toString().padStart(currentPlan.padLength, '0');
-        return `${currentPlan.basePath}${pageStr}.jpg`;
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setInputs(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-    };
-
-    const handleCalculate = () => {
-        setError(null);
-        setResult(null);
-
-        try {
-            if (mode === 'planner') {
-                const tempInputs = { ...inputs };
-                let currentPoints = 0;
-                let pointsNeeded = 0;
-                let requirement = "";
-
-                if (testType === 'pft') {
-                    // PFT Planner Logic
-                    const getPFTEventScore = (event) => {
-                       const fullScore = calculatePFTScore(inputs.gender, inputs.age, {
-                           ...tempInputs,
-                           upperBodyReps: parseInt(tempInputs.upperBodyReps) || 0,
-                           plankMinutes: parseInt(tempInputs.plankMinutes) || 0,
-                           plankSeconds: parseInt(tempInputs.plankSeconds) || 0,
-                           runMinutes: parseInt(tempInputs.runMinutes) || 0,
-                           runSeconds: parseInt(tempInputs.runSeconds) || 0
-                       });
-                       
-                       if (event === 'upper') return fullScore.upperBodyScore;
-                       if (event === 'plank') return fullScore.plankScore;
-                       if (event === 'run') return fullScore.runScore;
-                       return 0;
-                    };
-
-                    if (solveFor !== 'upper') currentPoints += getPFTEventScore('upper');
-                    if (solveFor !== 'plank') currentPoints += getPFTEventScore('plank');
-                    if (solveFor !== 'run') currentPoints += getPFTEventScore('run');
-                    
-                    pointsNeeded = plannerTarget - currentPoints;
-                    
-                    if (solveFor === 'upper') {
-                        const reps = getRequiredUpperBodyReps(inputs.gender, inputs.age, inputs.upperBodyType, pointsNeeded);
-                        requirement = `${reps} Reps`;
-                    } else if (solveFor === 'plank') {
-                        const time = getRequiredPlankTime(pointsNeeded);
-                        requirement = time;
-                    } else if (solveFor === 'run') {
-                        const time = getRequiredRunTime(inputs.gender, inputs.age, pointsNeeded);
-                        requirement = time;
-                    }
-                } else {
-                    // CFT Planner Logic
-                    const getCFTEventScore = (event) => {
-                        const fullScore = calculateCFTScore(inputs.gender, inputs.age, {
-                            ...tempInputs,
-                            mtcMinutes: parseInt(tempInputs.mtcMinutes) || 0,
-                            mtcSeconds: parseInt(tempInputs.mtcSeconds) || 0,
-                            ammoLifts: parseInt(tempInputs.ammoLifts) || 0,
-                            manufMinutes: parseInt(tempInputs.manufMinutes) || 0,
-                            manufSeconds: parseInt(tempInputs.manufSeconds) || 0,
-                            isAltitude: tempInputs.isAltitude
-                        });
-
-                        if (event === 'mtc') return fullScore.mtcScore;
-                        if (event === 'al') return fullScore.alScore;
-                        if (event === 'manuf') return fullScore.manufScore;
-                        return 0;
-                    };
-
-                    if (solveFor !== 'mtc') currentPoints += getCFTEventScore('mtc');
-                    if (solveFor !== 'al') currentPoints += getCFTEventScore('al');
-                    if (solveFor !== 'manuf') currentPoints += getCFTEventScore('manuf');
-
-                    pointsNeeded = plannerTarget - currentPoints;
-
-                    if (solveFor === 'mtc') {
-                        const time = getRequiredMTC(inputs.gender, inputs.age, pointsNeeded);
-                        requirement = time;
-                    } else if (solveFor === 'al') {
-                        const reps = getRequiredAmmoLifts(inputs.gender, inputs.age, pointsNeeded);
-                        requirement = `${reps} Reps`;
-                    } else if (solveFor === 'manuf') {
-                        const time = getRequiredMANUF(inputs.gender, inputs.age, pointsNeeded);
-                        requirement = time;
-                    }
-                }
-
-                if (pointsNeeded > 100) {
-                    throw new Error(`Impossible! You need ${pointsNeeded} points in the last event, but max is 100.`);
-                }
-                
-                setResult({
-                    isPlanner: true,
-                    pointsNeeded: Math.max(0, pointsNeeded),
-                    requirement,
-                    currentPoints
-                });
-                return;
-            }
-
-            // Normal Calculator Logic
-            if (testType === 'pft') {
-                if (!inputs.upperBodyReps || !inputs.plankMinutes || !inputs.runMinutes) {
-                    throw new Error('Please enter valid performance data for all PFT events.');
-                }
-                const score = calculatePFTScore(inputs.gender, inputs.age, {
-                    upperBodyType: inputs.upperBodyType,
-                    upperBodyReps: parseInt(inputs.upperBodyReps) || 0,
-                    plankMinutes: parseInt(inputs.plankMinutes) || 0,
-                    plankSeconds: parseInt(inputs.plankSeconds) || 0,
-                    runMinutes: parseInt(inputs.runMinutes) || 0,
-                    runSeconds: parseInt(inputs.runSeconds) || 0
-                });
-                setResult(score);
-            } else {
-                if (!inputs.mtcMinutes || !inputs.ammoLifts || !inputs.manufMinutes) {
-                    throw new Error('Please enter valid performance data for all CFT events.');
-                }
-                const score = calculateCFTScore(inputs.gender, inputs.age, {
-                    mtcMinutes: parseInt(inputs.mtcMinutes) || 0,
-                    mtcSeconds: parseInt(inputs.mtcSeconds) || 0,
-                    ammoLifts: parseInt(inputs.ammoLifts) || 0,
-                    manufMinutes: parseInt(inputs.manufMinutes) || 0,
-                    manufSeconds: parseInt(inputs.manufSeconds) || 0,
-                    isAltitude: inputs.isAltitude
-                });
-                setResult(score);
-            }
-        } catch (err) {
-            setError(err.message);
-        }
+    // Format time (seconds to MM:SS)
+    const formatTime = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
 
     return (
-        <div className="space-y-6">
-            <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-200 dark:border-gray-700">
-                <div className="flex items-center gap-3">
-                    <div className="p-3 bg-marine-red/10 rounded-lg">
-                        <Calculator className="w-8 h-8 text-marine-red" />
-                    </div>
-                    <div>
-                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white m-0">PFT/CFT Calculator</h1>
-                        <p className="text-gray-500 dark:text-gray-400">Calculate your physical fitness score</p>
-                    </div>
+        <div className="max-w-4xl mx-auto space-y-6 pb-20">
+            {/* Header Section */}
+            <div className="bg-gradient-to-r from-marine-red to-red-900 rounded-2xl p-6 text-white shadow-lg">
+                <div className="flex items-center gap-3 mb-2">
+                    <Activity className="text-yellow-400" size={28} />
+                    <h2 className="text-2xl font-bold">Physical Fitness Calculator</h2>
                 </div>
-
-                <div className="flex bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
+                <p className="text-red-100">Calculate scores, view requirements, and access training plans.</p>
+                
+                {/* Test Type Toggle */}
+                <div className="flex gap-2 mt-6 bg-black/20 p-1 rounded-lg w-fit">
                     <button
-                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${testType === 'pft' ? 'bg-white dark:bg-gray-600 text-marine-red dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
-                        onClick={() => {
-                            setTestType('pft');
-                            setSolveFor('run');
-                            setResult(null);
-                            setError(null);
-                            setActivePlan('interactive');
-                        }}
+                        onClick={() => setTestType('pft')}
+                        className={`px-4 py-2 rounded-md text-sm font-semibold transition-all ${
+                            testType === 'pft' 
+                                ? 'bg-white text-marine-red shadow-sm' 
+                                : 'text-red-100 hover:bg-white/10'
+                        }`}
                     >
-                        PFT (Physical Fitness Test)
+                        PFT
                     </button>
                     <button
-                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${testType === 'cft' ? 'bg-white dark:bg-gray-600 text-marine-red dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
-                        onClick={() => {
-                            setTestType('cft');
-                            setSolveFor('mtc');
-                            setResult(null);
-                            setError(null);
-                            setActivePlan('interactive');
-                        }}
+                        onClick={() => setTestType('cft')}
+                        className={`px-4 py-2 rounded-md text-sm font-semibold transition-all ${
+                            testType === 'cft' 
+                                ? 'bg-white text-marine-red shadow-sm' 
+                                : 'text-red-100 hover:bg-white/10'
+                        }`}
                     >
-                        CFT (Combat Fitness Test)
-                    </button>
-                </div>
-            </header>
-
-            {/* Mode Toggle */}
-            <div className="flex justify-center mb-6">
-                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-1 rounded-lg shadow-sm flex flex-wrap justify-center">
-                    <button
-                        onClick={() => { setMode('calculator'); setResult(null); }}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${mode === 'calculator' ? 'bg-marine-red text-white' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
-                    >
-                        <Calculator size={16} /> Calculator
-                    </button>
-                    <button
-                        onClick={() => { setMode('planner'); setResult(null); }}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${mode === 'planner' ? 'bg-marine-red text-white' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
-                    >
-                        <Target size={16} /> Goal Planner
-                    </button>
-                    <button
-                        onClick={() => { setMode('training'); setResult(null); }}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${mode === 'training' ? 'bg-marine-red text-white' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
-                    >
-                        <Calendar size={16} /> Training Plans
+                        CFT
                     </button>
                 </div>
             </div>
 
-            {mode === 'training' ? (
-                // Training Plans View
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-6"
+            {/* Main Tabs */}
+            <div className="flex border-b border-gray-200 dark:border-gray-700">
+                <button
+                    onClick={() => setActiveTab('calculator')}
+                    className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+                        activeTab === 'calculator'
+                            ? 'border-marine-red text-marine-red'
+                            : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                    }`}
                 >
-                    {testType === 'pft' && (
-                        <div className="flex gap-4 border-b border-gray-200 dark:border-gray-700 pb-2 overflow-x-auto mb-4">
-                            <button
-                                onClick={() => handlePlanChange('interactive')}
-                                className={`pb-2 px-4 whitespace-nowrap font-medium transition-colors relative ${
-                                    activePlan === 'interactive' 
-                                    ? 'text-marine-red' 
-                                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-                                }`}
-                            >
-                                Interactive 8-Week Plan
-                                {activePlan === 'interactive' && (
-                                    <motion.div layoutId="planTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-marine-red" />
-                                )}
-                            </button>
-                            <button
-                                onClick={() => handlePlanChange('pft-visual')}
-                                className={`pb-2 px-4 whitespace-nowrap font-medium transition-colors relative ${
-                                    activePlan === 'pft-visual' 
-                                    ? 'text-marine-red' 
-                                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-                                }`}
-                            >
-                                16-Week Visual Program
-                                {activePlan === 'pft-visual' && (
-                                    <motion.div layoutId="planTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-marine-red" />
-                                )}
-                            </button>
-                            <button
-                                onClick={() => handlePlanChange('plank-visual')}
-                                className={`pb-2 px-4 whitespace-nowrap font-medium transition-colors relative ${
-                                    activePlan === 'plank-visual' 
-                                    ? 'text-marine-red' 
-                                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-                                }`}
-                            >
-                                4-Week Plank Program
-                                {activePlan === 'plank-visual' && (
-                                    <motion.div layoutId="planTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-marine-red" />
-                                )}
-                            </button>
-                            <button
-                                onClick={() => handlePlanChange('return-to-run')}
-                                className={`pb-2 px-4 whitespace-nowrap font-medium transition-colors relative ${
-                                    activePlan === 'return-to-run' 
-                                    ? 'text-marine-red' 
-                                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-                                }`}
-                            >
-                                Return to Run (Rehab)
-                                {activePlan === 'return-to-run' && (
-                                    <motion.div layoutId="planTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-marine-red" />
-                                )}
-                            </button>
-                        </div>
-                    )}
+                    <div className="flex items-center gap-2">
+                        <Calculator size={16} />
+                        Calculator
+                    </div>
+                </button>
+                <button
+                    onClick={() => setActiveTab('training')}
+                    className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+                        activeTab === 'training'
+                            ? 'border-marine-red text-marine-red'
+                            : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                    }`}
+                >
+                    <div className="flex items-center gap-2">
+                        <Calendar size={16} />
+                        Training Plan
+                    </div>
+                </button>
+                <button
+                    onClick={() => setActiveTab('visual')}
+                    className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+                        activeTab === 'visual'
+                            ? 'border-marine-red text-marine-red'
+                            : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                    }`}
+                >
+                    <div className="flex items-center gap-2">
+                        <FileText size={16} />
+                        Visual Cards
+                    </div>
+                </button>
+            </div>
 
-                    {testType === 'cft' && (
-                        <div className="flex gap-4 border-b border-gray-200 dark:border-gray-700 pb-2 overflow-x-auto mb-4">
-                            <button
-                                onClick={() => handlePlanChange('interactive')}
-                                className={`pb-2 px-4 whitespace-nowrap font-medium transition-colors relative ${
-                                    activePlan === 'interactive' 
-                                    ? 'text-marine-red' 
-                                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-                                }`}
-                            >
-                                Interactive 8-Week Plan
-                                {activePlan === 'interactive' && (
-                                    <motion.div layoutId="planTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-marine-red" />
-                                )}
-                            </button>
-                            <button
-                                onClick={() => handlePlanChange('cft-visual')}
-                                className={`pb-2 px-4 whitespace-nowrap font-medium transition-colors relative ${
-                                    activePlan === 'cft-visual' 
-                                    ? 'text-marine-red' 
-                                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-                                }`}
-                            >
-                                CFT Prep Guidance (Visual)
-                                {activePlan === 'cft-visual' && (
-                                    <motion.div layoutId="planTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-marine-red" />
-                                )}
-                            </button>
-                        </div>
-                    )}
-
-                    {activePlan === 'interactive' && (
-                        <>
-                            <div className="card">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <Calendar className="w-6 h-6 text-marine-red" />
+            {/* Content Area */}
+            <div className="space-y-6">
+                {activeTab === 'calculator' && (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* Inputs Column */}
+                        <div className="md:col-span-2 space-y-6">
+                            {/* Personal Details */}
+                            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                                    <Target size={20} className="text-marine-red" />
+                                    Personal Details
+                                </h3>
+                                <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white m-0">
-                                            {trainingPlans[testType].title}
-                                        </h3>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                                            {trainingPlans[testType].description}
-                                        </p>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Gender</label>
+                                        <select
+                                            value={gender}
+                                            onChange={(e) => setGender(e.target.value)}
+                                            className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-marine-red focus:border-marine-red"
+                                        >
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Age</label>
+                                        <input
+                                            type="number"
+                                            value={age}
+                                            onChange={(e) => setAge(parseInt(e.target.value))}
+                                            className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-marine-red focus:border-marine-red"
+                                        />
+                                    </div>
+                                    <div className="col-span-2">
+                                        <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                                            <input
+                                                type="checkbox"
+                                                checked={altitude}
+                                                onChange={(e) => setAltitude(e.target.checked)}
+                                                className="rounded border-gray-300 text-marine-red focus:ring-marine-red"
+                                            />
+                                            High Altitude (>4500ft)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Score Inputs */}
+                            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                                    <Activity size={20} className="text-marine-red" />
+                                    Performance Metrics
+                                </h3>
+                                
+                                {testType === 'pft' ? (
+                                    <div className="space-y-6">
+                                        {/* Upper Body */}
+                                        <div>
+                                            <div className="flex justify-between mb-2">
+                                                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Upper Body</label>
+                                                <div className="flex gap-2 text-xs">
+                                                    <button
+                                                        onClick={() => setUpperBodyType('pullups')}
+                                                        className={`px-2 py-0.5 rounded ${upperBodyType === 'pullups' ? 'bg-marine-red text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'}`}
+                                                    >
+                                                        Pull-ups
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setUpperBodyType('pushups')}
+                                                        className={`px-2 py-0.5 rounded ${upperBodyType === 'pushups' ? 'bg-marine-red text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'}`}
+                                                    >
+                                                        Push-ups
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <input
+                                                type="range"
+                                                min="0"
+                                                max={upperBodyType === 'pullups' ? "30" : "100"}
+                                                value={upperBodyType === 'pullups' ? pullups : pushups}
+                                                onChange={(e) => upperBodyType === 'pullups' ? setPullups(parseInt(e.target.value)) : setPushups(parseInt(e.target.value))}
+                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-marine-red"
+                                            />
+                                            <div className="flex justify-between mt-1">
+                                                <span className="text-xs text-gray-500">0</span>
+                                                <span className="font-bold text-marine-red">
+                                                    {upperBodyType === 'pullups' ? pullups : pushups} reps
+                                                </span>
+                                                <span className="text-xs text-gray-500">{upperBodyType === 'pullups' ? "30" : "100"}</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Plank */}
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Plank (seconds)</label>
+                                            <input
+                                                type="range"
+                                                min="0"
+                                                max="285"
+                                                value={plankTime}
+                                                onChange={(e) => setPlankTime(parseInt(e.target.value))}
+                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-marine-red"
+                                            />
+                                            <div className="flex justify-between mt-1">
+                                                <span className="text-xs text-gray-500">0:00</span>
+                                                <span className="font-bold text-marine-red">{formatTime(plankTime)}</span>
+                                                <span className="text-xs text-gray-500">4:45</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Run */}
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">3-Mile Run</label>
+                                            <input
+                                                type="range"
+                                                min="1080"
+                                                max="2100"
+                                                step="10"
+                                                value={runTime}
+                                                onChange={(e) => setRunTime(parseInt(e.target.value))}
+                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-marine-red"
+                                            />
+                                            <div className="flex justify-between mt-1">
+                                                <span className="text-xs text-gray-500">18:00</span>
+                                                <span className="font-bold text-marine-red">{formatTime(runTime)}</span>
+                                                <span className="text-xs text-gray-500">35:00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-6">
+                                        {/* MTC */}
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Movement to Contact (880 yds)</label>
+                                            <input
+                                                type="range"
+                                                min="120"
+                                                max="300"
+                                                step="1"
+                                                value={mtcTime}
+                                                onChange={(e) => setMtcTime(parseInt(e.target.value))}
+                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-marine-red"
+                                            />
+                                            <div className="flex justify-between mt-1">
+                                                <span className="text-xs text-gray-500">2:00</span>
+                                                <span className="font-bold text-marine-red">{formatTime(mtcTime)}</span>
+                                                <span className="text-xs text-gray-500">5:00</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Ammo Lifts */}
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Ammo Can Lifts (2 mins)</label>
+                                            <input
+                                                type="range"
+                                                min="0"
+                                                max="150"
+                                                value={alReps}
+                                                onChange={(e) => setAlReps(parseInt(e.target.value))}
+                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-marine-red"
+                                            />
+                                            <div className="flex justify-between mt-1">
+                                                <span className="text-xs text-gray-500">0</span>
+                                                <span className="font-bold text-marine-red">{alReps} reps</span>
+                                                <span className="text-xs text-gray-500">150</span>
+                                            </div>
+                                        </div>
+
+                                        {/* MANUF */}
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Maneuver Under Fire</label>
+                                            <input
+                                                type="range"
+                                                min="120"
+                                                max="300"
+                                                step="1"
+                                                value={manufTime}
+                                                onChange={(e) => setManufTime(parseInt(e.target.value))}
+                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-marine-red"
+                                            />
+                                            <div className="flex justify-between mt-1">
+                                                <span className="text-xs text-gray-500">2:00</span>
+                                                <span className="font-bold text-marine-red">{formatTime(manufTime)}</span>
+                                                <span className="text-xs text-gray-500">5:00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Results Column */}
+                        <div className="space-y-6">
+                            {/* Score Card */}
+                            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border-t-4 border-marine-red">
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                                    <Trophy size={20} className="text-yellow-500" />
+                                    Results
+                                </h3>
+                                
+                                <div className="text-center mb-6">
+                                    <div className="text-5xl font-bold text-gray-900 dark:text-white mb-1">{result.totalScore}</div>
+                                    <div className={`text-lg font-bold px-3 py-1 rounded-full inline-block ${
+                                        result.scoreClass === "1st Class" ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300" :
+                                        result.scoreClass === "2nd Class" ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300" :
+                                        result.scoreClass === "3rd Class" ? "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300" :
+                                        "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"
+                                    }`}>
+                                        {result.scoreClass}
                                     </div>
                                 </div>
 
-                                <div className="space-y-3">
-                                    {trainingPlans[testType].weeks.map((weekData) => (
-                                        <div
-                                            key={weekData.week}
-                                            className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
-                                        >
-                                            <button
-                                                onClick={() => setExpandedWeek(expandedWeek === weekData.week ? null : weekData.week)}
-                                                className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-                                            >
-                                                <div className="flex items-center gap-3">
-                                                    <span className="w-8 h-8 bg-marine-red text-white rounded-full flex items-center justify-center text-sm font-bold">
-                                                        {weekData.week}
-                                                    </span>
-                                                    <div className="text-left">
-                                                        <h4 className="font-semibold text-gray-900 dark:text-white">
-                                                            Week {weekData.week}
-                                                        </h4>
-                                                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                                                            {weekData.focus}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                {expandedWeek === weekData.week ? (
-                                                    <ChevronUp className="text-gray-400" />
-                                                ) : (
-                                                    <ChevronDown className="text-gray-400" />
-                                                )}
-                                            </button>
-
-                                            <AnimatePresence>
-                                                {expandedWeek === weekData.week && (
-                                                    <motion.div
-                                                        initial={{ height: 0, opacity: 0 }}
-                                                        animate={{ height: 'auto', opacity: 1 }}
-                                                        exit={{ height: 0, opacity: 0 }}
-                                                        className="overflow-hidden"
-                                                    >
-                                                        <div className="p-4 space-y-2 bg-white dark:bg-gray-800">
-                                                            {weekData.days.map((dayData, idx) => (
-                                                                <div
-                                                                    key={idx}
-                                                                    className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
-                                                                >
-                                                                    <span className={`w-10 text-xs font-bold py-1 px-2 rounded ${
-                                                                        dayData.day === 'Sun' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' :
-                                                                        dayData.day === 'Sat' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' :
-                                                                        'bg-gray-200 text-gray-700 dark:bg-gray-600 dark:text-gray-300'
-                                                                    }`}>
-                                                                        {dayData.day}
-                                                                    </span>
-                                                                    <p className="text-sm text-gray-700 dark:text-gray-300 flex-1">
-                                                                        {dayData.workout}
-                                                                    </p>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </motion.div>
-                                                )}
-                                            </AnimatePresence>
-                                        </div>
-                                    ))}
+                                <div className="space-y-3 border-t border-gray-100 dark:border-gray-700 pt-4">
+                                    {testType === 'pft' ? (
+                                        <>
+                                            <div className="flex justify-between text-sm">
+                                                <span className="text-gray-600 dark:text-gray-400">Upper Body</span>
+                                                <span className="font-semibold text-gray-900 dark:text-white">{result.upperBodyScore} pts</span>
+                                            </div>
+                                            <div className="flex justify-between text-sm">
+                                                <span className="text-gray-600 dark:text-gray-400">Plank</span>
+                                                <span className="font-semibold text-gray-900 dark:text-white">{result.plankScore} pts</span>
+                                            </div>
+                                            <div className="flex justify-between text-sm">
+                                                <span className="text-gray-600 dark:text-gray-400">Run</span>
+                                                <span className="font-semibold text-gray-900 dark:text-white">{result.runScore} pts</span>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className="flex justify-between text-sm">
+                                                <span className="text-gray-600 dark:text-gray-400">MTC</span>
+                                                <span className="font-semibold text-gray-900 dark:text-white">{result.mtcScore} pts</span>
+                                            </div>
+                                            <div className="flex justify-between text-sm">
+                                                <span className="text-gray-600 dark:text-gray-400">Ammo Lifts</span>
+                                                <span className="font-semibold text-gray-900 dark:text-white">{result.alScore} pts</span>
+                                            </div>
+                                            <div className="flex justify-between text-sm">
+                                                <span className="text-gray-600 dark:text-gray-400">MANUF</span>
+                                                <span className="font-semibold text-gray-900 dark:text-white">{result.manufScore} pts</span>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </div>
 
-                            {/* Training Tips */}
-                            <div className="card bg-marine-red text-white">
-                                <h4 className="text-white font-bold mb-3 flex items-center gap-2">
-                                    <Trophy className="text-marine-gold" /> Training Tips
-                                </h4>
-                                <ul className="space-y-2 text-red-100 text-sm">
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle2 size={16} className="text-marine-gold mt-0.5 flex-shrink-0" />
-                                        <span>Consistency beats intensity. Show up every day even when motivation is low.</span>
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle2 size={16} className="text-marine-gold mt-0.5 flex-shrink-0" />
-                                        <span>Sleep 7-9 hours nightly. Recovery is where gains happen.</span>
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle2 size={16} className="text-marine-gold mt-0.5 flex-shrink-0" />
-                                        <span>Week 4 recovery is critical. Don't skip it to avoid overtraining.</span>
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle2 size={16} className="text-marine-gold mt-0.5 flex-shrink-0" />
-                                        <span>Practice test conditions: same time of day, same warmup routine.</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </>
-                    )}
+                            {/* Recommendations (Conditional) */}
+                            {result.totalScore < 300 && (
+                                <ImprovementRecommendations 
+                                    result={result} 
+                                    testType={testType} 
+                                    upperBodyType={upperBodyType} 
+                                />
+                            )}
+                        </div>
+                    </div>
+                )}
 
-                    {activePlan === 'return-to-run' && (
-                        <div className="space-y-6">
-                            <div className="card">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-                                    <Shield className="text-marine-green" /> {returnToRunData.title}
-                                </h3>
-                                <p className="text-xs text-gray-400 dark:text-gray-500 mb-4 italic">
-                                    Source: {returnToRunData.source}
-                                </p>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                                    {returnToRunData.intro}
-                                </p>
-                                
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {returnToRunData.sections.map((section, idx) => {
-                                        const Icon = {
-                                            Shield: Shield,
-                                            AlertTriangle: AlertTriangle,
-                                            Thermometer: Thermometer,
-                                            Activity: Activity,
-                                            FirstAid: HeartPulse
-                                        }[section.icon] || Activity;
-                                        
-                                        return (
-                                            <div key={idx} className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-100 dark:border-gray-700">
-                                                <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-                                                    <Icon size={18} className="text-marine-red" />
-                                                    {section.title}
-                                                </h4>
-                                                
-                                                {section.content && (
-                                                    <ul className="space-y-2">
-                                                        {section.content.map((item, i) => (
-                                                            <li key={i} className="text-sm text-gray-600 dark:text-gray-300 flex items-start gap-2">
-                                                                <div className="min-w-[4px] h-[4px] rounded-full bg-marine-red mt-2" />
-                                                                {item}
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                )}
-                                                
-                                                {section.subsections && (
-                                                    <div className="space-y-4">
-                                                        {section.subsections.map((sub, i) => (
-                                                            <div key={i}>
-                                                                <h5 className={`text-sm font-medium mb-2 ${
-                                                                    sub.type === 'danger' ? 'text-red-600 dark:text-red-400' :
-                                                                    sub.type === 'warning' ? 'text-orange-600 dark:text-orange-400' :
-                                                                    sub.type === 'success' ? 'text-green-600 dark:text-green-400' :
-                                                                    'text-gray-800 dark:text-gray-200'
-                                                                }`}>
-                                                                    {sub.subtitle}
-                                                                </h5>
-                                                                <ul className="space-y-1">
-                                                                    {sub.points.map((pt, j) => (
-                                                                        <li key={j} className="text-xs text-gray-600 dark:text-gray-300 flex items-start gap-2">
-                                                                            <span className="text-gray-400">•</span>
-                                                                            {pt}
-                                                                        </li>
-                                                                    ))}
-                                                                </ul>
+                {activeTab === 'training' && (
+                    <div className="space-y-6">
+                        {/* Sub-tab Navigation for PFT */}
+                        {testType === 'pft' && (
+                            <div className="flex gap-2 p-1 bg-gray-100 dark:bg-gray-800/50 rounded-lg w-fit mb-4">
+                                <button
+                                    onClick={() => setTrainingSubTab('general')}
+                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                                        trainingSubTab === 'general'
+                                            ? 'bg-white dark:bg-gray-700 shadow-sm text-marine-red'
+                                            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                                    }`}
+                                >
+                                    General Plan
+                                </button>
+                                <button
+                                    onClick={() => setTrainingSubTab('pullup')}
+                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                                        trainingSubTab === 'pullup'
+                                            ? 'bg-white dark:bg-gray-700 shadow-sm text-marine-red'
+                                            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                                    }`}
+                                >
+                                    Pull-up Progression
+                                </button>
+                            </div>
+                        )}
+
+                        {(trainingSubTab === 'general' || testType === 'cft') ? (
+                            <>
+                                {/* Plan Header */}
+                                <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{trainingPlans[testType].title}</h3>
+                                    <p className="text-gray-600 dark:text-gray-400">{trainingPlans[testType].description}</p>
+                                </div>
+
+                                {/* Weeks Accordion */}
+                                <div className="space-y-4">
+                                    {trainingPlans[testType].weeks.map((weekData) => (
+                                        <div key={weekData.week} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                                            <button
+                                                onClick={() => setExpandedWeek(expandedWeek === weekData.week ? null : weekData.week)}
+                                                className="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                                            >
+                                                <div className="flex items-center gap-4">
+                                                    <div className="bg-marine-red text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">
+                                                        {weekData.week}
+                                                    </div>
+                                                    <div className="text-left">
+                                                        <h4 className="font-semibold text-gray-900 dark:text-white">Week {weekData.week}</h4>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">{weekData.focus}</p>
+                                                    </div>
+                                                </div>
+                                                {expandedWeek === weekData.week ? <ChevronUp size={20} className="text-gray-400" /> : <ChevronDown size={20} className="text-gray-400" />}
+                                            </button>
+
+                                            {expandedWeek === weekData.week && (
+                                                <div className="border-t border-gray-100 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800/50">
+                                                    <div className="space-y-3">
+                                                        {weekData.days.map((day, idx) => (
+                                                            <div key={idx} className="flex gap-4 p-2 rounded hover:bg-white dark:hover:bg-gray-700 transition-colors">
+                                                                <span className="w-12 font-medium text-gray-500 dark:text-gray-400 text-sm">{day.day}</span>
+                                                                <span className="text-sm text-gray-900 dark:text-gray-300">{day.workout}</span>
                                                             </div>
                                                         ))}
                                                     </div>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        ) : (
+                            <PullupProgram />
+                        )}
+                    </div>
+                )}
+
+                {activeTab === 'visual' && (
+                    <div className="space-y-6">
+                        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                            <div className="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                        <FileText size={20} className="text-marine-red" />
+                                        {visualPlans[testType].title}
+                                    </h3>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                        {visualPlans[testType].description}
+                                    </p>
+                                </div>
+                                <div className="text-right">
+                                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                                        Card {currentCardIndex + 1} of {visualPlans[testType].count}
+                                    </span>
                                 </div>
                             </div>
-                            
-                            {/* Phases */}
-                            <div className="space-y-4">
-                                {returnToRunData.phases.map((phase, idx) => (
-                                    <div key={idx} className="card border-l-4 border-l-marine-red">
-                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-                                            {phase.phase}: {phase.title}
-                                        </h3>
-                                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                                            {phase.description}
-                                        </p>
-                                        
-                                        {phase.exercises && (
-                                            <div className="overflow-x-auto">
-                                                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
-                                                        <tr>
-                                                            <th className="px-4 py-2">Exercise</th>
-                                                            <th className="px-4 py-2">Sets</th>
-                                                            <th className="px-4 py-2">Contacts/Set</th>
-                                                            <th className="px-4 py-2">Total</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {phase.exercises.map((ex, i) => (
-                                                            <tr key={i} className="bg-white dark:bg-gray-800 border-b dark:border-gray-700">
-                                                                <td className="px-4 py-2 font-medium text-gray-900 dark:text-white">{ex.name}</td>
-                                                                <td className="px-4 py-2">{ex.sets}</td>
-                                                                <td className="px-4 py-2">{ex.contactsPerSet}</td>
-                                                                <td className="px-4 py-2">{ex.totalContacts}</td>
-                                                            </tr>
-                                                        ))}
-                                                        <tr className="bg-gray-50 dark:bg-gray-700 font-bold">
-                                                            <td className="px-4 py-2" colSpan={3}>Total Foot Contacts</td>
-                                                            <td className="px-4 py-2">{phase.totalContacts}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                
-                                                {phase.restBetweenSets && (
-                                                    <div className="mt-3 text-xs text-gray-500 flex gap-4">
-                                                        <span><strong>Rest Between Sets:</strong> {phase.restBetweenSets}</span>
-                                                        <span><strong>Between Exercises:</strong> {phase.restBetweenExercises}</span>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )}
 
-                                        {phase.type === 'interval' && phase.schedule && (
-                                            <div className="overflow-x-auto">
-                                                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
-                                                        <tr>
-                                                            <th className="px-4 py-2">Step</th>
-                                                            <th className="px-4 py-2">Walk</th>
-                                                            <th className="px-4 py-2">Jog</th>
-                                                            <th className="px-4 py-2">Reps</th>
-                                                            <th className="px-4 py-2">Total Time</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {phase.schedule.map((row, i) => (
-                                                            <tr key={i} className="bg-white dark:bg-gray-800 border-b dark:border-gray-700">
-                                                                <td className="px-4 py-2 font-medium text-gray-900 dark:text-white">{row.step}</td>
-                                                                <td className="px-4 py-2">{row.walk}</td>
-                                                                <td className="px-4 py-2">{row.jog}</td>
-                                                                <td className="px-4 py-2">{row.reps}</td>
-                                                                <td className="px-4 py-2">{row.total}</td>
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        )}
-
-                                        {phase.type === 'continuous' && phase.schedule && (
-                                            <div className="overflow-x-auto">
-                                                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
-                                                        <tr>
-                                                            <th className="px-4 py-2">Step</th>
-                                                            <th className="px-4 py-2">Run Duration</th>
-                                                            <th className="px-4 py-2">Frequency</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {phase.schedule.map((row, i) => (
-                                                            <tr key={i} className="bg-white dark:bg-gray-800 border-b dark:border-gray-700">
-                                                                <td className="px-4 py-2 font-medium text-gray-900 dark:text-white">{row.step}</td>
-                                                                <td className="px-4 py-2">{row.run}</td>
-                                                                <td className="px-4 py-2">{row.freq}</td>
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {['pft-visual', 'plank-visual', 'cft-visual'].includes(activePlan) && (
-                        <div className="card flex flex-col items-center">
-                            {/* CFT Schedule Navigator */}
-                            {visualPlans[activePlan].hasSchedule && (
-                                <div className="w-full mb-6 p-4 bg-marine-green/5 dark:bg-marine-green/10 rounded-lg border border-marine-green/20">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <h4 className="font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                                            <Calendar size={18} className="text-marine-green" />
-                                            Schedule Navigator
-                                        </h4>
-                                        <div className="flex items-center gap-2">
-                                            <button 
-                                                onClick={() => setCftWeek(w => Math.max(1, w - 1))}
-                                                disabled={cftWeek === 1}
-                                                className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded disabled:opacity-30"
-                                            >
-                                                <ChevronLeft size={16} />
-                                            </button>
-                                            <span className="font-medium text-sm">Week {cftWeek}</span>
-                                            <button 
-                                                onClick={() => setCftWeek(w => Math.min(25, w + 1))}
-                                                disabled={cftWeek === 25}
-                                                className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded disabled:opacity-30"
-                                            >
-                                                <ChevronRight size={16} />
-                                            </button>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
-                                        {cftSchedule.days.map((day, idx) => {
-                                            const pageNum = cftSchedule.getPage(cftWeek, idx);
-                                            const isRest = idx === 6;
-                                            const isSelected = !isRest && resourcePage === pageNum;
-                                            
-                                            return (
-                                                <button
-                                                    key={day.name}
-                                                    onClick={() => !isRest && handleScheduleClick(cftWeek, idx)}
-                                                    disabled={isRest}
-                                                    className={`
-                                                        p-2 rounded text-xs flex flex-col items-center gap-1 transition-all
-                                                        ${isRest 
-                                                            ? 'bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-600 cursor-default' 
-                                                            : isSelected
-                                                                ? 'bg-marine-red text-white shadow-md transform scale-105'
-                                                                : 'bg-white dark:bg-gray-800 hover:bg-marine-red/10 border border-gray-200 dark:border-gray-700'
-                                                        }
-                                                    `}
-                                                >
-                                                    <span className="font-bold">{day.name}</span>
-                                                    <span className={`text-[10px] ${isSelected ? 'text-red-100' : 'text-gray-500 dark:text-gray-400'}`}>
-                                                        {day.label}
-                                                    </span>
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
+                            {/* Viewer Controls - Top (for CFT) */}
+                            {testType === 'cft' && (
+                                <div className="flex items-center gap-2 mb-4 bg-gray-50 dark:bg-gray-700 p-2 rounded-lg">
+                                    <form onSubmit={handleJumpToPage} className="flex gap-2 w-full">
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            max={visualPlans[testType].count}
+                                            placeholder="Go to page..."
+                                            value={cftPageInput}
+                                            onChange={(e) => setCftPageInput(e.target.value)}
+                                            className="w-full text-sm rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800"
+                                        />
+                                        <button 
+                                            type="submit"
+                                            className="bg-marine-red text-white px-3 py-1 rounded text-sm font-medium whitespace-nowrap"
+                                        >
+                                            Go
+                                        </button>
+                                    </form>
                                 </div>
                             )}
 
-                            <div className="w-full flex justify-between items-center mb-4">
-                                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                                    {visualPlans[activePlan].title}
-                                </h3>
-                                <div className="flex items-center gap-4">
+                            {/* Card Viewer */}
+                            <div className="relative aspect-[3/4] md:aspect-[4/3] bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 flex items-center justify-center group">
+                                <img
+                                    src={`${visualPlans[testType].path}Slide${getPage(currentCardIndex, testType)}.JPG`}
+                                    alt={`${testType.toUpperCase()} Card ${currentCardIndex + 1}`}
+                                    className="max-w-full max-h-full object-contain"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = 'https://via.placeholder.com/800x600?text=Image+Not+Found';
+                                    }}
+                                />
+
+                                {/* Navigation Overlay */}
+                                <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button
-                                        onClick={prevResourcePage}
-                                        disabled={resourcePage === 1}
-                                        className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed text-gray-700 dark:text-gray-300 transition-colors"
+                                        onClick={() => setCurrentCardIndex(prev => Math.max(0, prev - 1))}
+                                        disabled={currentCardIndex === 0}
+                                        className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                                     >
                                         <ChevronLeft size={24} />
                                     </button>
-                                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
-                                        Page {resourcePage} of {visualPlans[activePlan].totalPages}
-                                    </span>
                                     <button
-                                        onClick={nextResourcePage}
-                                        disabled={resourcePage === visualPlans[activePlan].totalPages}
-                                        className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed text-gray-700 dark:text-gray-300 transition-colors"
+                                        onClick={() => setCurrentCardIndex(prev => Math.min(visualPlans[testType].count - 1, prev + 1))}
+                                        disabled={currentCardIndex === visualPlans[testType].count - 1}
+                                        className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                                     >
                                         <ChevronRight size={24} />
                                     </button>
                                 </div>
                             </div>
 
-                            {/* Image Display */}
-                            <div className="w-full bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 min-h-[400px] flex items-center justify-center relative">
-                                <img
-                                    key={`${activePlan}-${resourcePage}`}
-                                    src={getResourceImagePath(resourcePage)}
-                                    alt={`${visualPlans[activePlan].title} Page ${resourcePage}`}
-                                    className="max-w-full max-h-[80vh] object-contain"
-                                    loading="eager"
-                                    onError={(e) => {
-                                        e.target.onerror = null;
-                                        e.target.src = "https://placehold.co/600x800?text=Image+Not+Found";
-                                    }}
-                                />
-                            </div>
-                            
-                            <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                                Use the arrows to navigate through the program cards.
-                            </p>
-                        </div>
-                    )}
-                </motion.div>
-            ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6"
-                >
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                        {mode === 'planner' ? <Target className="w-5 h-5 text-gray-400" /> : <Activity className="w-5 h-5 text-gray-400" />}
-                        {mode === 'planner' ? 'Define Your Scenario' : 'Enter Your Stats'}
-                    </h3>
-                    
-                    <div className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Gender</label>
-                                <select name="gender" value={inputs.gender} onChange={handleInputChange} className="input-field">
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Age Group</label>
-                                <select name="age" value={inputs.age} onChange={handleInputChange} className="input-field">
-                                    <option value="17-20">17-20</option>
-                                    <option value="21-25">21-25</option>
-                                    <option value="26-30">26-30</option>
-                                    <option value="31-35">31-35</option>
-                                    <option value="36-40">36-40</option>
-                                    <option value="41-45">41-45</option>
-                                    <option value="46-50">46-50</option>
-                                    <option value="51+">51+</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        {mode === 'planner' && (
-                            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800 mb-4">
-                                <label className="block text-sm font-bold text-blue-900 dark:text-blue-300 mb-2">Target Total Score (0-300)</label>
-                                <input
-                                    type="number"
-                                    value={plannerTarget}
-                                    onChange={(e) => setPlannerTarget(parseInt(e.target.value) || 0)}
-                                    className="input-field text-lg font-bold text-blue-900 dark:text-blue-100"
-                                    min="0"
-                                    max="300"
-                                />
-                                <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">First Class: 235+ | Promotion Rec: ~285</p>
-                            </div>
-                        )}
-
-                        {testType === 'pft' ? (
-                            <>
-                                {/* Upper Body Section */}
-                                <div className={`space-y-3 transition-all ${mode === 'planner' && solveFor === 'upper' ? 'opacity-50 pointer-events-none' : ''}`}>
-                                    <div className="flex justify-between items-center">
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Upper Body Event</label>
-                                        {mode === 'planner' && (
-                                            <button
-                                                onClick={() => setSolveFor('upper')}
-                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'upper' ? 'bg-marine-red text-white border-marine-red' : 'bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-300 border-gray-200 dark:border-gray-600'}`}
-                                            >
-                                                {solveFor === 'upper' ? 'Solving...' : 'Solve for this'}
-                                            </button>
-                                        )}
-                                    </div>
-                                    <div className="flex gap-4">
-                                        <label className="flex items-center gap-2 cursor-pointer text-gray-900 dark:text-gray-100">
-                                            <input type="radio" name="upperBodyType" value="pullups" checked={inputs.upperBodyType === 'pullups'} onChange={handleInputChange} className="text-marine-red focus:ring-marine-red" />
-                                            <span>Pull-ups</span>
-                                        </label>
-                                        <label className="flex items-center gap-2 cursor-pointer text-gray-900 dark:text-gray-100">
-                                            <input type="radio" name="upperBodyType" value="pushups" checked={inputs.upperBodyType === 'pushups'} onChange={handleInputChange} className="text-marine-red focus:ring-marine-red" />
-                                            <span>Push-ups</span>
-                                        </label>
-                                    </div>
-                                    <input 
-                                        type="number" 
-                                        name="upperBodyReps" 
-                                        value={inputs.upperBodyReps} 
-                                        onChange={handleInputChange} 
-                                        placeholder={solveFor === 'upper' ? "Calculated automatically..." : "Reps"}
-                                        className="input-field" 
+                            {/* Thumbnails / Progress */}
+                            <div className="mt-4 flex justify-center gap-1 flex-wrap">
+                                {Array.from({ length: Math.min(visualPlans[testType].count, 14) }).map((_, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={() => setCurrentCardIndex(i)}
+                                        className={`w-2 h-2 rounded-full transition-all ${
+                                            i === currentCardIndex 
+                                                ? 'bg-marine-red w-4' 
+                                                : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400'
+                                        }`}
                                     />
-                                </div>
-
-                                {/* Plank Section */}
-                                <div className={`transition-all ${mode === 'planner' && solveFor === 'plank' ? 'opacity-50 pointer-events-none' : ''}`}>
-                                    <div className="flex justify-between items-center mb-1">
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Plank</label>
-                                        {mode === 'planner' && (
-                                            <button
-                                                onClick={() => setSolveFor('plank')}
-                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'plank' ? 'bg-marine-red text-white border-marine-red' : 'bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-300 border-gray-200 dark:border-gray-600'}`}
-                                            >
-                                                {solveFor === 'plank' ? 'Solving...' : 'Solve for this'}
-                                            </button>
-                                        )}
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <input type="number" name="plankMinutes" placeholder="Minutes" value={inputs.plankMinutes} onChange={handleInputChange} className="input-field" />
-                                        <input type="number" name="plankSeconds" placeholder="Seconds" value={inputs.plankSeconds} onChange={handleInputChange} className="input-field" />
-                                    </div>
-                                </div>
-
-                                {/* Run Section */}
-                                <div className={`transition-all ${mode === 'planner' && solveFor === 'run' ? 'opacity-50 pointer-events-none' : ''}`}>
-                                    <div className="flex justify-between items-center mb-1">
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">3-Mile Run</label>
-                                        {mode === 'planner' && (
-                                            <button
-                                                onClick={() => setSolveFor('run')}
-                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'run' ? 'bg-marine-red text-white border-marine-red' : 'bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-300 border-gray-200 dark:border-gray-600'}`}
-                                            >
-                                                {solveFor === 'run' ? 'Solving...' : 'Solve for this'}
-                                            </button>
-                                        )}
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <input type="number" name="runMinutes" placeholder="Minutes" value={inputs.runMinutes} onChange={handleInputChange} className="input-field" />
-                                        <input type="number" name="runSeconds" placeholder="Seconds" value={inputs.runSeconds} onChange={handleInputChange} className="input-field" />
-                                    </div>
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <div className={`transition-all ${mode === 'planner' && solveFor === 'mtc' ? 'opacity-50 pointer-events-none' : ''}`}>
-                                    <div className="flex justify-between items-center mb-1">
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Movement to Contact (880 yds)</label>
-                                        {mode === 'planner' && (
-                                            <button
-                                                onClick={() => setSolveFor('mtc')}
-                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'mtc' ? 'bg-marine-red text-white border-marine-red' : 'bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-300 border-gray-200 dark:border-gray-600'}`}
-                                            >
-                                                {solveFor === 'mtc' ? 'Solving...' : 'Solve for this'}
-                                            </button>
-                                        )}
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <input type="number" name="mtcMinutes" placeholder="Minutes" value={inputs.mtcMinutes} onChange={handleInputChange} className="input-field" />
-                                        <input type="number" name="mtcSeconds" placeholder="Seconds" value={inputs.mtcSeconds} onChange={handleInputChange} className="input-field" />
-                                    </div>
-                                </div>
-
-                                <div className={`transition-all ${mode === 'planner' && solveFor === 'al' ? 'opacity-50 pointer-events-none' : ''}`}>
-                                    <div className="flex justify-between items-center mb-1">
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Ammo Can Lifts (2 mins)</label>
-                                        {mode === 'planner' && (
-                                            <button
-                                                onClick={() => setSolveFor('al')}
-                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'al' ? 'bg-marine-red text-white border-marine-red' : 'bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-300 border-gray-200 dark:border-gray-600'}`}
-                                            >
-                                                {solveFor === 'al' ? 'Solving...' : 'Solve for this'}
-                                            </button>
-                                        )}
-                                    </div>
-                                    <input type="number" name="ammoLifts" placeholder="Reps" value={inputs.ammoLifts} onChange={handleInputChange} className="input-field" />
-                                </div>
-
-                                <div className={`transition-all ${mode === 'planner' && solveFor === 'manuf' ? 'opacity-50 pointer-events-none' : ''}`}>
-                                    <div className="flex justify-between items-center mb-1">
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Maneuver Under Fire</label>
-                                        {mode === 'planner' && (
-                                            <button
-                                                onClick={() => setSolveFor('manuf')}
-                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'manuf' ? 'bg-marine-red text-white border-marine-red' : 'bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-300 border-gray-200 dark:border-gray-600'}`}
-                                            >
-                                                {solveFor === 'manuf' ? 'Solving...' : 'Solve for this'}
-                                            </button>
-                                        )}
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <input type="number" name="manufMinutes" placeholder="Minutes" value={inputs.manufMinutes} onChange={handleInputChange} className="input-field" />
-                                        <input type="number" name="manufSeconds" placeholder="Seconds" value={inputs.manufSeconds} onChange={handleInputChange} className="input-field" />
-                                    </div>
-                                </div>
-                                
-                                <label className="flex items-center gap-2 cursor-pointer pt-2">
-                                    <input type="checkbox" name="isAltitude" checked={inputs.isAltitude} onChange={handleInputChange} className="rounded text-marine-red focus:ring-marine-red" />
-                                    <span className="text-sm text-gray-700 dark:text-gray-300">Test conducted at Altitude (4500ft+)</span>
-                                </label>
-                            </>
-                        )}
-
-                        <button 
-                            onClick={handleCalculate}
-                            className="w-full btn mt-4"
-                        >
-                            Calculate Score
-                        </button>
-
-                        {error && (
-                            <div className="p-3 bg-red-50 text-red-700 rounded-md text-sm flex items-center gap-2">
-                                <AlertCircle size={16} />
-                                {error}
-                            </div>
-                        )}
-                    </div>
-                </motion.div>
-
-                <AnimatePresence>
-                    {result && (
-                        <motion.div
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: 20 }}
-                            className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col"
-                        >
-                            <div className={`p-6 text-center ${result.isPlanner ? 'bg-blue-600' : 'bg-marine-red'} text-white`}>
-                                <h3 className="text-white text-lg font-medium opacity-90 mb-1">
-                                    {result.isPlanner ? 'Required Performance' : 'Total Score'}
-                                </h3>
-                                <div className="text-5xl font-bold mb-2">
-                                    {result.isPlanner ? result.requirement : result.totalScore}
-                                </div>
-                                <div className="inline-block px-3 py-1 bg-white/20 rounded-full text-sm font-bold backdrop-blur-sm">
-                                    {result.isPlanner ? `To Hit ${plannerTarget} Points` : `${result.classification?.name || result.classification} Class`}
-                                </div>
-                            </div>
-
-                            <div className="p-6 space-y-4 flex-1">
-                                {result.isPlanner ? (
-                                    <div className="space-y-4">
-                                        <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                                            <div className="flex justify-between items-center mb-2">
-                                                <span className="text-gray-600 dark:text-gray-300">Points from Locked Events</span>
-                                                <span className="font-bold text-gray-900 dark:text-white">{result.currentPoints}</span>
-                                            </div>
-                                            <div className="flex justify-between items-center">
-                                                <span className="text-gray-600 dark:text-gray-300">Points Needed</span>
-                                                <span className="font-bold text-blue-600 dark:text-blue-400">{result.pointsNeeded}</span>
-                                            </div>
-                                        </div>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400 italic text-center">
-                                            Based on simplified scoring tiers. Aim slightly higher to ensure score.
-                                        </p>
-                                    </div>
-                                ) : (
-                                    testType === 'pft' ? (
-                                        <>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                                            <span className="text-gray-600 dark:text-gray-300">Upper Body</span>
-                                            <span className="font-bold text-gray-900 dark:text-white">{result.upperBodyScore} pts</span>
-                                        </div>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                                            <span className="text-gray-600 dark:text-gray-300">Plank</span>
-                                            <span className="font-bold text-gray-900 dark:text-white">{result.plankScore} pts</span>
-                                        </div>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                                            <span className="text-gray-600 dark:text-gray-300">Run</span>
-                                            <span className="font-bold text-gray-900 dark:text-white">{result.runScore} pts</span>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                                            <span className="text-gray-600 dark:text-gray-300">MTC</span>
-                                            <span className="font-bold text-gray-900 dark:text-white">{result.mtcScore} pts</span>
-                                        </div>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                                            <span className="text-gray-600 dark:text-gray-300">ACL</span>
-                                            <span className="font-bold text-gray-900 dark:text-white">{result.alScore} pts</span>
-                                        </div>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                                            <span className="text-gray-600 dark:text-gray-300">MANUF</span>
-                                            <span className="font-bold text-gray-900 dark:text-white">{result.manufScore} pts</span>
-                                        </div>
-                                    </>
                                 ))}
-
-                                <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-700">
-                                    {(result.totalScore >= 235) ? (
-                                        <>
-                                            <h4 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-                                                <Trophy size={16} className="text-marine-gold" />
-                                                First Class Performance
-                                            </h4>
-                                            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                                                Outstanding work! Maintain this level of fitness and focus on injury prevention.
-                                                Consider working toward a 285+ score for promotion competitiveness.
-                                            </p>
-                                        </>
-                                    ) : (
-                                        <ImprovementRecommendations
-                                            result={result}
-                                            testType={testType}
-                                            upperBodyType={inputs.upperBodyType}
-                                        />
-                                    )}
-                                </div>
+                                {visualPlans[testType].count > 14 && (
+                                    <span className="text-xs text-gray-400 flex items-center">...</span>
+                                )}
                             </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                        </div>
+                    </div>
+                )}
             </div>
-            )}
         </div>
     );
 };
