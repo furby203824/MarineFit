@@ -167,23 +167,35 @@ export const getClassification = (score) => {
     return { class: 'fail', name: 'Failure' };
 };
 
+export const getAgeGroup = (age) => {
+    if (age < 17) return '17-20'; // Minimum age bucket
+    if (age <= 20) return '17-20';
+    if (age <= 25) return '21-25';
+    if (age <= 30) return '26-30';
+    if (age <= 35) return '31-35';
+    if (age <= 40) return '36-40';
+    if (age <= 45) return '41-45';
+    if (age <= 50) return '46-50';
+    return '51+';
+};
+
 // ============================================
 // UPPER BODY SCORING (Pull-ups / Push-ups)
 // ============================================
 
-const calculateUpperBodyScore = (gender, ageGroup, type, reps) => {
+export const calculateUpperBodyScore = (gender, ageGroup, type, reps) => {
     const g = gender.toLowerCase();
     const age = ageGroup || '21-25'; // Default to 21-25 if not specified
 
     if (type === 'pullups') {
-        const maxReps = pullupMax[g]?.[age] || pullupMax[g]['21-25'];
-        const minReps = pullupMin[g]?.[age] || pullupMin[g]['21-25'];
+        const maxReps = pullupMax[g]?.[age] || pullupMax[g]?.['21-25'];
+        const minReps = pullupMin[g]?.[age] || pullupMin[g]?.['21-25'];
 
         if (reps < minReps) return 0;
         return interpolateScore(reps, minReps, maxReps, false);
     } else { // pushups
-        const maxReps = pushupMax[g]?.[age] || pushupMax[g]['21-25'];
-        const minReps = pushupMin[g]?.[age] || pushupMin[g]['21-25'];
+        const maxReps = pushupMax[g]?.[age] || pushupMax[g]?.['21-25'];
+        const minReps = pushupMin[g]?.[age] || pushupMin[g]?.['21-25'];
 
         if (reps < minReps) return 0;
         return interpolateScore(reps, minReps, maxReps, false);
@@ -194,7 +206,7 @@ const calculateUpperBodyScore = (gender, ageGroup, type, reps) => {
 // PLANK SCORING (Not age-dependent)
 // ============================================
 
-const calculatePlankScore = (minutes, seconds) => {
+export const calculatePlankScore = (minutes, seconds) => {
     const totalSeconds = (minutes * 60) + seconds;
 
     if (totalSeconds < plankMinSeconds) return 0;
@@ -209,13 +221,13 @@ const calculatePlankScore = (minutes, seconds) => {
 // 3-MILE RUN SCORING
 // ============================================
 
-const calculateRunScore = (gender, ageGroup, minutes, seconds) => {
+export const calculateRunScore = (gender, ageGroup, minutes, seconds) => {
     const g = gender.toLowerCase();
     const age = ageGroup || '21-25';
     const totalSeconds = (minutes * 60) + seconds;
 
-    const maxTime = runMax[g]?.[age] || runMax[g]['21-25'];
-    const minTime = runMin[g]?.[age] || runMin[g]['21-25'];
+    const maxTime = runMax[g]?.[age] || runMax[g]?.['21-25'];
+    const minTime = runMin[g]?.[age] || runMin[g]?.['21-25'];
 
     if (totalSeconds > minTime) return 0;
     return interpolateScore(totalSeconds, minTime, maxTime, true);
@@ -225,13 +237,13 @@ const calculateRunScore = (gender, ageGroup, minutes, seconds) => {
 // CFT: MOVEMENT TO CONTACT (880 yds)
 // ============================================
 
-const calculateMTCScore = (gender, ageGroup, minutes, seconds) => {
+export const calculateMTCScore = (gender, ageGroup, minutes, seconds) => {
     const g = gender.toLowerCase();
     const age = ageGroup || '21-25';
     const totalSeconds = (minutes * 60) + seconds;
 
-    const maxTime = mtcMax[g]?.[age] || mtcMax[g]['21-25'];
-    const minTime = mtcMin[g]?.[age] || mtcMin[g]['21-25'];
+    const maxTime = mtcMax[g]?.[age] || mtcMax[g]?.['21-25'];
+    const minTime = mtcMin[g]?.[age] || mtcMin[g]?.['21-25'];
 
     if (totalSeconds > minTime) return 0;
     return interpolateScore(totalSeconds, minTime, maxTime, true);
@@ -241,12 +253,12 @@ const calculateMTCScore = (gender, ageGroup, minutes, seconds) => {
 // CFT: AMMO CAN LIFTS
 // ============================================
 
-const calculateALScore = (gender, ageGroup, reps) => {
+export const calculateALScore = (gender, ageGroup, reps) => {
     const g = gender.toLowerCase();
     const age = ageGroup || '21-25';
 
-    const maxReps = ammoMax[g]?.[age] || ammoMax[g]['21-25'];
-    const minReps = ammoMin[g]?.[age] || ammoMin[g]['21-25'];
+    const maxReps = ammoMax[g]?.[age] || ammoMax[g]?.['21-25'];
+    const minReps = ammoMin[g]?.[age] || ammoMin[g]?.['21-25'];
 
     if (reps < minReps) return 0;
     return interpolateScore(reps, minReps, maxReps, false);
@@ -256,13 +268,13 @@ const calculateALScore = (gender, ageGroup, reps) => {
 // CFT: MANEUVER UNDER FIRE
 // ============================================
 
-const calculateMANUFScore = (gender, ageGroup, minutes, seconds) => {
+export const calculateMANUFScore = (gender, ageGroup, minutes, seconds) => {
     const g = gender.toLowerCase();
     const age = ageGroup || '21-25';
     const totalSeconds = (minutes * 60) + seconds;
 
-    const maxTime = manufMax[g]?.[age] || manufMax[g]['21-25'];
-    const minTime = manufMin[g]?.[age] || manufMin[g]['21-25'];
+    const maxTime = manufMax[g]?.[age] || manufMax[g]?.['21-25'];
+    const minTime = manufMin[g]?.[age] || manufMin[g]?.['21-25'];
 
     if (totalSeconds > minTime) return 0;
     return interpolateScore(totalSeconds, minTime, maxTime, true);

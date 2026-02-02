@@ -3,6 +3,7 @@ import PullupProgram from './PullupProgram';
 import {
     calculatePFTScore,
     calculateCFTScore,
+    getAgeGroup,
     getRequiredRunTime,
     getRequiredUpperBodyReps,
     getRequiredPlankTime,
@@ -432,51 +433,45 @@ const PFTPrep = () => {
     };
 
     const result = useMemo(() => {
-        if (testType === 'pft') {
-            const upperScore = calculatePFTScore(
-                upperBodyType === 'pullups' ? 'pullups' : 'pushups',
-                upperBodyType === 'pullups' ? pullups : pushups,
-                gender,
-                age
-            );
-            
-            const plankScore = calculatePFTScore(
-                'plank',
-                plankTime,
-                gender,
-                age
-            );
+        const ageGroup = getAgeGroup(age);
 
-            const runScore = calculatePFTScore(
-                'run',
-                runTime,
-                gender,
-                age,
-                altitude
-            );
+        if (testType === 'pft') {
+            const inputs = {
+                upperBodyType,
+                upperBodyReps: upperBodyType === 'pullups' ? pullups : pushups,
+                plankMinutes: Math.floor(plankTime / 60),
+                plankSeconds: plankTime % 60,
+                runMinutes: Math.floor(runTime / 60),
+                runSeconds: runTime % 60
+            };
+
+            const scores = calculatePFTScore(gender, ageGroup, inputs);
 
             return {
-                upperBodyScore: upperScore,
-                plankScore: plankScore,
-                runScore: runScore,
-                totalScore: upperScore + plankScore + runScore,
-                scoreClass: (upperScore + plankScore + runScore) >= 235 ? "1st Class" : 
-                           (upperScore + plankScore + runScore) >= 200 ? "2nd Class" : 
-                           (upperScore + plankScore + runScore) >= 150 ? "3rd Class" : "Fail"
+                upperBodyScore: scores.upperBodyScore,
+                plankScore: scores.plankScore,
+                runScore: scores.runScore,
+                totalScore: scores.totalScore,
+                scoreClass: scores.classification.name
             };
         } else {
-            const mtcScore = calculateCFTScore('mtc', mtcTime, gender, age, altitude);
-            const alScore = calculateCFTScore('al', alReps, gender, age);
-            const manufScore = calculateCFTScore('manuf', manufTime, gender, age, altitude);
+            const inputs = {
+                mtcMinutes: Math.floor(mtcTime / 60),
+                mtcSeconds: mtcTime % 60,
+                ammoLifts: alReps,
+                manufMinutes: Math.floor(manufTime / 60),
+                manufSeconds: manufTime % 60,
+                isAltitude: altitude
+            };
+
+            const scores = calculateCFTScore(gender, ageGroup, inputs);
 
             return {
-                mtcScore,
-                alScore,
-                manufScore,
-                totalScore: mtcScore + alScore + manufScore,
-                scoreClass: (mtcScore + alScore + manufScore) >= 235 ? "1st Class" : 
-                           (mtcScore + alScore + manufScore) >= 200 ? "2nd Class" : 
-                           (mtcScore + alScore + manufScore) >= 150 ? "3rd Class" : "Fail"
+                mtcScore: scores.mtcScore,
+                alScore: scores.alScore,
+                manufScore: scores.manufScore,
+                totalScore: scores.totalScore,
+                scoreClass: scores.classification.name
             };
         }
     }, [testType, gender, age, altitude, pullups, pushups, plankTime, runTime, upperBodyType, mtcTime, alReps, manufTime]);
