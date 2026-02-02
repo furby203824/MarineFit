@@ -5,7 +5,8 @@ import {
     Box, Zap, BookOpen, ShoppingCart, ExternalLink, Target, Shield, FileText,
     CheckCircle2, AlertTriangle, XCircle, Salad, Wheat, Egg, Beef, Coffee,
     Clock, Activity, Flame, Brain, Heart, Gauge, ThermometerSun, AlertOctagon,
-    Pill, FlaskConical, Info, Timer, Dumbbell, TrendingUp, Droplet
+    Pill, FlaskConical, Info, Timer, Dumbbell, TrendingUp, Droplet, Package,
+    MapPin, Users, Mountain
 } from 'lucide-react';
 
 const Nutrition = () => {
@@ -272,12 +273,94 @@ const Nutrition = () => {
         { icon: Egg, title: "Protein Options", desc: "Egg whites/substitutes and leaner, high-quality proteins available" }
     ];
 
+    // Operational Rations data
+    const energyNeeds = {
+        men: [
+            { level: "Light", kcal: 3000 },
+            { level: "Moderate", kcal: 3400 },
+            { level: "Heavy", kcal: 3700 },
+            { level: "Very Heavy", kcal: 4700 }
+        ],
+        women: [
+            { level: "Light", kcal: 2100 },
+            { level: "Moderate", kcal: 2300 },
+            { level: "Heavy", kcal: 2700 },
+            { level: "Very Heavy", kcal: 3000 }
+        ]
+    };
+
+    const operationalRations = [
+        { name: "MRE (Meal, Ready to Eat)", avgKcal: 1300, desc: "Individual meal, 24 varieties" },
+        { name: "First Strike Ration® (FSR)", avgKcal: 2900, desc: "3 meals per ration, highly mobile" },
+        { name: "MCW (Meal, Cold Weather)", avgKcal: 1600, desc: "Individual meal for cold environments" },
+        { name: "UGR-A (Unitized Group Ration)", avgKcal: 1300, desc: "50-person group, A-ration quality" },
+        { name: "UGR-E (Express)", avgKcal: 1350, desc: "50-person group, limited prep" },
+        { name: "UGR-H&S (Heat & Serve)", avgKcal: 1350, desc: "50-person group, self-heating" },
+        { name: "UGR-M (Marine)", avgKcal: 1300, desc: "Marine-specific group ration" },
+        { name: "MORE (Modular Enhancement)", avgKcal: 1000, desc: "Augments other rations for extra calories" }
+    ];
+
+    const missionPlanning = [
+        {
+            phase: "Pre-Mission",
+            timing: "2-4 hours before",
+            icon: Timer,
+            color: "text-blue-600",
+            bg: "bg-blue-50 dark:bg-blue-900/20",
+            nutrients: "80-400g CHO depending on body weight",
+            fluid: "Drink to thirst",
+            tips: [
+                "Know your body tolerances; practice during training",
+                "If needed, 30-60 min before use caffeine (up to 200mg)",
+                "Choose easily digestible CHO sources"
+            ],
+            examples: ["Toaster Pastry + Dried Fruit + Beverage Base", "Hash Browns + Granola + Snack Bread"]
+        },
+        {
+            phase: "During Mission",
+            timing: "Every 20-30 minutes",
+            icon: Activity,
+            color: "text-orange-600",
+            bg: "bg-orange-50 dark:bg-orange-900/20",
+            nutrients: "30-60g CHO/hour (50-75g in cold/altitude)",
+            fluid: "0.5-1.0 qt (0.5-1.0 L)/hr",
+            tips: [
+                "During multiple hours of heavy activity, snack regularly",
+                "Goal: consume 60-90g CHO/hour for extended operations",
+                "Do not exceed 1.5 qt (1.4 L) fluid/hour"
+            ],
+            examples: ["First Strike Bar", "Pocket Sandwiches", "Energy Gel", "CHO Beverage Base"]
+        },
+        {
+            phase: "Post-Mission",
+            timing: "Within 30-60 minutes",
+            icon: TrendingUp,
+            color: "text-green-600",
+            bg: "bg-green-50 dark:bg-green-900/20",
+            nutrients: "80-120g CHO + 15-25g PRO",
+            fluid: "Drink to relieve thirst and promote urination",
+            tips: [
+                "This is the critical recovery window",
+                "Combine carbs with protein for optimal recovery",
+                "Continue hydrating over several hours"
+            ],
+            examples: ["Italian Sandwich + Beef Snacks + First Strike Bar Mini", "Tortilla + Peanut Butter + Applesauce"]
+        }
+    ];
+
+    const fieldNutrientTargets = {
+        cho: { perLb: "~3g", example: "500g for 165 lb warfighter" },
+        pro: { perLb: "~0.7g", example: "115g for 165 lb warfighter" },
+        fat: { percent: "20-35%", example: "56-98g on 2500 kcal diet" }
+    };
+
     // Sections
     const sections = [
         { id: 'fueled', title: 'Fueled to Fight®', desc: 'USMC stoplight rating system for informed food choices', icon: Target, color: 'text-green-600', bg: 'bg-green-50' },
         { id: 'macros', title: 'Macronutrients', desc: 'Understanding carbs, protein, fat, and micronutrients', icon: Flame, color: 'text-amber-600', bg: 'bg-amber-50' },
         { id: 'timing', title: 'Nutrient Timing', desc: 'When to eat matters as much as what you eat', icon: Clock, color: 'text-blue-600', bg: 'bg-blue-50' },
         { id: 'hydration', title: 'Performance Hydration', desc: 'Critical hydration protocols for optimal performance', icon: Droplets, color: 'text-cyan-600', bg: 'bg-cyan-50' },
+        { id: 'rations', title: 'Operational Rations', desc: 'Field feeding and mission nutrition planning', icon: Package, color: 'text-emerald-600', bg: 'bg-emerald-50' },
         { id: 'supplements', title: 'Supplement Safety', desc: 'Operation Supplement Safety (OPSS) guidance', icon: Pill, color: 'text-red-600', bg: 'bg-red-50' },
         { id: 'garrison', title: 'Garrison Dining', desc: 'Performance fueling at USMC mess halls', icon: Utensils, color: 'text-orange-600', bg: 'bg-orange-50' },
         { id: 'commissary', title: 'Commissary Shopping', desc: 'Shop smart with dietitian-approved options', icon: ShoppingCart, color: 'text-indigo-600', bg: 'bg-indigo-50' },
@@ -601,6 +684,160 @@ const Nutrition = () => {
                             <div className="space-y-2 text-sm text-red-800 dark:text-red-300">
                                 <p><strong>Hyponatremia:</strong> Low sodium from over-hydration. Max 12 quarts/day. USMC mess hall meals meet sodium requirements.</p>
                                 <p><strong>Rhabdomyolysis:</strong> Rapid muscle breakdown from eccentric movements, heat, dehydration, over-exertion. Signs: muscle pain, weakness, swelling. Health always comes first!</p>
+                            </div>
+                        </div>
+                    </div>
+                );
+
+            case 'rations':
+                return (
+                    <div className="space-y-6">
+                        {/* Introduction */}
+                        <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl p-4 border border-emerald-200 dark:border-emerald-800">
+                            <p className="text-sm text-emerald-800 dark:text-emerald-300">
+                                <strong>Food is your body's fuel.</strong> Operational rations are designed using scientific evidence to ensure warfighter nutritional needs are met in all environments. By providing your body with proper nutrition, you can improve alertness, strength, and endurance.
+                            </p>
+                        </div>
+
+                        {/* Energy Needs by Activity Level */}
+                        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <div className="p-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+                                <div className="flex items-center gap-2">
+                                    <Flame className="w-5 h-5 text-orange-600" />
+                                    <h4 className="font-semibold text-gray-900 dark:text-white">Daily Energy Needs by Activity Level</h4>
+                                </div>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Extreme environmental conditions can increase energy needs</p>
+                            </div>
+                            <div className="grid grid-cols-2 divide-x divide-gray-100 dark:divide-gray-700">
+                                <div className="p-4">
+                                    <p className="text-sm font-semibold text-blue-600 mb-3">Men (kcal/day)</p>
+                                    <div className="space-y-2">
+                                        {energyNeeds.men.map((e, i) => (
+                                            <div key={i} className="flex justify-between text-sm">
+                                                <span className="text-gray-600 dark:text-gray-400">{e.level}</span>
+                                                <span className="font-bold text-gray-900 dark:text-white">{e.kcal.toLocaleString()}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="p-4">
+                                    <p className="text-sm font-semibold text-pink-600 mb-3">Women (kcal/day)</p>
+                                    <div className="space-y-2">
+                                        {energyNeeds.women.map((e, i) => (
+                                            <div key={i} className="flex justify-between text-sm">
+                                                <span className="text-gray-600 dark:text-gray-400">{e.level}</span>
+                                                <span className="font-bold text-gray-900 dark:text-white">{e.kcal.toLocaleString()}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Field Nutrient Targets */}
+                        <div className="grid grid-cols-3 gap-3">
+                            <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-3 border border-amber-200 dark:border-amber-800 text-center">
+                                <p className="text-xs text-amber-700 dark:text-amber-400 font-semibold mb-1">CHO</p>
+                                <p className="text-lg font-bold text-amber-800 dark:text-amber-300">{fieldNutrientTargets.cho.perLb}/lb</p>
+                                <p className="text-xs text-amber-600 dark:text-amber-400">{fieldNutrientTargets.cho.example}</p>
+                            </div>
+                            <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-3 border border-red-200 dark:border-red-800 text-center">
+                                <p className="text-xs text-red-700 dark:text-red-400 font-semibold mb-1">PRO</p>
+                                <p className="text-lg font-bold text-red-800 dark:text-red-300">{fieldNutrientTargets.pro.perLb}/lb</p>
+                                <p className="text-xs text-red-600 dark:text-red-400">{fieldNutrientTargets.pro.example}</p>
+                            </div>
+                            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-3 border border-blue-200 dark:border-blue-800 text-center">
+                                <p className="text-xs text-blue-700 dark:text-blue-400 font-semibold mb-1">FAT</p>
+                                <p className="text-lg font-bold text-blue-800 dark:text-blue-300">{fieldNutrientTargets.fat.percent}</p>
+                                <p className="text-xs text-blue-600 dark:text-blue-400">{fieldNutrientTargets.fat.example}</p>
+                            </div>
+                        </div>
+
+                        {/* Operational Rations */}
+                        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <div className="p-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+                                <div className="flex items-center gap-2">
+                                    <Package className="w-5 h-5 text-emerald-600" />
+                                    <h4 className="font-semibold text-gray-900 dark:text-white">Operational Ration Types</h4>
+                                </div>
+                            </div>
+                            <div className="divide-y divide-gray-100 dark:divide-gray-700">
+                                {operationalRations.map((ration, i) => (
+                                    <div key={i} className="p-3 flex items-center justify-between">
+                                        <div>
+                                            <p className="font-medium text-gray-900 dark:text-white text-sm">{ration.name}</p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400">{ration.desc}</p>
+                                        </div>
+                                        <span className="font-bold text-marine-red text-sm">{ration.avgKcal.toLocaleString()} kcal</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Mission Planning */}
+                        <div className="space-y-4">
+                            <h4 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                                <MapPin className="w-5 h-5 text-marine-red" />
+                                Mission Nutrition Planning
+                            </h4>
+                            {missionPlanning.map((phase, index) => {
+                                const Icon = phase.icon;
+                                return (
+                                    <div key={index} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                                        <div className={`${phase.bg} p-4 border-b border-gray-200 dark:border-gray-700`}>
+                                            <div className="flex items-center gap-3">
+                                                <Icon className={`w-6 h-6 ${phase.color}`} />
+                                                <div>
+                                                    <h4 className={`font-bold ${phase.color}`}>{phase.phase}</h4>
+                                                    <p className="text-sm text-gray-600 dark:text-gray-400">{phase.timing}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="p-4 space-y-3">
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Nutrients</p>
+                                                    <p className="text-sm font-medium text-gray-900 dark:text-white">{phase.nutrients}</p>
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Fluids</p>
+                                                    <p className="text-sm font-medium text-gray-900 dark:text-white">{phase.fluid}</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Tips</p>
+                                                <ul className="space-y-1">
+                                                    {phase.tips.map((tip, i) => (
+                                                        <li key={i} className="text-sm text-gray-600 dark:text-gray-300 flex items-start gap-2">
+                                                            <span className="text-marine-red">•</span>
+                                                            {tip}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                            <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                    <strong>Example Components:</strong> {phase.examples.join(", ")}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {/* Resources */}
+                        <div className="bg-marine-red text-white rounded-xl p-4">
+                            <h4 className="font-bold mb-3">Operational Ration Resources</h4>
+                            <div className="space-y-2">
+                                <a href="https://www.hprc-online.org/page/Combat-Rations-Database-ComRaD" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-red-100 hover:text-white">
+                                    <ExternalLink size={14} />
+                                    ComRaD - Combat Rations Database (nutrition info)
+                                </a>
+                                <a href="https://nsrdec.army.mil/img/pdfs/OP_Rations08-22-16.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-red-100 hover:text-white">
+                                    <ExternalLink size={14} />
+                                    Operational Rations Handbook (Natick PAM 30-25)
+                                </a>
                             </div>
                         </div>
                     </div>
