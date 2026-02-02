@@ -1,5 +1,5 @@
 // Marine Corps HITT Database
-// Expanded to support dynamic workout generation, progression/regression, and equipment tagging.
+// Complete exercise library with official DVIDSHUB video links
 
 export const equipmentTags = {
   NONE: 'Bodyweight',
@@ -12,15 +12,17 @@ export const equipmentTags = {
   BOX: 'Box',
   SLED: 'Sled',
   BATTLE_ROPE: 'Battle Rope',
-  CONES: 'Cones'
+  CONES: 'Cones',
+  MED_BALL: 'Med Ball',
+  HURDLES: 'Hurdles',
+  PVC: 'PVC Pipe'
 };
 
 export const categories = {
   MOVEMENT_PREP: 'Movement Prep',
   STRENGTH_POWER: 'Strength & Power',
   SPEED_AGILITY: 'Speed, Agility & Endurance',
-  CORE: 'Core',
-  FLEXIBILITY: 'Flexibility & Recovery' // New category
+  FLEXIBILITY: 'Flexibility & Mobility'
 };
 
 export const goals = {
@@ -31,346 +33,192 @@ export const goals = {
   RECOVERY: 'Active Recovery'
 };
 
-// Helper to infer tags if not explicitly provided (Logic Rule #1)
-const inferTags = (name, specifiedEquipment) => {
-  const tags = [];
-  const lowerName = name.toLowerCase();
-  
-  if (specifiedEquipment && specifiedEquipment !== 'None') {
-    tags.push(specifiedEquipment);
-  } else {
-    tags.push(equipmentTags.NONE);
-  }
-
-  // Auto-tagging based on name keywords
-  if (lowerName.includes('jump') || lowerName.includes('sprint') || lowerName.includes('plyo')) tags.push('Plyometric');
-  if (lowerName.includes('squat') || lowerName.includes('lunge')) tags.push('Lower Body');
-  if (lowerName.includes('push') || lowerName.includes('press')) tags.push('Upper Push');
-  if (lowerName.includes('pull') || lowerName.includes('row')) tags.push('Upper Pull');
-  
-  return tags;
+// Prescription templates based on exercise type and goal
+export const prescriptionTemplates = {
+  warmup: { sets: 1, reps: '10-15', rest: '0s', tempo: 'controlled' },
+  strength: { sets: 3, reps: '8-12', rest: '60s', tempo: '2-0-2-0' },
+  power: { sets: 4, reps: '5-8', rest: '90s', tempo: 'explosive' },
+  endurance: { sets: 2, reps: '15-20', rest: '30s', tempo: 'moderate' },
+  plyo: { sets: 3, reps: '6-10', rest: '60s', tempo: 'explosive' },
+  cardio: { sets: 1, reps: '30-45s', rest: '15s', tempo: 'max effort' },
+  flexibility: { sets: 1, reps: '30s hold', rest: '0s', tempo: 'static' }
 };
 
-const rawExercises = [
-  // MOVEMENT PREP (Dynamic Warmup)
-  {
-    id: 'mp-1',
-    category: categories.MOVEMENT_PREP,
-    name: 'Glute Bridge',
-    url: 'https://www.youtube.com/watch?v=wPM8icPu6t8',
-    equipment: equipmentTags.NONE,
-    difficulty: 1,
-    progression: 'mp-1-p', // Single Leg Glute Bridge
-  },
-  {
-    id: 'mp-2',
-    category: categories.MOVEMENT_PREP,
-    name: 'Frankensteins',
-    url: 'https://www.youtube.com/watch?v=Kz6-4-1',
-    equipment: equipmentTags.NONE,
-    difficulty: 1,
-  },
-  {
-    id: 'mp-3',
-    category: categories.MOVEMENT_PREP,
-    name: 'Lateral Lunge',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 2,
-    regression: 'mp-3-r', // Stationary Side Stretch
-  },
-  {
-    id: 'mp-4',
-    category: categories.MOVEMENT_PREP,
-    name: 'World\'s Greatest Stretch',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 2,
-  },
-  {
-    id: 'mp-5',
-    category: categories.MOVEMENT_PREP,
-    name: 'Inchworm',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 2,
-  },
-  {
-    id: 'mp-6',
-    category: categories.MOVEMENT_PREP,
-    name: 'Thoracic Rotations',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 1,
-  },
+export const hittExercises = [
+  // =====================
+  // MOVEMENT PREP
+  // =====================
+  { id: 'mp-1', name: 'Arm Circles', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551356/arm-circles', tags: ['Shoulders', 'Warmup'] },
+  { id: 'mp-2', name: 'Back Pedal Reach', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/677347/back-pedal-reach', tags: ['Dynamic', 'Full Body'] },
+  { id: 'mp-3', name: 'Bear Crawl', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/677348/bear-crawl', tags: ['Full Body', 'Core'] },
+  { id: 'mp-4', name: 'Butt Kickers', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/558559/butt-kickers', tags: ['Cardio', 'Legs'] },
+  { id: 'mp-5', name: 'Carioca', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/558561/carioca', tags: ['Agility', 'Hips'] },
+  { id: 'mp-6', name: 'Carioca w/ Knee Drive', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/558560/carioca-w-knee-drive', tags: ['Agility', 'Hips'] },
+  { id: 'mp-7', name: 'Cross-Over Lunge', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551366/cross-over-lunge', tags: ['Lower Body', 'Hips'] },
+  { id: 'mp-8', name: 'Cross-Over Walk', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551370/crossover-walk', tags: ['Hips', 'Dynamic'] },
+  { id: 'mp-9', name: 'Diagonal Lunge', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551373/diagonal-lunge', tags: ['Lower Body', 'Hips'] },
+  { id: 'mp-10', name: 'Donkey Kick', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/677352/donkey-kick', tags: ['Glutes', 'Core'] },
+  { id: 'mp-11', name: 'Eight Count Body Builder', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 3, url: 'https://www.dvidshub.net/video/558562/eight-count-body-builders', tags: ['Full Body', 'Metabolic'] },
+  { id: 'mp-12', name: 'Fire Hydrants', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/638171/fire-hydrants', tags: ['Hips', 'Glutes'] },
+  { id: 'mp-13', name: 'Frankenstein', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551378/frankenstein', tags: ['Hamstrings', 'Dynamic'] },
+  { id: 'mp-14', name: 'Frog Thrust', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/558565/frog-thrust', tags: ['Hips', 'Core'] },
+  { id: 'mp-15', name: 'Frog Thrust w/ Jump', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 3, url: 'https://www.dvidshub.net/video/677357/frog-thrust-with-jump', tags: ['Plyometric', 'Full Body'] },
+  { id: 'mp-16', name: 'Frontal Leg Swing', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551381/frontal-leg-swing', tags: ['Hips', 'Dynamic'] },
+  { id: 'mp-17', name: 'Groiners', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/558570/groiners', tags: ['Hips', 'Mobility'] },
+  { id: 'mp-18', name: 'Heel / Toe Raise', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551384/heel-toe-raises', tags: ['Calves', 'Balance'] },
+  { id: 'mp-19', name: 'Highland Fling', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551387/highland-flings', tags: ['Cardio', 'Coordination'] },
+  { id: 'mp-20', name: 'Hip Abduction', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551391/hip-abduction', tags: ['Hips', 'Glutes'] },
+  { id: 'mp-21', name: 'Hip Adduction', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551395/hip-adduction', tags: ['Hips', 'Groin'] },
+  { id: 'mp-22', name: 'Hip Circles', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/677358/hip-circles', tags: ['Hips', 'Mobility'] },
+  { id: 'mp-23', name: 'Inchworm', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551396/inchworm', tags: ['Full Body', 'Hamstrings'] },
+  { id: 'mp-24', name: 'Jump Thrust', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 3, url: 'https://www.dvidshub.net/video/677359/jump-thrust', tags: ['Plyometric', 'Full Body'] },
+  { id: 'mp-25', name: 'Knee To Elbow Push-Up', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551405/knee-elbow-push-up', tags: ['Core', 'Upper Push'] },
+  { id: 'mp-26', name: 'Lateral Cross-Over Skip', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/558575/lateral-cross-over-skip', tags: ['Agility', 'Cardio'] },
+  { id: 'mp-27', name: 'Lateral Lunge', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/677362/lateral-lunge', tags: ['Lower Body', 'Hips'] },
+  { id: 'mp-28', name: 'Lateral Shuffle', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/558578/lateral-shuffle', tags: ['Agility', 'Cardio'] },
+  { id: 'mp-29', name: 'Lateral Side Bend', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551406/lateral-side-bends', tags: ['Core', 'Obliques'] },
+  { id: 'mp-30', name: 'Lateral Skip', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/558579/lateral-skip', tags: ['Agility', 'Cardio'] },
+  { id: 'mp-31', name: 'Lateral Squat Wave', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551411/lateral-squat-wave', tags: ['Lower Body', 'Hips'] },
+  { id: 'mp-32', name: 'Lateral Step Squat', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551418/lateral-step-squat', tags: ['Lower Body', 'Hips'] },
+  { id: 'mp-33', name: 'Long Strider', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551420/long-strider', tags: ['Hips', 'Dynamic'] },
+  { id: 'mp-34', name: 'Lunge w/ Power Skip', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/558582/lunge-w-power-skip', tags: ['Plyometric', 'Lower Body'] },
+  { id: 'mp-35', name: 'Monster Walk', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/558585/monster-walk', tags: ['Hips', 'Glutes'] },
+  { id: 'mp-36', name: 'Mountain Climber', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/558587/mountain-climbers', tags: ['Core', 'Cardio'] },
+  { id: 'mp-37', name: 'Neck Clock', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/677368/neck-clock', tags: ['Neck', 'Mobility'] },
+  { id: 'mp-38', name: 'Plank Leg Extension', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551422/plank-leg-extension', tags: ['Core', 'Glutes'] },
+  { id: 'mp-39', name: 'Power Skip (Distance)', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/642014/power-skip-distance', tags: ['Plyometric', 'Cardio'] },
+  { id: 'mp-40', name: 'Power Skip (Height)', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/642016/power-skip-height', tags: ['Plyometric', 'Cardio'] },
+  { id: 'mp-41', name: 'Prone Leg Overs', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/677372/prone-leg-overs', tags: ['Hips', 'Mobility'] },
+  { id: 'mp-42', name: 'Sagittal Leg Swing', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551823/sagittal-leg-swing', tags: ['Hips', 'Dynamic'] },
+  { id: 'mp-43', name: 'Scorpions', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/677374/scorpion', tags: ['Thoracic', 'Hips'] },
+  { id: 'mp-44', name: 'Side Slide w/ Arm Swing', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/558590/side-slide-w-arm-swing', tags: ['Agility', 'Shoulders'] },
+  { id: 'mp-45', name: 'Side Straddle Hops', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551825/side-straddle-hops', tags: ['Cardio', 'Full Body'] },
+  { id: 'mp-46', name: 'Single Leg Balance', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551827/single-leg-balance', tags: ['Balance', 'Stability'] },
+  { id: 'mp-47', name: 'Speed Skaters', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/558593/speed-skaters', tags: ['Plyometric', 'Agility'] },
+  { id: 'mp-48', name: 'Spiderman', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551828/spiderman', tags: ['Hips', 'Mobility'] },
+  { id: 'mp-49', name: 'Split Jack Forward', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551830/split-jack-forward', tags: ['Plyometric', 'Cardio'] },
+  { id: 'mp-50', name: 'Split Squat Drop', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/558599/split-squat-drops', tags: ['Lower Body', 'Plyometric'] },
+  { id: 'mp-51', name: 'Split Squat Jump', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 3, url: 'https://www.dvidshub.net/video/549955/split-squat-jump-combo', tags: ['Plyometric', 'Lower Body'] },
+  { id: 'mp-52', name: 'Squat Drop', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/558601/squat-drops', tags: ['Lower Body', 'Plyometric'] },
+  { id: 'mp-53', name: 'Stationary Forward Lunge', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551832/stationary-forward-lunge', tags: ['Lower Body', 'Quads'] },
+  { id: 'mp-54', name: 'Stationary Reverse Lunge', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551833/stationary-reverse-lunge', tags: ['Lower Body', 'Glutes'] },
+  { id: 'mp-55', name: 'Stationary Squat', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551837/stationary-squat', tags: ['Lower Body', 'Quads'] },
+  { id: 'mp-56', name: 'Supine Leg Overs', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/638480/supine-leg-over', tags: ['Hips', 'Core'] },
+  { id: 'mp-57', name: 'Supine Straight Leg Raise', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551841/supine-straight-leg-raise', tags: ['Core', 'Hip Flexors'] },
+  { id: 'mp-58', name: 'Thrust', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/677377/thrust', tags: ['Core', 'Full Body'] },
+  { id: 'mp-59', name: 'Trunk Circles', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551844/trunk-circles', tags: ['Core', 'Mobility'] },
+  { id: 'mp-60', name: 'Trunk Flexion / Extension', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551847/trunk-flexion-and-extension', tags: ['Core', 'Spine'] },
+  { id: 'mp-61', name: 'Trunk Twists', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551848/trunk-twists', tags: ['Core', 'Rotation'] },
+  { id: 'mp-62', name: 'Walking Knee Hug', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551850/walking-knee-hug', tags: ['Hips', 'Glutes'] },
+  { id: 'mp-63', name: 'Walking Leg Cradle', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551854/walking-leg-cradle', tags: ['Hips', 'Glutes'] },
+  { id: 'mp-64', name: 'Walking Lunge', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551862/walking-lunge', tags: ['Lower Body', 'Dynamic'] },
+  { id: 'mp-65', name: 'Walking Lunge - Elbow to Instep', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551857/walking-lunge-elbow-instep', tags: ['Hips', 'Mobility'] },
+  { id: 'mp-66', name: 'Walking Lunge w/ Side Reach', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551860/walking-lunge-with-side-reach', tags: ['Lower Body', 'Core'] },
+  { id: 'mp-67', name: 'Walking Lunge w/ Twist', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551861/walking-lunge-with-twist', tags: ['Lower Body', 'Rotation'] },
+  { id: 'mp-68', name: 'Walking Quad Stretch', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551863/walking-quad-stretch', tags: ['Quads', 'Dynamic'] },
+  { id: 'mp-69', name: 'Wideouts', category: categories.MOVEMENT_PREP, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/677342/wideouts', tags: ['Cardio', 'Lower Body'] },
 
+  // =====================
   // STRENGTH & POWER
-  {
-    id: 'sp-1',
-    category: categories.STRENGTH_POWER,
-    name: 'Kettlebell Swing',
-    url: '',
-    equipment: equipmentTags.KETTLEBELL,
-    difficulty: 2,
-    tags: ['Hinge', 'Power', 'Posterior Chain'],
-  },
-  {
-    id: 'sp-2',
-    category: categories.STRENGTH_POWER,
-    name: 'Goblet Squat',
-    url: '',
-    equipment: equipmentTags.KETTLEBELL,
-    difficulty: 2,
-    regression: 'sp-9', // Air Squat
-    tags: ['Squat', 'Lower Body'],
-  },
-  {
-    id: 'sp-3',
-    category: categories.STRENGTH_POWER,
-    name: 'Sandbag Clean',
-    url: '',
-    equipment: equipmentTags.SANDBAG,
-    difficulty: 3,
-    tags: ['Power', 'Full Body'],
-  },
-  {
-    id: 'sp-4',
-    category: categories.STRENGTH_POWER,
-    name: 'Pull-ups',
-    url: '',
-    equipment: 'Pull-up Bar',
-    difficulty: 3,
-    regression: 'sp-4-r', // Banded Pull-up or Inverted Row
-    tags: ['Upper Pull', 'Back'],
-  },
-  {
-    id: 'sp-5',
-    category: categories.STRENGTH_POWER,
-    name: 'Push-ups (Hand Release)',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 2,
-    regression: 'sp-5-r', // Knee Push-ups
-    progression: 'sp-11', // Diamond Push-ups
-    tags: ['Upper Push', 'Chest'],
-  },
-  {
-    id: 'sp-6',
-    category: categories.STRENGTH_POWER,
-    name: 'Box Jumps',
-    url: '',
-    equipment: equipmentTags.BOX,
-    difficulty: 3,
-    regression: 'sp-6-r', // Step Ups
-    tags: ['Plyometric', 'Lower Body'],
-  },
-  {
-    id: 'sp-7',
-    category: categories.STRENGTH_POWER,
-    name: 'Thrusters',
-    url: '',
-    equipment: 'Barbell/Dumbbell',
-    difficulty: 4,
-    tags: ['Full Body', 'Power', 'Metabolic'],
-  },
-  {
-    id: 'sp-8',
-    category: categories.STRENGTH_POWER,
-    name: 'Ammo Can Press',
-    url: '',
-    equipment: equipmentTags.AMMO_CAN,
-    difficulty: 2,
-    tags: ['Upper Push', 'Shoulders'],
-  },
-  {
-    id: 'sp-9',
-    category: categories.STRENGTH_POWER,
-    name: 'Air Squats',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 1,
-    progression: 'sp-2', // Goblet Squat
-    tags: ['Squat', 'Lower Body'],
-  },
-  {
-    id: 'sp-10',
-    category: categories.STRENGTH_POWER,
-    name: 'Walking Lunges',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 2,
-    tags: ['Unilateral', 'Lower Body'],
-  },
-  {
-    id: 'sp-11',
-    category: categories.STRENGTH_POWER,
-    name: 'Diamond Push-ups',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 3,
-    tags: ['Upper Push', 'Triceps'],
-  },
-  {
-    id: 'sp-12',
-    category: categories.STRENGTH_POWER,
-    name: 'Pike Push-ups',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 3,
-    tags: ['Upper Push', 'Shoulders'],
-  },
-  {
-    id: 'sp-13',
-    category: categories.STRENGTH_POWER,
-    name: 'Broad Jumps',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 2,
-    tags: ['Plyometric', 'Power'],
-  },
+  // =====================
+  { id: 'sp-1', name: '3 Way Plank', category: categories.STRENGTH_POWER, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/679630/3-way-plank', tags: ['Core', 'Stability'] },
+  { id: 'sp-2', name: 'Alternating Plyo Push-Up', category: categories.STRENGTH_POWER, equipment: equipmentTags.NONE, difficulty: 3, url: 'https://www.dvidshub.net/video/636810/alternating-plyo-pushups', tags: ['Upper Push', 'Plyometric'] },
+  { id: 'sp-3', name: 'Ammo Can Deadlift', category: categories.STRENGTH_POWER, equipment: equipmentTags.AMMO_CAN, difficulty: 2, url: 'https://www.dvidshub.net/video/679631/ammo-can-deadlift', tags: ['Hinge', 'Posterior Chain'] },
+  { id: 'sp-4', name: 'Ammo Can Deadlift (Single Leg)', category: categories.STRENGTH_POWER, equipment: equipmentTags.AMMO_CAN, difficulty: 3, url: 'https://www.dvidshub.net/video/517459/ammo-can-single-leg-deadlift', tags: ['Hinge', 'Unilateral'] },
+  { id: 'sp-5', name: 'Ammo Can Front Raise', category: categories.STRENGTH_POWER, equipment: equipmentTags.AMMO_CAN, difficulty: 2, url: 'https://www.dvidshub.net/video/636814/ammo-can-front-raise', tags: ['Shoulders', 'Upper Body'] },
+  { id: 'sp-6', name: 'Ammo Can Lunge', category: categories.STRENGTH_POWER, equipment: equipmentTags.AMMO_CAN, difficulty: 2, url: 'https://www.dvidshub.net/video/549268/ammo-can-forward-lunge', tags: ['Lower Body', 'Quads'] },
+  { id: 'sp-7', name: 'Ammo Can Press', category: categories.STRENGTH_POWER, equipment: equipmentTags.AMMO_CAN, difficulty: 2, url: 'https://www.dvidshub.net/video/636816/ammo-can-press', tags: ['Upper Push', 'Shoulders'] },
+  { id: 'sp-8', name: 'Ammo Can Row', category: categories.STRENGTH_POWER, equipment: equipmentTags.AMMO_CAN, difficulty: 2, url: 'https://www.dvidshub.net/video/636823/ammo-can-upright-row', tags: ['Upper Pull', 'Back'] },
+  { id: 'sp-9', name: 'Barbell Back Squat', category: categories.STRENGTH_POWER, equipment: equipmentTags.BARBELL, difficulty: 3, url: 'https://www.dvidshub.net/video/548426/barbell-back-squat', tags: ['Lower Body', 'Quads'] },
+  { id: 'sp-10', name: 'Barbell Bent Over Row', category: categories.STRENGTH_POWER, equipment: equipmentTags.BARBELL, difficulty: 3, url: 'https://www.dvidshub.net/video/639914/barbell-bent-over-row', tags: ['Upper Pull', 'Back'] },
+  { id: 'sp-11', name: 'Barbell Front Squat', category: categories.STRENGTH_POWER, equipment: equipmentTags.BARBELL, difficulty: 3, url: 'https://www.dvidshub.net/video/548433/barbell-front-squat', tags: ['Lower Body', 'Quads'] },
+  { id: 'sp-12', name: 'Barbell Romanian Deadlift', category: categories.STRENGTH_POWER, equipment: equipmentTags.BARBELL, difficulty: 3, url: 'https://www.dvidshub.net/video/639927/barbell-romanian-deadlift', tags: ['Hinge', 'Hamstrings'] },
+  { id: 'sp-13', name: 'Bench Press', category: categories.STRENGTH_POWER, equipment: equipmentTags.BARBELL, difficulty: 3, url: 'https://www.dvidshub.net/video/639911/barbell-bench-press', tags: ['Upper Push', 'Chest'] },
+  { id: 'sp-14', name: 'Box Jump', category: categories.STRENGTH_POWER, equipment: equipmentTags.BOX, difficulty: 3, url: 'https://www.dvidshub.net/video/550429/box-jump', tags: ['Plyometric', 'Lower Body'] },
+  { id: 'sp-15', name: 'Box Depth Jump', category: categories.STRENGTH_POWER, equipment: equipmentTags.BOX, difficulty: 3, url: 'https://www.dvidshub.net/video/550428/box-depth-jump', tags: ['Plyometric', 'Power'] },
+  { id: 'sp-16', name: 'Clap Push-Up', category: categories.STRENGTH_POWER, equipment: equipmentTags.NONE, difficulty: 3, url: 'https://www.dvidshub.net/video/679633/clap-pushups', tags: ['Upper Push', 'Plyometric'] },
+  { id: 'sp-17', name: 'Deadhang Pull-Up', category: categories.STRENGTH_POWER, equipment: 'Pull-up Bar', difficulty: 3, url: 'https://www.dvidshub.net/video/639937/dead-hang-pullup', tags: ['Upper Pull', 'Back'] },
+  { id: 'sp-18', name: 'Deadlift', category: categories.STRENGTH_POWER, equipment: equipmentTags.BARBELL, difficulty: 3, url: 'https://www.dvidshub.net/video/517483/barbell-dead-lift', tags: ['Hinge', 'Full Body'] },
+  { id: 'sp-19', name: 'Dumbbell Arnold Press', category: categories.STRENGTH_POWER, equipment: equipmentTags.DUMBBELL, difficulty: 2, url: 'https://www.dvidshub.net/video/636919/dumbbel-arnold-press', tags: ['Shoulders', 'Upper Push'] },
+  { id: 'sp-20', name: 'Dumbbell Bench Press', category: categories.STRENGTH_POWER, equipment: equipmentTags.DUMBBELL, difficulty: 2, url: 'https://www.dvidshub.net/video/636920/dumbbell-bench-press', tags: ['Upper Push', 'Chest'] },
+  { id: 'sp-21', name: 'Dumbbell Bent Over Row', category: categories.STRENGTH_POWER, equipment: equipmentTags.DUMBBELL, difficulty: 2, url: 'https://www.dvidshub.net/video/636921/dumbbell-bent-over-rows', tags: ['Upper Pull', 'Back'] },
+  { id: 'sp-22', name: 'Dumbbell Bicep Curl', category: categories.STRENGTH_POWER, equipment: equipmentTags.DUMBBELL, difficulty: 1, url: 'https://www.dvidshub.net/video/679653/dumbbell-bicep-curl', tags: ['Biceps', 'Arms'] },
+  { id: 'sp-23', name: 'Dumbbell Lunge', category: categories.STRENGTH_POWER, equipment: equipmentTags.DUMBBELL, difficulty: 2, url: 'https://www.dvidshub.net/video/549334/dumbbell-lunge', tags: ['Lower Body', 'Unilateral'] },
+  { id: 'sp-24', name: 'Dumbbell Romanian Deadlift', category: categories.STRENGTH_POWER, equipment: equipmentTags.DUMBBELL, difficulty: 2, url: 'https://www.dvidshub.net/video/548459/dumbbell-romanian-deadlift', tags: ['Hinge', 'Hamstrings'] },
+  { id: 'sp-25', name: 'Dumbbell Shoulder Press', category: categories.STRENGTH_POWER, equipment: equipmentTags.DUMBBELL, difficulty: 2, url: 'https://www.dvidshub.net/video/636933/dumbbell-shoulder-press', tags: ['Shoulders', 'Upper Push'] },
+  { id: 'sp-26', name: 'Dumbbell Snatch', category: categories.STRENGTH_POWER, equipment: equipmentTags.DUMBBELL, difficulty: 3, url: 'https://www.dvidshub.net/video/551039/dumbbell-snatch', tags: ['Power', 'Full Body'] },
+  { id: 'sp-27', name: 'Dumbbell Squat', category: categories.STRENGTH_POWER, equipment: equipmentTags.DUMBBELL, difficulty: 2, url: 'https://www.dvidshub.net/video/549336/dumbbell-squat', tags: ['Lower Body', 'Quads'] },
+  { id: 'sp-28', name: 'Flutter Kicks', category: categories.STRENGTH_POWER, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/639942/flutter-kicks', tags: ['Core', 'Hip Flexors'] },
+  { id: 'sp-29', name: 'Frog Jump', category: categories.STRENGTH_POWER, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/551047/frog-jump', tags: ['Plyometric', 'Lower Body'] },
+  { id: 'sp-30', name: 'Hang Clean', category: categories.STRENGTH_POWER, equipment: equipmentTags.BARBELL, difficulty: 4, url: 'https://www.dvidshub.net/video/679675/hang-clean', tags: ['Power', 'Olympic'] },
+  { id: 'sp-31', name: 'Hanging Knee Raises', category: categories.STRENGTH_POWER, equipment: 'Pull-up Bar', difficulty: 2, url: 'https://www.dvidshub.net/video/639946/hanging-knee-raises', tags: ['Core', 'Hip Flexors'] },
+  { id: 'sp-32', name: 'Kettlebell Clean', category: categories.STRENGTH_POWER, equipment: equipmentTags.KETTLEBELL, difficulty: 3, url: 'https://www.dvidshub.net/video/679682/kettlebell-clean', tags: ['Power', 'Full Body'] },
+  { id: 'sp-33', name: 'Kettlebell Goblet Squat', category: categories.STRENGTH_POWER, equipment: equipmentTags.KETTLEBELL, difficulty: 2, url: 'https://www.dvidshub.net/video/548733/kettlebell-goblet-squat', tags: ['Lower Body', 'Squat'] },
+  { id: 'sp-34', name: 'Kettlebell Swing', category: categories.STRENGTH_POWER, equipment: equipmentTags.KETTLEBELL, difficulty: 2, url: 'https://www.dvidshub.net/video/548744/kettlebell-swing', tags: ['Hinge', 'Power'] },
+  { id: 'sp-35', name: 'Kettlebell Military Press', category: categories.STRENGTH_POWER, equipment: equipmentTags.KETTLEBELL, difficulty: 2, url: 'https://www.dvidshub.net/video/638178/kettlebell-military-press', tags: ['Shoulders', 'Upper Push'] },
+  { id: 'sp-36', name: 'Kettlebell Renegade Row', category: categories.STRENGTH_POWER, equipment: equipmentTags.KETTLEBELL, difficulty: 3, url: 'https://www.dvidshub.net/video/679693/kettlebell-renegade-row', tags: ['Upper Pull', 'Core'] },
+  { id: 'sp-37', name: 'Lateral Box Jump', category: categories.STRENGTH_POWER, equipment: equipmentTags.BOX, difficulty: 3, url: 'https://www.dvidshub.net/video/692485/lateral-box-jump', tags: ['Plyometric', 'Agility'] },
+  { id: 'sp-38', name: 'Med Ball Slam', category: categories.STRENGTH_POWER, equipment: equipmentTags.MED_BALL, difficulty: 2, url: 'https://www.dvidshub.net/video/638228/med-ball-slam', tags: ['Power', 'Full Body'] },
+  { id: 'sp-39', name: 'Med Ball Russian Twist', category: categories.STRENGTH_POWER, equipment: equipmentTags.MED_BALL, difficulty: 2, url: 'https://www.dvidshub.net/video/692500/med-ball-russian-twist', tags: ['Core', 'Rotation'] },
+  { id: 'sp-40', name: 'Military Press', category: categories.STRENGTH_POWER, equipment: equipmentTags.BARBELL, difficulty: 3, url: 'https://www.dvidshub.net/video/692514/military-press', tags: ['Shoulders', 'Upper Push'] },
+  { id: 'sp-41', name: 'Mountain Climber', category: categories.STRENGTH_POWER, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/692520/mountain-climbers', tags: ['Core', 'Cardio'] },
+  { id: 'sp-42', name: 'Power Clean', category: categories.STRENGTH_POWER, equipment: equipmentTags.BARBELL, difficulty: 4, url: 'https://www.dvidshub.net/video/692525/power-clean', tags: ['Power', 'Olympic'] },
+  { id: 'sp-43', name: 'Prone Superman', category: categories.STRENGTH_POWER, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/640241/prone-superman', tags: ['Back', 'Core'] },
+  { id: 'sp-44', name: 'Push Press', category: categories.STRENGTH_POWER, equipment: equipmentTags.BARBELL, difficulty: 3, url: 'https://www.dvidshub.net/video/639925/barbell-push-press', tags: ['Shoulders', 'Power'] },
+  { id: 'sp-45', name: 'Rope Alternating Waves', category: categories.STRENGTH_POWER, equipment: equipmentTags.BATTLE_ROPE, difficulty: 2, url: 'https://www.dvidshub.net/video/641018/rope-alternate-waves', tags: ['Upper Body', 'Metabolic'] },
+  { id: 'sp-46', name: 'Rope Double Waves', category: categories.STRENGTH_POWER, equipment: equipmentTags.BATTLE_ROPE, difficulty: 2, url: 'https://www.dvidshub.net/video/692858/rope-double-waves', tags: ['Upper Body', 'Metabolic'] },
+  { id: 'sp-47', name: 'Russian Twist', category: categories.STRENGTH_POWER, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/640994/russian-twist', tags: ['Core', 'Rotation'] },
+  { id: 'sp-48', name: 'Sandbag Clean', category: categories.STRENGTH_POWER, equipment: equipmentTags.SANDBAG, difficulty: 3, url: 'https://www.dvidshub.net/video/549933/sandbag-clean', tags: ['Power', 'Full Body'] },
+  { id: 'sp-49', name: 'Sandbag Front Squat', category: categories.STRENGTH_POWER, equipment: equipmentTags.SANDBAG, difficulty: 2, url: 'https://www.dvidshub.net/video/548807/sandbag-front-squat', tags: ['Lower Body', 'Squat'] },
+  { id: 'sp-50', name: 'Sandbag Shoulder Lunge', category: categories.STRENGTH_POWER, equipment: equipmentTags.SANDBAG, difficulty: 2, url: 'https://www.dvidshub.net/video/549946/sandbag-shoulder-lunge', tags: ['Lower Body', 'Full Body'] },
+  { id: 'sp-51', name: 'Star Jump', category: categories.STRENGTH_POWER, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/549962/star-jump', tags: ['Plyometric', 'Full Body'] },
+  { id: 'sp-52', name: 'Toe Touches', category: categories.STRENGTH_POWER, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/640261/toe-touches', tags: ['Core', 'Abs'] },
+  { id: 'sp-53', name: 'TRX Atomic Push-Up', category: categories.STRENGTH_POWER, equipment: equipmentTags.TRX, difficulty: 3, url: 'https://www.dvidshub.net/search/?q=TRX+atomic&view=grid', tags: ['Upper Push', 'Core'] },
+  { id: 'sp-54', name: 'TRX Chest Press', category: categories.STRENGTH_POWER, equipment: equipmentTags.TRX, difficulty: 2, url: 'https://www.dvidshub.net/video/640266/trx-chest-press', tags: ['Upper Push', 'Chest'] },
+  { id: 'sp-55', name: 'TRX Inverted Row', category: categories.STRENGTH_POWER, equipment: equipmentTags.TRX, difficulty: 2, url: 'https://www.dvidshub.net/video/640272/trx-inverted-row', tags: ['Upper Pull', 'Back'] },
+  { id: 'sp-56', name: 'TRX Pike', category: categories.STRENGTH_POWER, equipment: equipmentTags.TRX, difficulty: 3, url: 'https://www.dvidshub.net/video/642051/trx-pike', tags: ['Core', 'Shoulders'] },
+  { id: 'sp-57', name: 'TRX Single Leg Squat', category: categories.STRENGTH_POWER, equipment: equipmentTags.TRX, difficulty: 3, url: 'https://www.dvidshub.net/video/642055/trx-single-leg-squat', tags: ['Lower Body', 'Unilateral'] },
+  { id: 'sp-58', name: 'V-Ups', category: categories.STRENGTH_POWER, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/640287/v-ups', tags: ['Core', 'Abs'] },
 
+  // =====================
   // SPEED, AGILITY & ENDURANCE
-  {
-    id: 'sae-1',
-    category: categories.SPEED_AGILITY,
-    name: '300 Yard Shuttle',
-    url: '',
-    equipment: equipmentTags.CONES,
-    difficulty: 4,
-    tags: ['Anaerobic', 'Running'],
-  },
-  {
-    id: 'sae-2',
-    category: categories.SPEED_AGILITY,
-    name: 'Burpees',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 3,
-    tags: ['Metabolic', 'Full Body'],
-  },
-  {
-    id: 'sae-3',
-    category: categories.SPEED_AGILITY,
-    name: 'Mountain Climbers',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 2,
-    tags: ['Core', 'Metabolic'],
-  },
-  {
-    id: 'sae-4',
-    category: categories.SPEED_AGILITY,
-    name: 'Sled Push',
-    url: '',
-    equipment: equipmentTags.SLED,
-    difficulty: 4,
-    tags: ['Power', 'Legs'],
-  },
-  {
-    id: 'sae-5',
-    category: categories.SPEED_AGILITY,
-    name: 'Battle Ropes',
-    url: '',
-    equipment: equipmentTags.BATTLE_ROPE,
-    difficulty: 3,
-    tags: ['Upper Body', 'Metabolic'],
-  },
-  {
-    id: 'sae-6',
-    category: categories.SPEED_AGILITY,
-    name: '400m Sprint',
-    url: '',
-    equipment: 'Track/Field',
-    difficulty: 3,
-    tags: ['Running', 'Anaerobic'],
-  },
-  {
-    id: 'sae-7',
-    category: categories.SPEED_AGILITY,
-    name: 'High Knees',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 1,
-    tags: ['Cardio'],
-  },
-  {
-    id: 'sae-8',
-    category: categories.SPEED_AGILITY,
-    name: 'Jumping Jacks',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 1,
-    tags: ['Cardio'],
-  },
-  {
-    id: 'sae-9',
-    category: categories.SPEED_AGILITY,
-    name: 'Bear Crawl',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 3,
-    tags: ['Full Body', 'Mobility'],
-  },
-  {
-    id: 'sae-10',
-    category: categories.SPEED_AGILITY,
-    name: '8-Count Bodybuilders',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 4,
-    tags: ['Full Body', 'Metabolic'],
-  },
+  // =====================
+  { id: 'sae-1', name: '60 Yard Shuttle Run', category: categories.SPEED_AGILITY, equipment: equipmentTags.CONES, difficulty: 3, url: 'https://www.dvidshub.net/video/695745/60-yard-shuttle-run', tags: ['Running', 'Anaerobic'] },
+  { id: 'sae-2', name: 'A-Skip', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/640967/skip', tags: ['Running Mechanics', 'Warmup'] },
+  { id: 'sae-3', name: 'B-Skip', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'http://www.dvidshub.net/video/696701/b-skip', tags: ['Running Mechanics', 'Warmup'] },
+  { id: 'sae-4', name: 'Box Drill 1', category: categories.SPEED_AGILITY, equipment: equipmentTags.CONES, difficulty: 2, url: 'https://www.dvidshub.net/video/696698/box-drill-1', tags: ['Agility', 'Change of Direction'] },
+  { id: 'sae-5', name: 'Broad Jump Start', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/640972/broad-jump-start', tags: ['Power', 'Acceleration'] },
+  { id: 'sae-6', name: 'Carioca', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/558561/carioca', tags: ['Agility', 'Hips'] },
+  { id: 'sae-7', name: 'Crossover Run', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/696708/crossover-run', tags: ['Agility', 'Footwork'] },
+  { id: 'sae-8', name: 'Gassers', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 4, url: 'http://www.dvidshub.net/video/696732/gassers', tags: ['Conditioning', 'Anaerobic'] },
+  { id: 'sae-9', name: 'High Knees', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/558574/high-knees', tags: ['Cardio', 'Running Mechanics'] },
+  { id: 'sae-10', name: 'Hill Sprint', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 4, url: 'http://www.dvidshub.net/video/696745/hill-sprint', tags: ['Power', 'Conditioning'] },
+  { id: 'sae-11', name: 'Hour Glass Drill', category: categories.SPEED_AGILITY, equipment: equipmentTags.CONES, difficulty: 3, url: 'https://www.dvidshub.net/video/697231/hour-glass-drill', tags: ['Agility', 'Change of Direction'] },
+  { id: 'sae-12', name: 'Hurdle Hops (Forward)', category: categories.SPEED_AGILITY, equipment: equipmentTags.HURDLES, difficulty: 2, url: 'http://www.dvidshub.net/video/697842/hurdle-hops-forward', tags: ['Plyometric', 'Coordination'] },
+  { id: 'sae-13', name: 'Hurdle Hops (Lateral)', category: categories.SPEED_AGILITY, equipment: equipmentTags.HURDLES, difficulty: 2, url: 'http://www.dvidshub.net/video/697845/hurdle-hops-lateral', tags: ['Plyometric', 'Agility'] },
+  { id: 'sae-14', name: 'Icky Shuffle', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'http://www.dvidshub.net/video/697848/icky-shuffle', tags: ['Footwork', 'Agility'] },
+  { id: 'sae-15', name: 'Lateral Skip', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/558579/lateral-skip', tags: ['Agility', 'Cardio'] },
+  { id: 'sae-16', name: 'Mountain Climber Start', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/697865/mountain-climber-start', tags: ['Acceleration', 'Core'] },
+  { id: 'sae-17', name: 'Partner Resisted Sprint', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 3, url: 'https://www.dvidshub.net/video/641005/partner-resisted-sprint', tags: ['Power', 'Acceleration'] },
+  { id: 'sae-18', name: 'Prone Start', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/641012/prone-start', tags: ['Acceleration', 'Reaction'] },
+  { id: 'sae-19', name: 'Push-Up Start', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/641015/push-up-start', tags: ['Acceleration', 'Reaction'] },
+  { id: 'sae-20', name: 'Sprint Progression', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/697881/sprint-progression', tags: ['Running Mechanics', 'Speed'] },
+  { id: 'sae-21', name: 'Stadium Stairs (1 Foot)', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 3, url: 'http://www.dvidshub.net/video/697884/stadium-stairs-1-foot-each-step', tags: ['Conditioning', 'Power'] },
+  { id: 'sae-22', name: 'Zig Zag Drill', category: categories.SPEED_AGILITY, equipment: equipmentTags.CONES, difficulty: 2, url: 'https://www.dvidshub.net/video/699163/zig-zag-drill', tags: ['Agility', 'Change of Direction'] },
 
-  // FLEXIBILITY & RECOVERY (New Category)
-  {
-    id: 'flx-1',
-    category: categories.FLEXIBILITY,
-    name: 'Pigeon Stretch',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 1,
-    tags: ['Hips', 'Static'],
-  },
-  {
-    id: 'flx-2',
-    category: categories.FLEXIBILITY,
-    name: 'Couch Stretch',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 2,
-    tags: ['Quads', 'Hip Flexors'],
-  },
-  {
-    id: 'flx-3',
-    category: categories.FLEXIBILITY,
-    name: 'Doorway Pec Stretch',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 1,
-    tags: ['Chest', 'Shoulders'],
-  },
-  {
-    id: 'flx-4',
-    category: categories.FLEXIBILITY,
-    name: 'Hamstring Flossing',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 1,
-    tags: ['Hamstrings', 'Mobility'],
-  },
-  {
-    id: 'flx-5',
-    category: categories.FLEXIBILITY,
-    name: 'Bretzel Stretch',
-    url: '',
-    equipment: equipmentTags.NONE,
-    difficulty: 2,
-    tags: ['Thoracic', 'Hips', 'Rotation'],
-  }
+  // =====================
+  // FLEXIBILITY & MOBILITY
+  // =====================
+  { id: 'flx-1', name: 'Chest Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/699167/chest-stretch', tags: ['Chest', 'Static'] },
+  { id: 'flx-2', name: 'Cross Body Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'http://www.dvidshub.net/video/699168/cross-body-stretch', tags: ['Shoulders', 'Static'] },
+  { id: 'flx-3', name: 'Elbow To Instep', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/636501/elbow-instep', tags: ['Hips', 'Dynamic'] },
+  { id: 'flx-4', name: 'Glute Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/699170/glute-stretch', tags: ['Glutes', 'Static'] },
+  { id: 'flx-5', name: 'Half Kneeling Hip Flexor', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551136/pvc-half-kneeling-hip-flexor', tags: ['Hip Flexors', 'Static'] },
+  { id: 'flx-6', name: 'Neck Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/699174/neck-stretch', tags: ['Neck', 'Static'] },
+  { id: 'flx-7', name: 'Quad Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/699175/quad-stretch', tags: ['Quads', 'Static'] },
+  { id: 'flx-8', name: 'Shoulder Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/699176/shoulder-stretch', tags: ['Shoulders', 'Static'] },
+  { id: 'flx-9', name: 'Side Bend Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/699177/side-bend-stretch', tags: ['Core', 'Obliques'] },
+  { id: 'flx-10', name: 'Sumo Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/699179/sumo-stretch', tags: ['Groin', 'Hips'] },
+  { id: 'flx-11', name: 'Tricep Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/699182/tricep-stretch', tags: ['Triceps', 'Static'] },
+  { id: 'flx-12', name: 'Upper Back Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'http://www.dvidshub.net/video/699184/upper-back-stretch', tags: ['Back', 'Thoracic'] }
 ];
-
-// Enrich exercises with inferred tags if missing
-export const hittExercises = rawExercises.map(ex => ({
-  ...ex,
-  tags: ex.tags ? [...ex.tags, ...inferTags(ex.name, ex.equipment)] : inferTags(ex.name, ex.equipment)
-}));
