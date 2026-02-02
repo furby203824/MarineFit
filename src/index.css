@@ -61,17 +61,68 @@
 
 /* Print styles */
 @media print {
-  .no-print {
+  .no-print,
+  nav,
+  aside,
+  header button,
+  .btn,
+  [role="navigation"] {
     display: none !important;
   }
 
   body {
     background: white !important;
     color: black !important;
+    font-size: 12pt !important;
+  }
+
+  main {
+    margin-left: 0 !important;
+    padding: 0 !important;
   }
 
   .card {
     box-shadow: none !important;
     border: 1px solid #ccc !important;
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3, h4 {
+    color: black !important;
+    page-break-after: avoid;
+  }
+
+  .bg-marine-red {
+    background-color: #8B0000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .text-marine-red {
+    color: #8B0000 !important;
+  }
+
+  /* Workout card specific */
+  .workout-printable {
+    max-width: 100% !important;
+  }
+
+  .workout-printable .exercise-item {
+    border: 1px solid #ddd !important;
+    margin-bottom: 8px !important;
+    padding: 8px !important;
+  }
+
+  /* Hide interactive elements */
+  button:not(.print-include),
+  a[target="_blank"],
+  .hover\\:shadow-md {
+    box-shadow: none !important;
+  }
+
+  /* Page setup */
+  @page {
+    margin: 0.5in;
+    size: letter portrait;
   }
 }

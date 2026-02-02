@@ -54,7 +54,7 @@ const Navigation = () => {
   return (
     <>
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white dark:bg-gray-800 border-b dark:border-gray-700 z-50 flex items-center justify-between px-4">
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white dark:bg-gray-800 border-b dark:border-gray-700 z-50 flex items-center justify-between px-4 no-print">
         <span className="font-bold text-xl text-marine-red flex items-center gap-2">
           <span className="text-2xl">⚓</span> MarineFit
         </span>
@@ -76,7 +76,7 @@ const Navigation = () => {
       <motion.aside
         initial={false}
         animate={{ width: isOpen ? 240 : 80 }}
-        className="hidden md:flex flex-col fixed left-0 top-0 bottom-0 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-40 shadow-sm transition-colors duration-200"
+        className="hidden md:flex flex-col fixed left-0 top-0 bottom-0 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-40 shadow-sm transition-colors duration-200 no-print"
       >
         <div className="h-16 flex items-center px-4 border-b border-gray-100 dark:border-gray-700">
           <div className={twMerge("flex items-center gap-2 overflow-hidden", !isOpen && "justify-center w-full")}>
