@@ -287,47 +287,60 @@ const PTCoach = () => {
                         </h4>
                         <div className="grid gap-3">
                           {block.exercises.map((ex, idx) => (
-                            <motion.div 
+                            <motion.div
                               key={ex.id}
                               initial={{ opacity: 0, x: -10 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: idx * 0.05 }}
-                              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-sm transition-shadow"
+                              className="p-3 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-sm transition-shadow"
                             >
-                              <div>
-                                <div className="flex items-center gap-2">
-                                  <span className="font-semibold text-gray-900">{ex.name}</span>
-                                  <span className="text-xs bg-white px-2 py-0.5 rounded border border-gray-200 text-gray-500">
-                                    {ex.equipment}
-                                  </span>
-                                </div>
-                                <div className="flex gap-2 mt-1">
-                                  {ex.tags.map(tag => (
-                                    <span key={tag} className="text-[10px] text-gray-400 bg-gray-100 px-1.5 rounded">
-                                      {tag}
+                              <div className="flex items-center justify-between">
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 flex-wrap">
+                                    <span className="font-semibold text-gray-900">{ex.name}</span>
+                                    <span className="text-xs bg-white px-2 py-0.5 rounded border border-gray-200 text-gray-500">
+                                      {ex.equipment}
                                     </span>
-                                  ))}
+                                  </div>
+                                  {/* Prescription Display */}
+                                  {ex.prescription && (
+                                    <div className="flex items-center gap-3 mt-2 text-sm">
+                                      <span className="bg-marine-red/10 text-marine-red px-2 py-0.5 rounded font-medium">
+                                        {ex.prescription.sets} x {ex.prescription.reps}
+                                      </span>
+                                      {ex.prescription.rest !== '0s' && (
+                                        <span className="text-gray-500">
+                                          Rest: {ex.prescription.rest}
+                                        </span>
+                                      )}
+                                      {ex.prescription.notes && (
+                                        <span className="text-gray-400 italic text-xs hidden sm:inline">
+                                          {ex.prescription.notes}
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
                                 </div>
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <button
-                                  onClick={() => handleSwapExercise(bIdx, idx)}
-                                  className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
-                                  title="Swap Exercise"
-                                >
-                                  <RefreshCw size={18} />
-                                </button>
+                                <div className="flex items-center gap-1 ml-2">
+                                  <button
+                                    onClick={() => handleSwapExercise(bIdx, idx)}
+                                    className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                                    title="Swap Exercise"
+                                  >
+                                    <RefreshCw size={18} />
+                                  </button>
                                 {ex.url && (
-                                  <a 
-                                    href={ex.url} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer" 
+                                  <a
+                                    href={ex.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="p-2 text-gray-400 hover:text-marine-red hover:bg-white rounded-full transition-colors"
                                     title="Watch Demo"
                                   >
                                     <PlayCircle size={20} />
                                   </a>
                                 )}
+                                </div>
                               </div>
                             </motion.div>
                           ))}
