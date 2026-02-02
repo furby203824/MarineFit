@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Activity, ExternalLink, Phone, Mail, Dumbbell, RefreshCw, Filter, PlayCircle, Printer, Clock, Target, Save, ThumbsUp, ThumbsDown, History, Trash2, CheckCircle, Search, BookOpen, X } from 'lucide-react';
+import { Activity, ExternalLink, Phone, Mail, Dumbbell, RefreshCw, Filter, PlayCircle, Printer, Clock, Target, Save, ThumbsUp, ThumbsDown, History, Trash2, CheckCircle, Search, BookOpen, X, Plus, GripVertical, ChevronDown, ChevronUp, Edit3, PlusCircle } from 'lucide-react';
 import { equipmentTags, goals, hittExercises, categories } from '../data/hittData';
 import { generateWorkout } from '../utils/workoutGenerator';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,8 +7,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 const PTCoach = () => {
   const [workout, setWorkout] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
-  const [activeTab, setActiveTab] = useState('generator'); // 'generator', 'history', or 'library'
+  const [activeTab, setActiveTab] = useState('generator'); // 'generator', 'history', 'library', or 'custom'
   const [savedWorkouts, setSavedWorkouts] = useState([]);
+
+  // Custom Workout Builder State
+  const [customWorkout, setCustomWorkout] = useState({
+    title: 'Custom Workout',
+    blocks: [{ id: Date.now(), name: 'BLOCK 1', exercises: [] }]
+  });
+  const [customSearchQuery, setCustomSearchQuery] = useState('');
+  const [customCategoryFilter, setCustomCategoryFilter] = useState('');
+  const [activeBlockId, setActiveBlockId] = useState(null);
+  const [showExercisePicker, setShowExercisePicker] = useState(false);
+  const [editingExercise, setEditingExercise] = useState(null); // { blockId, exerciseIndex }
 
   // Exercise Library filters
   const [searchQuery, setSearchQuery] = useState('');
@@ -190,6 +201,158 @@ const PTCoach = () => {
     alert("AAR Submitted. Training variables updated for next cycle.");
   };
 
+  // ===== CUSTOM WORKOUT BUILDER FUNCTIONS =====
+
+  // Filtered exercises for custom workout picker
+  const customFilteredExercises = useMemo(() => {
+    return hittExercises.filter(ex => {
+      if (customSearchQuery && !ex.name.toLowerCase().includes(customSearchQuery.toLowerCase())) {
+        return false;
+      }
+      if (customCategoryFilter && ex.category !== customCategoryFilter) {
+        return false;
+      }
+      return true;
+    });
+  }, [customSearchQuery, customCategoryFilter]);
+
+  const addBlock = () => {
+    const newBlock = {
+      id: Date.now(),
+      name: `BLOCK ${customWorkout.blocks.length + 1}`,
+      exercises: []
+    };
+    setCustomWorkout(prev => ({
+      ...prev,
+      blocks: [...prev.blocks, newBlock]
+    }));
+  };
+
+  const removeBlock = (blockId) => {
+    if (customWorkout.blocks.length === 1) {
+      alert("You need at least one block in your workout.");
+      return;
+    }
+    setCustomWorkout(prev => ({
+      ...prev,
+      blocks: prev.blocks.filter(b => b.id !== blockId)
+    }));
+  };
+
+  const updateBlockName = (blockId, newName) => {
+    setCustomWorkout(prev => ({
+      ...prev,
+      blocks: prev.blocks.map(b =>
+        b.id === blockId ? { ...b, name: newName } : b
+      )
+    }));
+  };
+
+  const openExercisePicker = (blockId) => {
+    setActiveBlockId(blockId);
+    setShowExercisePicker(true);
+    setCustomSearchQuery('');
+    setCustomCategoryFilter('');
+  };
+
+  const addExerciseToBlock = (exercise) => {
+    if (!activeBlockId) return;
+
+    const exerciseWithPrescription = {
+      ...exercise,
+      uniqueId: `${exercise.id}-${Date.now()}`,
+      prescription: {
+        sets: 3,
+        reps: '10',
+        rest: '60s',
+        notes: ''
+      }
+    };
+
+    setCustomWorkout(prev => ({
+      ...prev,
+      blocks: prev.blocks.map(b =>
+        b.id === activeBlockId
+          ? { ...b, exercises: [...b.exercises, exerciseWithPrescription] }
+          : b
+      )
+    }));
+    setShowExercisePicker(false);
+  };
+
+  const removeExerciseFromBlock = (blockId, exerciseIndex) => {
+    setCustomWorkout(prev => ({
+      ...prev,
+      blocks: prev.blocks.map(b =>
+        b.id === blockId
+          ? { ...b, exercises: b.exercises.filter((_, i) => i !== exerciseIndex) }
+          : b
+      )
+    }));
+  };
+
+  const updateExercisePrescription = (blockId, exerciseIndex, field, value) => {
+    setCustomWorkout(prev => ({
+      ...prev,
+      blocks: prev.blocks.map(b =>
+        b.id === blockId
+          ? {
+              ...b,
+              exercises: b.exercises.map((ex, i) =>
+                i === exerciseIndex
+                  ? { ...ex, prescription: { ...ex.prescription, [field]: value } }
+                  : ex
+              )
+            }
+          : b
+      )
+    }));
+  };
+
+  const moveExercise = (blockId, exerciseIndex, direction) => {
+    setCustomWorkout(prev => ({
+      ...prev,
+      blocks: prev.blocks.map(b => {
+        if (b.id !== blockId) return b;
+        const newExercises = [...b.exercises];
+        const newIndex = exerciseIndex + direction;
+        if (newIndex < 0 || newIndex >= newExercises.length) return b;
+        [newExercises[exerciseIndex], newExercises[newIndex]] = [newExercises[newIndex], newExercises[exerciseIndex]];
+        return { ...b, exercises: newExercises };
+      })
+    }));
+  };
+
+  const saveCustomWorkout = () => {
+    const totalExercises = customWorkout.blocks.reduce((sum, b) => sum + b.exercises.length, 0);
+    if (totalExercises === 0) {
+      alert("Add at least one exercise to your workout before saving.");
+      return;
+    }
+
+    const workoutToSave = {
+      id: Date.now(),
+      title: customWorkout.title,
+      date: new Date().toISOString(),
+      blocks: customWorkout.blocks,
+      isCustom: true
+    };
+
+    const newHistory = [workoutToSave, ...savedWorkouts];
+    setSavedWorkouts(newHistory);
+    localStorage.setItem('marine_fitness_history', JSON.stringify(newHistory));
+    alert("Custom workout saved to History Log!");
+  };
+
+  const resetCustomWorkout = () => {
+    if (window.confirm("Are you sure you want to clear this workout and start fresh?")) {
+      setCustomWorkout({
+        title: 'Custom Workout',
+        blocks: [{ id: Date.now(), name: 'BLOCK 1', exercises: [] }]
+      });
+    }
+  };
+
   return (
     <div className="space-y-8">
       <header className="flex items-center justify-between gap-4 pb-6 border-b border-gray-200 dark:border-gray-700">
@@ -207,21 +370,27 @@ const PTCoach = () => {
         <div className="flex bg-gray-100 dark:bg-gray-700 p-1 rounded-lg flex-wrap">
           <button
             onClick={() => setActiveTab('generator')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'generator' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
+            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'generator' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
           >
-            <RefreshCw size={16} /> Generator
+            <RefreshCw size={16} /> <span className="hidden sm:inline">Generator</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('custom')}
+            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'custom' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
+          >
+            <PlusCircle size={16} /> <span className="hidden sm:inline">Create Custom</span>
           </button>
           <button
             onClick={() => setActiveTab('library')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'library' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
+            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'library' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
           >
-            <BookOpen size={16} /> Exercise Library
+            <BookOpen size={16} /> <span className="hidden sm:inline">Library</span>
           </button>
           <button
             onClick={() => setActiveTab('history')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'history' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
+            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'history' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
           >
-            <History size={16} /> History
+            <History size={16} /> <span className="hidden sm:inline">History</span>
           </button>
         </div>
       </header>
@@ -589,7 +758,275 @@ const PTCoach = () => {
                 </div>
               )}
             </div>
-          ) : (
+          ) : activeTab === 'custom' ? (
+            // CUSTOM WORKOUT BUILDER TAB
+            <div className="space-y-4">
+              <div className="card border-t-4 border-t-marine-gold">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-bold text-gray-900 m-0 flex items-center gap-2">
+                    <PlusCircle className="text-marine-red" /> Custom Workout Builder
+                  </h2>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={resetCustomWorkout}
+                      className="px-3 py-1.5 text-sm text-gray-500 hover:text-red-600 transition-colors"
+                    >
+                      Clear All
+                    </button>
+                    <button
+                      onClick={saveCustomWorkout}
+                      className="btn flex items-center gap-2 text-sm"
+                    >
+                      <Save size={16} /> Save Workout
+                    </button>
+                  </div>
+                </div>
+
+                {/* Workout Title */}
+                <div className="mb-6">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                    Workout Title
+                  </label>
+                  <input
+                    type="text"
+                    value={customWorkout.title}
+                    onChange={(e) => setCustomWorkout(prev => ({ ...prev, title: e.target.value }))}
+                    className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-marine-red focus:border-transparent"
+                    placeholder="e.g., Monday Upper Body"
+                  />
+                </div>
+
+                {/* Blocks */}
+                <div className="space-y-4">
+                  {customWorkout.blocks.map((block, blockIndex) => (
+                    <div key={block.id} className="border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
+                      {/* Block Header */}
+                      <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 flex items-center justify-between">
+                        <input
+                          type="text"
+                          value={block.name}
+                          onChange={(e) => updateBlockName(block.id, e.target.value)}
+                          className="font-bold text-sm uppercase tracking-wider text-marine-red bg-transparent border-none focus:outline-none focus:ring-0 w-40"
+                        />
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => openExercisePicker(block.id)}
+                            className="flex items-center gap-1 px-3 py-1.5 text-sm bg-marine-red text-white rounded-md hover:bg-marine-red/90 transition-colors"
+                          >
+                            <Plus size={14} /> Add Exercise
+                          </button>
+                          <button
+                            onClick={() => removeBlock(block.id)}
+                            className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+                            title="Remove Block"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Block Exercises */}
+                      <div className="p-4">
+                        {block.exercises.length === 0 ? (
+                          <div className="text-center py-8 text-gray-400 border-2 border-dashed border-gray-200 dark:border-gray-600 rounded-lg">
+                            <Dumbbell className="mx-auto h-8 w-8 mb-2 opacity-50" />
+                            <p className="text-sm">No exercises yet. Click "Add Exercise" to get started.</p>
+                          </div>
+                        ) : (
+                          <div className="space-y-3">
+                            {block.exercises.map((ex, exIndex) => (
+                              <div
+                                key={ex.uniqueId}
+                                className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-100 dark:border-gray-600"
+                              >
+                                <div className="flex items-start justify-between gap-3">
+                                  <div className="flex items-center gap-2">
+                                    <div className="flex flex-col">
+                                      <button
+                                        onClick={() => moveExercise(block.id, exIndex, -1)}
+                                        disabled={exIndex === 0}
+                                        className="p-0.5 text-gray-400 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed"
+                                      >
+                                        <ChevronUp size={14} />
+                                      </button>
+                                      <button
+                                        onClick={() => moveExercise(block.id, exIndex, 1)}
+                                        disabled={exIndex === block.exercises.length - 1}
+                                        className="p-0.5 text-gray-400 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed"
+                                      >
+                                        <ChevronDown size={14} />
+                                      </button>
+                                    </div>
+                                    <div>
+                                      <div className="flex items-center gap-2 flex-wrap">
+                                        <span className="font-semibold text-gray-900">{ex.name}</span>
+                                        <span className="text-xs bg-white dark:bg-gray-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-500 text-gray-500">
+                                          {ex.equipment}
+                                        </span>
+                                      </div>
+                                      <p className="text-xs text-gray-500 mt-0.5">{ex.category}</p>
+                                    </div>
+                                  </div>
+                                  <button
+                                    onClick={() => removeExerciseFromBlock(block.id, exIndex)}
+                                    className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+                                  >
+                                    <Trash2 size={14} />
+                                  </button>
+                                </div>
+
+                                {/* Prescription Controls */}
+                                <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+                                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                                    <div>
+                                      <label className="block text-xs text-gray-500 mb-1">Sets</label>
+                                      <input
+                                        type="number"
+                                        min="1"
+                                        value={ex.prescription.sets}
+                                        onChange={(e) => updateExercisePrescription(block.id, exIndex, 'sets', parseInt(e.target.value) || 1)}
+                                        className="w-full px-2 py-1 text-sm border border-gray-200 dark:border-gray-500 rounded bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-100"
+                                      />
+                                    </div>
+                                    <div>
+                                      <label className="block text-xs text-gray-500 mb-1">Reps</label>
+                                      <input
+                                        type="text"
+                                        value={ex.prescription.reps}
+                                        onChange={(e) => updateExercisePrescription(block.id, exIndex, 'reps', e.target.value)}
+                                        className="w-full px-2 py-1 text-sm border border-gray-200 dark:border-gray-500 rounded bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-100"
+                                        placeholder="e.g., 10 or 30s"
+                                      />
+                                    </div>
+                                    <div>
+                                      <label className="block text-xs text-gray-500 mb-1">Rest</label>
+                                      <input
+                                        type="text"
+                                        value={ex.prescription.rest}
+                                        onChange={(e) => updateExercisePrescription(block.id, exIndex, 'rest', e.target.value)}
+                                        className="w-full px-2 py-1 text-sm border border-gray-200 dark:border-gray-500 rounded bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-100"
+                                        placeholder="e.g., 60s"
+                                      />
+                                    </div>
+                                    <div className="col-span-3 sm:col-span-1">
+                                      <label className="block text-xs text-gray-500 mb-1">Notes</label>
+                                      <input
+                                        type="text"
+                                        value={ex.prescription.notes}
+                                        onChange={(e) => updateExercisePrescription(block.id, exIndex, 'notes', e.target.value)}
+                                        className="w-full px-2 py-1 text-sm border border-gray-200 dark:border-gray-500 rounded bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-100"
+                                        placeholder="Optional"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Add Block Button */}
+                  <button
+                    onClick={addBlock}
+                    className="w-full py-3 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg text-gray-500 dark:text-gray-400 hover:border-marine-red hover:text-marine-red transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Plus size={18} /> Add Another Block
+                  </button>
+                </div>
+              </div>
+
+              {/* Exercise Picker Modal */}
+              <AnimatePresence>
+                {showExercisePicker && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+                    onClick={() => setShowExercisePicker(false)}
+                  >
+                    <motion.div
+                      initial={{ scale: 0.95, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.95, opacity: 0 }}
+                      className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col"
+                      onClick={e => e.stopPropagation()}
+                    >
+                      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="text-lg font-bold text-gray-900 dark:text-white">Add Exercise</h3>
+                          <button
+                            onClick={() => setShowExercisePicker(false)}
+                            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                          >
+                            <X size={20} />
+                          </button>
+                        </div>
+
+                        {/* Search and Filter */}
+                        <div className="flex gap-2">
+                          <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                            <input
+                              type="text"
+                              placeholder="Search exercises..."
+                              value={customSearchQuery}
+                              onChange={(e) => setCustomSearchQuery(e.target.value)}
+                              className="w-full pl-9 pr-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm"
+                            />
+                          </div>
+                          <select
+                            value={customCategoryFilter}
+                            onChange={(e) => setCustomCategoryFilter(e.target.value)}
+                            className="px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm"
+                          >
+                            <option value="">All Categories</option>
+                            {allCategories.map(cat => (
+                              <option key={cat} value={cat}>{cat}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Exercise List */}
+                      <div className="flex-1 overflow-y-auto p-4">
+                        <div className="grid gap-2">
+                          {customFilteredExercises.map((ex) => (
+                            <button
+                              key={ex.id}
+                              onClick={() => addExerciseToBlock(ex)}
+                              className="w-full text-left p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors border border-transparent hover:border-marine-red"
+                            >
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <span className="font-medium text-gray-900 dark:text-white">{ex.name}</span>
+                                  <div className="flex items-center gap-2 mt-1">
+                                    <span className="text-xs text-gray-500">{ex.category}</span>
+                                    <span className="text-xs bg-gray-200 dark:bg-gray-600 px-1.5 py-0.5 rounded text-gray-600 dark:text-gray-300">
+                                      {ex.equipment}
+                                    </span>
+                                  </div>
+                                </div>
+                                <Plus size={18} className="text-marine-red" />
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                        {customFilteredExercises.length === 0 && (
+                          <div className="text-center py-8 text-gray-500">
+                            No exercises found matching your search.
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ) : activeTab === 'history' ? (
             // HISTORY TAB
             <div className="space-y-4">
               {savedWorkouts.length === 0 ? (
@@ -631,7 +1068,7 @@ const PTCoach = () => {
                 ))
               )}
             </div>
-          )}
+          ) : null}
         </div>
 
         {/* Sidebar Info - Takes up 1 column */}
