@@ -4,6 +4,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import Navigation from './components/Navigation';
 import Dashboard from './components/Dashboard';
 import PTCoach from './components/PTCoach';
+import ExerciseLibrary from './components/ExerciseLibrary';
 import PFTPrep from './components/PFTPrep';
 import Nutrition from './components/Nutrition';
 import InjuryPrevention from './components/InjuryPrevention';
@@ -21,6 +22,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/pt-coach" element={<PTCoach />} />
+                <Route path="/exercises" element={<ExerciseLibrary />} />
                 <Route path="/pft-prep" element={<PFTPrep />} />
                 <Route path="/nutrition" element={<Nutrition />} />
                 <Route path="/injury-prevention" element={<InjuryPrevention />} />
