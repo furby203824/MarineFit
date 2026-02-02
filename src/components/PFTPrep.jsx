@@ -82,13 +82,13 @@ const PFTPrep = () => {
                     pointsNeeded = plannerTarget - currentPoints;
                     
                     if (solveFor === 'upper') {
-                        const reps = getRequiredUpperBodyReps(inputs.gender, inputs.upperBodyType, pointsNeeded);
+                        const reps = getRequiredUpperBodyReps(inputs.gender, inputs.age, inputs.upperBodyType, pointsNeeded);
                         requirement = `${reps} Reps`;
                     } else if (solveFor === 'plank') {
                         const time = getRequiredPlankTime(pointsNeeded);
                         requirement = time;
                     } else if (solveFor === 'run') {
-                        const time = getRequiredRunTime(inputs.gender, pointsNeeded);
+                        const time = getRequiredRunTime(inputs.gender, inputs.age, pointsNeeded);
                         requirement = time;
                     }
                 } else {
@@ -117,13 +117,13 @@ const PFTPrep = () => {
                     pointsNeeded = plannerTarget - currentPoints;
 
                     if (solveFor === 'mtc') {
-                        const time = getRequiredMTC(inputs.gender, pointsNeeded);
+                        const time = getRequiredMTC(inputs.gender, inputs.age, pointsNeeded);
                         requirement = time;
                     } else if (solveFor === 'al') {
-                        const reps = getRequiredAmmoLifts(inputs.gender, pointsNeeded);
+                        const reps = getRequiredAmmoLifts(inputs.gender, inputs.age, pointsNeeded);
                         requirement = `${reps} Reps`;
                     } else if (solveFor === 'manuf') {
-                        const time = getRequiredMANUF(inputs.gender, pointsNeeded);
+                        const time = getRequiredMANUF(inputs.gender, inputs.age, pointsNeeded);
                         requirement = time;
                     }
                 }
