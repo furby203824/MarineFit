@@ -8,7 +8,6 @@ import Nutrition from './components/Nutrition';
 import InjuryPrevention from './components/InjuryPrevention';
 import SleepOptimizer from './components/SleepOptimizer';
 import BodyComp from './components/BodyComp';
-import UnitDashboard from './components/UnitDashboard';
 
 function App() {
   return (

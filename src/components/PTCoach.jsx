@@ -67,6 +67,47 @@ const PTCoach = () => {
     localStorage.setItem('marine_fitness_history', JSON.stringify(newHistory));
   };
 
+  const handleSwapExercise = (blockIndex, exerciseIndex) => {
+    if (!workout) return;
+
+    const block = workout.blocks[blockIndex];
+    const currentExercise = block.exercises[exerciseIndex];
+
+    // Get all exercise IDs currently in the workout to avoid duplicates
+    const usedExerciseIds = workout.blocks.flatMap(b => b.exercises.map(ex => ex.id));
+
+    // Find exercises in the same category that aren't already used
+    const availableExercises = hittExercises.filter(ex => {
+      // Must be same category
+      if (ex.category !== currentExercise.category) return false;
+      // Can't already be in the workout
+      if (usedExerciseIds.includes(ex.id)) return false;
+      // Must match equipment constraints (bodyweight always allowed)
+      const isBodyweight = ex.equipment === 'Bodyweight';
+      const equipmentAvailable = selectedEquipment.length === 0 ||
+        selectedEquipment.includes(ex.equipment) ||
+        isBodyweight;
+      return equipmentAvailable;
+    });
+
+    if (availableExercises.length === 0) {
+      alert("No alternative exercises available for this category with your current equipment selection.");
+      return;
+    }
+
+    // Pick a random alternative
+    const newExercise = availableExercises[Math.floor(Math.random() * availableExercises.length)];
+
+    // Update the workout state
+    const updatedWorkout = { ...workout };
+    updatedWorkout.blocks = [...workout.blocks];
+    updatedWorkout.blocks[blockIndex] = { ...block };
+    updatedWorkout.blocks[blockIndex].exercises = [...block.exercises];
+    updatedWorkout.blocks[blockIndex].exercises[exerciseIndex] = newExercise;
+
+    setWorkout(updatedWorkout);
+  };
+
   const handleFeedback = (rating) => { // rating: 'good' | 'hard'
     // 1. Update the current workout with feedback
     const feedbackData = {
