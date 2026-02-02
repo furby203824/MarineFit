@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Activity, ExternalLink, Phone, Mail, Dumbbell, RefreshCw, Filter, PlayCircle, Printer, Clock, Target, Save, ThumbsUp, ThumbsDown, History, Trash2, CheckCircle } from 'lucide-react';
-import { equipmentTags, goals } from '../data/hittData';
+import { equipmentTags, goals, hittExercises } from '../data/hittData';
 import { generateWorkout } from '../utils/workoutGenerator';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -268,17 +268,26 @@ const PTCoach = () => {
                                   ))}
                                 </div>
                               </div>
-                              {ex.url && (
-                                <a 
-                                  href={ex.url} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer" 
-                                  className="p-2 text-gray-400 hover:text-marine-red hover:bg-white rounded-full transition-colors"
-                                  title="Watch Demo"
+                              <div className="flex items-center gap-1">
+                                <button
+                                  onClick={() => handleSwapExercise(bIdx, idx)}
+                                  className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                                  title="Swap Exercise"
                                 >
-                                  <PlayCircle size={20} />
-                                </a>
-                              )}
+                                  <RefreshCw size={18} />
+                                </button>
+                                {ex.url && (
+                                  <a 
+                                    href={ex.url} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    className="p-2 text-gray-400 hover:text-marine-red hover:bg-white rounded-full transition-colors"
+                                    title="Watch Demo"
+                                  >
+                                    <PlayCircle size={20} />
+                                  </a>
+                                )}
+                              </div>
                             </motion.div>
                           ))}
                         </div>
