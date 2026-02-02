@@ -21,21 +21,21 @@ const item = {
 const DashboardCard = ({ to, icon: Icon, title, desc, color }) => (
   <motion.div variants={item}>
     <Link to={to} className="group block h-full">
-      <div className="h-full bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+      <div className="h-full bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
         <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full opacity-10 ${color}`} />
-        
+
         <div className="relative z-10">
           <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${color} bg-opacity-10 text-opacity-100`}>
             <Icon className={`w-6 h-6 ${color.replace('bg-', 'text-')}`} />
           </div>
-          
-          <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-marine-red transition-colors">
+
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-marine-red transition-colors">
             {title}
           </h3>
-          <p className="text-gray-500 text-sm mb-4 leading-relaxed">
+          <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 leading-relaxed">
             {desc}
           </p>
-          
+
           <div className="flex items-center text-sm font-semibold text-marine-red opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
             Open Module <ArrowRight className="ml-2 w-4 h-4" />
           </div>
