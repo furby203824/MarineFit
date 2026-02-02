@@ -150,7 +150,7 @@ const Navigation = () => {
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
-              className="bg-white dark:bg-gray-800 w-3/4 h-full p-4"
+              className="bg-white dark:bg-gray-800 w-3/4 h-full p-4 overflow-y-auto"
               onClick={e => e.stopPropagation()}
             >
               <div className="space-y-2">
