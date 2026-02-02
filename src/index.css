@@ -9,16 +9,16 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900 font-sans antialiased;
+    @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans antialiased transition-colors duration-200;
   }
   h1 {
-    @apply text-3xl font-bold text-gray-900 mb-4;
+    @apply text-3xl font-bold text-gray-900 dark:text-white mb-4;
   }
   h2 {
-    @apply text-2xl font-semibold text-gray-800 mb-3;
+    @apply text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-3;
   }
   h3 {
-    @apply text-xl font-medium text-gray-800 mb-2;
+    @apply text-xl font-medium text-gray-800 dark:text-gray-100 mb-2;
   }
 }
 
@@ -26,18 +26,103 @@
   .btn {
     @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-marine-red hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200;
   }
-  
+
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-4 py-2 border border-marine-red text-sm font-medium rounded-md text-marine-red bg-transparent hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200;
+    @apply inline-flex items-center justify-center px-4 py-2 border border-marine-red text-sm font-medium rounded-md text-marine-red bg-transparent hover:bg-red-50 dark:hover:bg-red-900/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200;
   }
 
   .card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-200;
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-200;
   }
-  
+
   .input-field {
-    @apply mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400
+    @apply mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm shadow-sm placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-100
     focus:outline-none focus:border-marine-red focus:ring-1 focus:ring-marine-red
-    disabled:bg-gray-50 disabled:text-gray-500 disabled:border-gray-200;
+    disabled:bg-gray-50 dark:disabled:bg-gray-800 disabled:text-gray-500 disabled:border-gray-200 dark:disabled:border-gray-700;
+  }
+
+  /* Dark mode text utilities */
+  .text-gray-900 {
+    @apply dark:text-white;
+  }
+
+  .text-gray-800 {
+    @apply dark:text-gray-100;
+  }
+
+  .text-gray-600 {
+    @apply dark:text-gray-300;
+  }
+
+  .text-gray-500 {
+    @apply dark:text-gray-400;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print,
+  nav,
+  aside,
+  header button,
+  .btn,
+  [role="navigation"] {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt !important;
+  }
+
+  main {
+    margin-left: 0 !important;
+    padding: 0 !important;
+  }
+
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3, h4 {
+    color: black !important;
+    page-break-after: avoid;
+  }
+
+  .bg-marine-red {
+    background-color: #8B0000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .text-marine-red {
+    color: #8B0000 !important;
+  }
+
+  /* Workout card specific */
+  .workout-printable {
+    max-width: 100% !important;
+  }
+
+  .workout-printable .exercise-item {
+    border: 1px solid #ddd !important;
+    margin-bottom: 8px !important;
+    padding: 8px !important;
+  }
+
+  /* Hide interactive elements */
+  button:not(.print-include),
+  a[target="_blank"],
+  .hover\\:shadow-md {
+    box-shadow: none !important;
+  }
+
+  /* Page setup */
+  @page {
+    margin: 0.5in;
+    size: letter portrait;
   }
 }
