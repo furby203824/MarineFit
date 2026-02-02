@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Activity, ExternalLink, Phone, Mail, Dumbbell, RefreshCw, Filter, PlayCircle, Printer, Clock, Target, Save, ThumbsUp, ThumbsDown, History, Trash2, CheckCircle } from 'lucide-react';
-import { equipmentTags, goals, hittExercises } from '../data/hittData';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Activity, ExternalLink, Phone, Mail, Dumbbell, RefreshCw, Filter, PlayCircle, Printer, Clock, Target, Save, ThumbsUp, ThumbsDown, History, Trash2, CheckCircle, Search, BookOpen, X } from 'lucide-react';
+import { equipmentTags, goals, hittExercises, categories } from '../data/hittData';
 import { generateWorkout } from '../utils/workoutGenerator';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const PTCoach = () => {
   const [workout, setWorkout] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
-  const [activeTab, setActiveTab] = useState('generator'); // 'generator' or 'history'
+  const [activeTab, setActiveTab] = useState('generator'); // 'generator', 'history', or 'library'
   const [savedWorkouts, setSavedWorkouts] = useState([]);
+
+  // Exercise Library filters
+  const [searchQuery, setSearchQuery] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [equipmentFilter, setEquipmentFilter] = useState('');
+  const [difficultyFilter, setDifficultyFilter] = useState('');
   
   // Advanced Filters
   const [time, setTime] = useState('30');
@@ -17,6 +23,41 @@ const PTCoach = () => {
   
   // Available Equipment Options (excluding Bodyweight which is default)
   const equipOptions = Object.values(equipmentTags).filter(e => e !== 'Bodyweight');
+
+  // Exercise Library - filtered exercises
+  const filteredExercises = useMemo(() => {
+    return hittExercises.filter(ex => {
+      // Search by name
+      if (searchQuery && !ex.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return false;
+      }
+      // Filter by category
+      if (categoryFilter && ex.category !== categoryFilter) {
+        return false;
+      }
+      // Filter by equipment
+      if (equipmentFilter && ex.equipment !== equipmentFilter) {
+        return false;
+      }
+      // Filter by difficulty
+      if (difficultyFilter && ex.difficulty !== parseInt(difficultyFilter)) {
+        return false;
+      }
+      return true;
+    });
+  }, [searchQuery, categoryFilter, equipmentFilter, difficultyFilter]);
+
+  // Get unique values for filter dropdowns
+  const allCategories = [...new Set(hittExercises.map(ex => ex.category))];
+  const allEquipment = [...new Set(hittExercises.map(ex => ex.equipment))];
+  const allDifficulties = [1, 2, 3];
+
+  const clearLibraryFilters = () => {
+    setSearchQuery('');
+    setCategoryFilter('');
+    setEquipmentFilter('');
+    setDifficultyFilter('');
+  };
 
   // Load history on mount
   useEffect(() => {
@@ -163,18 +204,24 @@ const PTCoach = () => {
         </div>
         
         {/* Tab Switcher */}
-        <div className="flex bg-gray-100 p-1 rounded-lg">
-          <button 
+        <div className="flex bg-gray-100 p-1 rounded-lg flex-wrap">
+          <button
             onClick={() => setActiveTab('generator')}
             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'generator' ? 'bg-white text-marine-red shadow-sm' : 'text-gray-600 hover:text-gray-900'}`}
           >
             <RefreshCw size={16} /> Generator
           </button>
-          <button 
+          <button
+            onClick={() => setActiveTab('library')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'library' ? 'bg-white text-marine-red shadow-sm' : 'text-gray-600 hover:text-gray-900'}`}
+          >
+            <BookOpen size={16} /> Exercise Library
+          </button>
+          <button
             onClick={() => setActiveTab('history')}
             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'history' ? 'bg-white text-marine-red shadow-sm' : 'text-gray-600 hover:text-gray-900'}`}
           >
-            <History size={16} /> History Log
+            <History size={16} /> History
           </button>
         </div>
       </header>
@@ -400,6 +447,148 @@ const PTCoach = () => {
                 )}
               </AnimatePresence>
             </div>
+          ) : activeTab === 'library' ? (
+            // EXERCISE LIBRARY TAB
+            <div className="space-y-4">
+              <div className="card">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-bold text-gray-900 m-0 flex items-center gap-2">
+                    <BookOpen className="text-marine-red" /> Exercise Library
+                  </h2>
+                  <span className="text-sm text-gray-500">
+                    {filteredExercises.length} of {hittExercises.length} exercises
+                  </span>
+                </div>
+
+                {/* Search Bar */}
+                <div className="relative mb-4">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                  <input
+                    type="text"
+                    placeholder="Search exercises by name..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-10 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-marine-red focus:border-transparent"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X size={16} />
+                    </button>
+                  )}
+                </div>
+
+                {/* Filters */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                  <select
+                    value={categoryFilter}
+                    onChange={(e) => setCategoryFilter(e.target.value)}
+                    className="bg-white border border-gray-200 rounded-md py-2 px-3 text-sm focus:ring-marine-red focus:border-marine-red"
+                  >
+                    <option value="">All Categories</option>
+                    {allCategories.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={equipmentFilter}
+                    onChange={(e) => setEquipmentFilter(e.target.value)}
+                    className="bg-white border border-gray-200 rounded-md py-2 px-3 text-sm focus:ring-marine-red focus:border-marine-red"
+                  >
+                    <option value="">All Equipment</option>
+                    {allEquipment.map(eq => (
+                      <option key={eq} value={eq}>{eq}</option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={difficultyFilter}
+                    onChange={(e) => setDifficultyFilter(e.target.value)}
+                    className="bg-white border border-gray-200 rounded-md py-2 px-3 text-sm focus:ring-marine-red focus:border-marine-red"
+                  >
+                    <option value="">All Difficulties</option>
+                    {allDifficulties.map(d => (
+                      <option key={d} value={d}>Level {d} {d === 1 ? '(Easy)' : d === 2 ? '(Medium)' : '(Hard)'}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {(searchQuery || categoryFilter || equipmentFilter || difficultyFilter) && (
+                  <button
+                    onClick={clearLibraryFilters}
+                    className="text-sm text-marine-red hover:underline mb-4"
+                  >
+                    Clear all filters
+                  </button>
+                )}
+              </div>
+
+              {/* Exercise Grid */}
+              {filteredExercises.length === 0 ? (
+                <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                  <Search className="mx-auto h-12 w-12 text-gray-300 mb-3" />
+                  <p className="text-gray-500 font-medium">No exercises match your filters.</p>
+                  <button
+                    onClick={clearLibraryFilters}
+                    className="mt-2 text-sm text-marine-red hover:underline"
+                  >
+                    Clear filters
+                  </button>
+                </div>
+              ) : (
+                <div className="grid gap-3">
+                  {filteredExercises.map((ex) => (
+                    <motion.div
+                      key={ex.id}
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="card p-4 hover:shadow-md transition-all"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 flex-wrap mb-2">
+                            <span className="font-semibold text-gray-900">{ex.name}</span>
+                            <span className="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-600">
+                              {ex.equipment}
+                            </span>
+                            <span className={`text-xs px-2 py-0.5 rounded ${
+                              ex.difficulty === 1 ? 'bg-green-100 text-green-700' :
+                              ex.difficulty === 2 ? 'bg-yellow-100 text-yellow-700' :
+                              'bg-red-100 text-red-700'
+                            }`}>
+                              Lvl {ex.difficulty}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-500 mb-2">{ex.category}</p>
+                          {ex.tags && ex.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1">
+                              {ex.tags.map((tag, i) => (
+                                <span key={i} className="text-xs bg-marine-red/10 text-marine-red px-2 py-0.5 rounded">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        {ex.url && (
+                          <a
+                            href={ex.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1 px-3 py-1.5 bg-marine-red text-white text-sm rounded-lg hover:bg-marine-red/90 transition-colors ml-3"
+                          >
+                            <PlayCircle size={16} /> Watch
+                          </a>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </div>
           ) : (
             // HISTORY TAB
             <div className="space-y-4">
@@ -423,14 +612,14 @@ const PTCoach = () => {
                       )}
                     </div>
                     <div className="flex gap-2">
-                       <button 
+                       <button
                          onClick={() => { setWorkout(w); setActiveTab('generator'); }}
                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-full"
                          title="Load Workout"
                        >
                          <RefreshCw size={18} />
                        </button>
-                       <button 
+                       <button
                          onClick={() => deleteWorkout(w.id)}
                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full"
                          title="Delete"
