@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Menu, X, Activity, Calculator, Heart, Shield, Moon, Sun, Utensils, Home,
-  ChevronRight, Dumbbell, Users
+  ChevronRight, Dumbbell, Users, Library
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { clsx } from 'clsx';
@@ -100,6 +100,7 @@ const Navigation = () => {
 
           <NavItem to="/" icon={Home} label="Dashboard" isOpen={isOpen} />
           <NavItem to="/pt-coach" icon={Activity} label="PT Coach" isOpen={isOpen} />
+          <NavItem to="/exercises" icon={Library} label="Exercise Library" isOpen={isOpen} />
           <NavItem to="/pft-prep" icon={Calculator} label="PFT/CFT Prep" isOpen={isOpen} />
           <NavItem to="/body-comp" icon={Heart} label="Body Comp" isOpen={isOpen} />
 
@@ -156,6 +157,7 @@ const Navigation = () => {
               <div className="space-y-2">
                  <NavItem to="/" icon={Home} label="Dashboard" isOpen={true} />
                  <NavItem to="/pt-coach" icon={Activity} label="PT Coach" isOpen={true} />
+                 <NavItem to="/exercises" icon={Library} label="Exercise Library" isOpen={true} />
                  <NavItem to="/pft-prep" icon={Calculator} label="PFT/CFT Prep" isOpen={true} />
                  <NavItem to="/body-comp" icon={Heart} label="Body Comp" isOpen={true} />
                  <NavItem to="/nutrition" icon={Utensils} label="Nutrition" isOpen={true} />

@@ -1,0 +1,1930 @@
+{
+  "source": "Marine Corps Fitness",
+  "exercises": [
+    {
+      "type": "Movement Prep",
+      "name": "Arm Circles",
+      "url": "https://www.dvidshub.net/video/551356/arm-circles"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Back Pedal Reach",
+      "url": "https://www.dvidshub.net/video/677347/back-pedal-reach"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Bear Crawl",
+      "url": "https://www.dvidshub.net/video/677348/bear-crawl"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Butt Kickers",
+      "url": "https://www.dvidshub.net/video/558559/butt-kickers"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Carioca",
+      "url": "https://www.dvidshub.net/video/558561/carioca"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Carioca w/ Knee Drive",
+      "url": "https://www.dvidshub.net/video/558560/carioca-w-knee-drive"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Crab Walk",
+      "url": "https://www.dvidshub.net/search/?q=crab&filter%5Btype%5D=video&filter%5Bbranch%5D=Marines&view=grid&sort=publishdate"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Cross-Over Lunge",
+      "url": "https://www.dvidshub.net/video/551366/cross-over-lunge"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Cross-Over Walk",
+      "url": "https://www.dvidshub.net/video/551370/crossover-walk"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Diagonal Lunge",
+      "url": "https://www.dvidshub.net/video/551373/diagonal-lunge"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Donkey Kick",
+      "url": "https://www.dvidshub.net/video/677352/donkey-kick"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Eight Count Body Builder",
+      "url": "https://www.dvidshub.net/video/558562/eight-count-body-builders"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Fire Hydrants",
+      "url": "https://www.dvidshub.net/video/638171/fire-hydrants"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Frankenstein",
+      "url": "https://www.dvidshub.net/video/551378/frankenstein"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Frog Thrust",
+      "url": "https://www.dvidshub.net/video/558565/frog-thrust"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Frog Thrust w/ Jump",
+      "url": "https://www.dvidshub.net/video/677357/frog-thrust-with-jump"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Frontal Leg Swing",
+      "url": "https://www.dvidshub.net/video/551381/frontal-leg-swing"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Groiners",
+      "url": "https://www.dvidshub.net/video/558570/groiners"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Heel / Toe Raise",
+      "url": "https://www.dvidshub.net/video/551384/heel-toe-raises"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Highland Fling",
+      "url": "https://www.dvidshub.net/video/551387/highland-flings"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Hip Abduction",
+      "url": "https://www.dvidshub.net/video/551391/hip-abduction"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Hip Adduction",
+      "url": "https://www.dvidshub.net/video/551395/hip-adduction"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Hip Circles",
+      "url": "https://www.dvidshub.net/video/677358/hip-circles"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Inchworm",
+      "url": "https://www.dvidshub.net/video/551396/inchworm"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Jump Thrust",
+      "url": "https://www.dvidshub.net/video/677359/jump-thrust"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Knee To Elbow Push-Up",
+      "url": "https://www.dvidshub.net/video/551405/knee-elbow-push-up"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Lateral Cross-Over Skip",
+      "url": "https://www.dvidshub.net/video/558575/lateral-cross-over-skip"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Lateral Lunge",
+      "url": "https://www.dvidshub.net/video/677362/lateral-lunge"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Lateral Shuffle",
+      "url": "https://www.dvidshub.net/video/558578/lateral-shuffle"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Lateral Side Bend",
+      "url": "https://www.dvidshub.net/video/551406/lateral-side-bends"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Lateral Skip",
+      "url": "https://www.dvidshub.net/video/558579/lateral-skip"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Lateral Squat Wave",
+      "url": "https://www.dvidshub.net/video/551411/lateral-squat-wave"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Lateral Step Squat",
+      "url": "https://www.dvidshub.net/video/551418/lateral-step-squat"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Long Strider",
+      "url": "https://www.dvidshub.net/video/551420/long-strider"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Lunge w/ Power Skip",
+      "url": "https://www.dvidshub.net/video/558582/lunge-w-power-skip"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Monster Walk",
+      "url": "https://www.dvidshub.net/video/558585/monster-walk"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Mountain Climber",
+      "url": "https://www.dvidshub.net/video/558587/mountain-climbers"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Neck Clock",
+      "url": "https://www.dvidshub.net/video/677368/neck-clock"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Plank Leg Extension",
+      "url": "https://www.dvidshub.net/video/551422/plank-leg-extension"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Power Skip (Distance)",
+      "url": "https://www.dvidshub.net/video/642014/power-skip-distance"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Power Skip (Height)",
+      "url": "https://www.dvidshub.net/video/642016/power-skip-height"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Prone Leg Overs",
+      "url": "https://www.dvidshub.net/video/677372/prone-leg-overs"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Sagittal Leg Swing",
+      "url": "https://www.dvidshub.net/video/551823/sagittal-leg-swing"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Scorpions",
+      "url": "https://www.dvidshub.net/video/677374/scorpion"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Side Slide w/ Arm Swing",
+      "url": "https://www.dvidshub.net/video/558590/side-slide-w-arm-swing"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Side Straddle Hops",
+      "url": "https://www.dvidshub.net/video/551825/side-straddle-hops"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Single Leg Balance",
+      "url": "https://www.dvidshub.net/video/551827/single-leg-balance"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Speed Skaters",
+      "url": "https://www.dvidshub.net/video/558593/speed-skaters"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Spiderman",
+      "url": "https://www.dvidshub.net/video/551828/spiderman"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Split Jack Forward",
+      "url": "https://www.dvidshub.net/video/551830/split-jack-forward"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Split Squat Drop",
+      "url": "https://www.dvidshub.net/video/558599/split-squat-drops"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Split Squat Jump",
+      "url": "https://www.dvidshub.net/video/549955/split-squat-jump-combo"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Squat Drop",
+      "url": "https://www.dvidshub.net/video/558601/squat-drops"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Stationary Forward Lunge",
+      "url": "https://www.dvidshub.net/video/551832/stationary-forward-lunge"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Stationary Reverse Lunge",
+      "url": "https://www.dvidshub.net/video/551833/stationary-reverse-lunge"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Stationary Squat",
+      "url": "https://www.dvidshub.net/video/551837/stationary-squat"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Supine Leg Overs",
+      "url": "https://www.dvidshub.net/video/638480/supine-leg-over"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Supine Straight Leg Raise",
+      "url": "https://www.dvidshub.net/video/551841/supine-straight-leg-raise"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Thrust",
+      "url": "https://www.dvidshub.net/video/677377/thrust"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Trunk Circles",
+      "url": "https://www.dvidshub.net/video/551844/trunk-circles"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Trunk Flexion / Extension",
+      "url": "https://www.dvidshub.net/video/551847/trunk-flexion-and-extension"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Trunk Twists",
+      "url": "https://www.dvidshub.net/video/551848/trunk-twists"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Walking Knee Hug",
+      "url": "https://www.dvidshub.net/video/551850/walking-knee-hug"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Walking Leg Cradle",
+      "url": "https://www.dvidshub.net/video/551854/walking-leg-cradle"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Walking Lunge",
+      "url": "https://www.dvidshub.net/video/551862/walking-lunge"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Walking Lunge - Elbow to Instep",
+      "url": "https://www.dvidshub.net/video/551857/walking-lunge-elbow-instep"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Walking Lunge w/ Side Reach",
+      "url": "https://www.dvidshub.net/video/551860/walking-lunge-with-side-reach"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Walking Lunge w/ Twist",
+      "url": "https://www.dvidshub.net/video/551861/walking-lunge-with-twist"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Walking Quad Stretch",
+      "url": "https://www.dvidshub.net/video/551863/walking-quad-stretch"
+    },
+    {
+      "type": "Movement Prep",
+      "name": "Wideouts",
+      "url": "https://www.dvidshub.net/video/677342/wideouts"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "3 Way Plank",
+      "url": "https://www.dvidshub.net/video/679630/3-way-plank"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Alternating Plyo Push-Up",
+      "url": "https://www.dvidshub.net/video/636810/alternating-plyo-pushups"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Ammo Can Deadlift",
+      "url": "https://www.dvidshub.net/video/679631/ammo-can-deadlift"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Ammo Can Deadlift (Single Leg)",
+      "url": "https://www.dvidshub.net/video/517459/ammo-can-single-leg-deadlift"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Ammo Can Front Raise",
+      "url": "https://www.dvidshub.net/video/636814/ammo-can-front-raise"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Ammo Can Lateral Lunge",
+      "url": "https://www.dvidshub.net/search/?q=ammo+can+lateral+lunge&view=grid"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Ammo Can Lunge",
+      "url": "https://www.dvidshub.net/video/549268/ammo-can-forward-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Ammo Can Press",
+      "url": "https://www.dvidshub.net/video/636816/ammo-can-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Ammo Can Row",
+      "url": "https://www.dvidshub.net/video/636823/ammo-can-upright-row"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Barbell Back Squat",
+      "url": "https://www.dvidshub.net/video/548426/barbell-back-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Barbell Bent Over Row",
+      "url": "https://www.dvidshub.net/video/639914/barbell-bent-over-row"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Barbell Diagonal Lunge",
+      "url": "https://www.dvidshub.net/video/549279/barbell-diagonal-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Barbell Forward Lunge",
+      "url": "https://www.dvidshub.net/video/549282/barbell-forward-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Barbell Front Squat",
+      "url": "https://www.dvidshub.net/video/548433/barbell-front-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Barbell Lateral Lunge",
+      "url": "https://www.dvidshub.net/video/549286/barbell-lateral-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Barbell Lateral Squat",
+      "url": "https://www.dvidshub.net/video/517491/barbell-lateral-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Barbell Overhead Squat",
+      "url": "https://www.dvidshub.net/video/517493/barbell-overhead-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Barbell Reverse Lunge",
+      "url": "https://www.dvidshub.net/video/549287/barbell-reverse-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Barbell Romanian Deadlift",
+      "url": "https://www.dvidshub.net/video/639927/barbell-romanian-deadlift"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Barbell Shrug",
+      "url": "https://www.dvidshub.net/video/639930/barbell-shrug-and-upright-row"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Barbell Split Squat",
+      "url": "https://www.dvidshub.net/video/517497/barbell-split-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Barbell Upright Row",
+      "url": "https://www.dvidshub.net/video/639930/barbell-shrug-and-upright-row"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Bench Press",
+      "url": "https://www.dvidshub.net/video/639911/barbell-bench-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Box Depth Jump",
+      "url": "https://www.dvidshub.net/video/550428/box-depth-jump"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Box Depth Jump to Sprint",
+      "url": "https://www.dvidshub.net/video/550425/box-depth-jump-sprint"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Box Jump",
+      "url": "https://www.dvidshub.net/video/550429/box-jump"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Box Tuck Jump (Single Leg)",
+      "url": "https://www.dvidshub.net/video/549288/box-tuck-jump-single-leg"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Clap Push-Up",
+      "url": "https://www.dvidshub.net/video/679633/clap-pushups"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Clean Hang Pull",
+      "url": "https://www.dvidshub.net/video/551025/clean-hang-pull"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Clean High Pull",
+      "url": "https://www.dvidshub.net/video/551029/clean-high-pull"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Close Grip Bench Press",
+      "url": "https://www.dvidshub.net/video/679638/close-grip-bench-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Deadhang Pull-Up",
+      "url": "https://www.dvidshub.net/video/639937/dead-hang-pullup"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Deadlift",
+      "url": "https://www.dvidshub.net/video/517483/barbell-dead-lift"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Diagonal Bound",
+      "url": "https://www.dvidshub.net/video/551034/diagonal-bound"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Arnold Press",
+      "url": "https://www.dvidshub.net/video/636919/dumbbel-arnold-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Bench Press",
+      "url": "https://www.dvidshub.net/video/636920/dumbbell-bench-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Bent Over Row",
+      "url": "https://www.dvidshub.net/video/636921/dumbbell-bent-over-rows"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Bicep Curl",
+      "url": "https://www.dvidshub.net/video/679653/dumbbell-bicep-curl"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Hammer Curl",
+      "url": "https://www.dvidshub.net/video/636924/dumbbell-hammer-curl"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Incline Bench Press",
+      "url": "https://www.dvidshub.net/video/636927/dumbbell-incline-bench-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Lateral Lunge",
+      "url": "https://www.dvidshub.net/video/549290/dumbbell-lateral-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Lateral Squat",
+      "url": "https://www.dvidshub.net/video/548454/dumbbell-lateral-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Lunge",
+      "url": "https://www.dvidshub.net/video/549334/dumbbell-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Pullover",
+      "url": "https://www.dvidshub.net/video/679657/dumbbell-bicep-curl"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Romanian Deadlift",
+      "url": "https://www.dvidshub.net/video/548459/dumbbell-romanian-deadlift"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Rotational Lunge",
+      "url": "https://www.dvidshub.net/video/679667/dumbbell-rotational-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Shoulder Press",
+      "url": "https://www.dvidshub.net/video/636933/dumbbell-shoulder-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Single Leg Deadlift",
+      "url": "https://www.dvidshub.net/video/548720/dumbbell-single-leg-deadlift"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Snatch",
+      "url": "https://www.dvidshub.net/video/551039/dumbbell-snatch"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Split Squat",
+      "url": "https://www.dvidshub.net/video/636938/dumbbell-split-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Squat",
+      "url": "https://www.dvidshub.net/video/549336/dumbbell-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Squat (Single Leg)",
+      "url": "https://www.dvidshub.net/video/548723/dumbbell-single-leg-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Dumbbell Sumo Squat",
+      "url": "http://www.dartfish.tv/Player.aspx?CR=p96647c67492m1759713"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Explosive Calf Raises",
+      "url": "https://www.dvidshub.net/video/636502/explosive-calf-raise"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Figure 8's",
+      "url": "https://www.dvidshub.net/video/679673/figure-8"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Flutter Kicks",
+      "url": "https://www.dvidshub.net/video/639942/flutter-kicks"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Frog Jump",
+      "url": "https://www.dvidshub.net/video/551047/frog-jump"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Half Kneeling w/ Rotation",
+      "url": "https://www.dvidshub.net/video/638222/half-kneeling-with-rotation"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Hang Clean",
+      "url": "https://www.dvidshub.net/video/679675/hang-clean"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Hang Snatch",
+      "url": "https://www.dvidshub.net/video/679678/hang-snatch"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Hanging Flutter Kicks",
+      "url": "https://www.dvidshub.net/video/639944/hanging-flutter-kicks"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Hanging Knee Raises",
+      "url": "https://www.dvidshub.net/video/639946/hanging-knee-raises"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Hanging Leg Lowers",
+      "url": "https://www.dvidshub.net/video/639947/hanging-leg-lowers"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Hanging Oblique Knee Raises",
+      "url": "https://www.dvidshub.net/video/679685/hanging-oblique-knee-raises"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Hanging Windmills",
+      "url": "https://www.dvidshub.net/video/640225/hanging-windmill"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Kettlebell Double Windmill",
+      "url": "https://www.dvidshub.net/video/679680/kettlebell-double-windmill"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Kettlebell Goblet Squat",
+      "url": "https://www.dvidshub.net/video/548733/kettlebell-goblet-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Kettlebell Clean",
+      "url": "https://www.dvidshub.net/video/679682/kettlebell-clean"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Kettlebell Double Windmill Curl To Press",
+      "url": "https://www.dvidshub.net/video/679683/kettlebell-double-windmill-curl-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Kettlebell Farmers Carry",
+      "url": "https://www.dvidshub.net/video/679688/kettlebell-farmer-carry"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Kettlebell Military Press",
+      "url": "https://www.dvidshub.net/video/638178/kettlebell-military-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Kettlebell Overhead Lunge",
+      "url": "https://www.dvidshub.net/video/549346/kettlebell-overhead-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Kettlebell Overhead Lunge (Single Arm)",
+      "url": "https://www.dvidshub.net/video/679690/kettlebell-overhead-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Kettlebell Overhead Split Squat",
+      "url": "https://www.dvidshub.net/video/548739/kettlebell-overhead-split-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Kettlebell Push Press",
+      "url": "https://www.dvidshub.net/video/638181/double-kettlebell-push-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Kettlebell Renegade Row",
+      "url": "https://www.dvidshub.net/video/679693/kettlebell-renegade-row"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Kettlebell Row (Single Arm)",
+      "url": "https://www.dvidshub.net/video/679697/kettlebell-row-single-arm"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Kettlebell Swing",
+      "url": "https://www.dvidshub.net/video/548744/kettlebell-swing"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Kettlebell Upright Row",
+      "url": "https://www.dvidshub.net/video/638182/kettlebell-upright-row"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Kettlebell Windmill",
+      "url": "https://www.dvidshub.net/video/679700/kettlebell-windmill"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Landmine Rotation",
+      "url": "https://www.dvidshub.net/video/640981/landmine-rotation"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Landmine Thrust",
+      "url": "https://www.dvidshub.net/video/551133/landmine-thrust"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Lateral Box Jump",
+      "url": "https://www.dvidshub.net/video/692485/lateral-box-jump"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Lateral Squat Jump",
+      "url": "https://www.dvidshub.net/video/549347/lateral-squat-jump"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Leg Lowers",
+      "url": "https://www.dvidshub.net/video/692487/leg-lowers"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Lying Chest Throw",
+      "url": "https://www.dvidshub.net/video/640988/med-ball-lying-chest-throw"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Med Ball Arch Chops",
+      "url": "https://www.dvidshub.net/video/692490/med-ball-arch-chops"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Med Ball Circuit",
+      "url": "https://www.dvidshub.net/video/692493/med-ball-circuit"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Med Ball Crunch",
+      "url": "https://www.dvidshub.net/video/640227/med-ball-crunch"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Med Ball Figure 8's",
+      "url": "https://www.dvidshub.net/video/692495/med-ball-figure-8s"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Med Ball Oblique Toss",
+      "url": "https://www.dvidshub.net/video/640991/med-ball-oblique-toss"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Med Ball Partner Toss",
+      "url": "https://www.dvidshub.net/video/692497/med-ball-partner-toss"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Med Ball Russian Twist",
+      "url": "https://www.dvidshub.net/video/692500/med-ball-russian-twist"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Med Ball Side Throw",
+      "url": "https://www.dvidshub.net/video/640997/med-ball-side-throw"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Med Ball Side Twist Toss",
+      "url": "https://www.dvidshub.net/video/640999/med-ball-side-twist-toss"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Med Ball Slam",
+      "url": "https://www.dvidshub.net/video/638228/med-ball-slam"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Med Ball Toe Touches",
+      "url": "http://www.dartfish.tv/Player.aspx?CR=p96647c67492m1742231"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Med Ball Underhand Throw",
+      "url": "https://www.dvidshub.net/video/692509/med-ball-underhand-throw"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Med Ball V-Ups",
+      "url": "https://www.dvidshub.net/video/640229/med-ball-v-up"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Med Ball V-Ups (Single Leg)",
+      "url": "https://www.dvidshub.net/video/640228/med-ball-single-leg-v-up"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Med Ball Woodchoppers",
+      "url": "https://www.dvidshub.net/video/692512/med-ball-woodchoppers"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Military Press",
+      "url": "https://www.dvidshub.net/video/692514/military-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Mountain Climber",
+      "url": "https://www.dvidshub.net/video/692520/mountain-climbers"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Oblique Heel Touches",
+      "url": "https://www.dvidshub.net/video/640231/oblique-heel-touch"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Pike Jumps",
+      "url": "https://www.dvidshub.net/video/692517/pike-jump"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Plyo Push-Up (Hands Out)",
+      "url": "https://www.dvidshub.net/video/692522/plyo-push-ups-hands-out"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Plyo Push-Up (Single Arm)",
+      "url": "https://www.dvidshub.net/video/638461/single-arm-plyo-pushups"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Power Clean",
+      "url": "https://www.dvidshub.net/video/692525/power-clean"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Power Snatch",
+      "url": "https://www.dvidshub.net/video/692528/power-snatch"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Press Under",
+      "url": "https://www.dvidshub.net/video/640238/press-under"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Prisoner Squat Jump",
+      "url": "https://www.dvidshub.net/video/549351/prisoner-squat-jump"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Prone Superman",
+      "url": "https://www.dvidshub.net/video/640241/prone-superman"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Push Press",
+      "url": "https://www.dvidshub.net/video/639925/barbell-push-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Quick Drop",
+      "url": "https://www.dvidshub.net/video/640243/quick-drop"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Reverse Lunge w/ Hamstring Curl",
+      "url": "https://www.dvidshub.net/video/692857/reverse-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Rope Alternating Waves",
+      "url": "https://www.dvidshub.net/video/641018/rope-alternate-waves"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Rope Alternating Waves w/ Lunge",
+      "url": "https://www.dvidshub.net/video/549355/rope-alternating-wave-with-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Rope Corkscrews",
+      "url": "https://www.dvidshub.net/video/641020/rope-corkscrew"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Rope Double Waves",
+      "url": "https://www.dvidshub.net/video/692858/rope-double-waves"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Rope Double Waves w/ Split Squat",
+      "url": "https://www.dvidshub.net/video/641022/rope-double-wave-with-split-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Rope Kneeling Throws",
+      "url": "https://www.dvidshub.net/video/692859/kneeling-rope-throws"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Rope Plank Pulls",
+      "url": "http://www.dartfish.tv/Player.aspx?CR=p96647c67492m1752086"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Rope Power Jacks",
+      "url": "https://www.dvidshub.net/video/692865/rope-power-jacks"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Rope Seated Alternating Waves",
+      "url": "https://www.dvidshub.net/video/642017/rope-seated-alternate-waves"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Rope Side Plank Pull",
+      "url": "https://www.dvidshub.net/video/692862/lateral-plank-rope-pull"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Rope Side Plank Spirals",
+      "url": "https://www.dvidshub.net/video/692868/rope-side-plank-spiral"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Rope Side Plank Waves",
+      "url": "https://www.dvidshub.net/video/692869/rope-side-plank-waves"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Rope Squat Pulls",
+      "url": "https://www.dvidshub.net/video/642018/rope-squat-pulls"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Rope Standing Throws",
+      "url": "https://www.dvidshub.net/video/692878/standing-rope-throws"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Rope Uppercuts",
+      "url": "https://www.dvidshub.net/video/642020/rope-uppercuts"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Russian Twist",
+      "url": "https://www.dvidshub.net/video/640994/russian-twist"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Balance Step Lunge",
+      "url": "https://www.dvidshub.net/video/549931/sandbag-balance-step-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Bear Hug Squat",
+      "url": "https://www.dvidshub.net/video/548802/sandbag-bear-hug-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Bent Over Row",
+      "url": "https://www.dvidshub.net/video/638450/sandbad-bent-over-rows"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Bicep Curl",
+      "url": "https://www.dvidshub.net/video/638453/sandbag-bicep-curl"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Clean",
+      "url": "https://www.dvidshub.net/video/549933/sandbag-clean"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Cyclone",
+      "url": "https://www.dvidshub.net/video/642024/sandbag-cyclone"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Front Lunge",
+      "url": "https://www.dvidshub.net/video/549936/sandbag-front-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Front Squat",
+      "url": "https://www.dvidshub.net/video/548807/sandbag-front-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Goodmorning",
+      "url": "https://www.dvidshub.net/video/548810/sandbag-good-morning"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Kneeling Around the World",
+      "url": "https://www.dvidshub.net/video/642021/sandbag-kneeling-aound-world"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Lateral Bag Drag",
+      "url": "https://www.dvidshub.net/video/642026/sandbag-lateral-bag-drag"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Overhead Squat",
+      "url": "https://www.dvidshub.net/video/548813/sandbag-overhead-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Rotational Lunge",
+      "url": "https://www.dvidshub.net/video/549943/sandbag-rotational-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Shoulder Lunge",
+      "url": "https://www.dvidshub.net/video/549946/sandbag-shoulder-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Shoulder Squat",
+      "url": "https://www.dvidshub.net/video/548817/sandbag-shoulder-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Standing Around the World",
+      "url": "https://www.dvidshub.net/video/642029/sandbag-standing-around-world"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Sandbag Suitcase Lunge",
+      "url": "https://www.dvidshub.net/video/549951/sandbag-suitcase-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Split Jerk",
+      "url": "https://www.dvidshub.net/video/640258/split-jerk"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Split Jump w/ Med Ball Slam",
+      "url": "https://www.dvidshub.net/video/640258/split-jerk"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Split Squat Jump Combo",
+      "url": "https://www.dvidshub.net/video/549955/split-squat-jump-combo"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Split Squat Med Ball Chest Pass",
+      "url": "https://www.fitness.marines.mil/Strength-n-Power/"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Star Jump",
+      "url": "https://www.dvidshub.net/video/549962/star-jump"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Toe Touches",
+      "url": "https://www.dvidshub.net/video/640261/toe-touches"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Traveling Push-Up",
+      "url": "https://www.dvidshub.net/video/692881/traveling-push-up"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "Triple Extension",
+      "url": "https://www.dvidshub.net/video/551150/triple-extension"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Abducted Lunge",
+      "url": "https://www.dvidshub.net/video/549968/trx-abducted-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Active Straight Leg Raise w/ Core Activation",
+      "url": "https://www.dvidshub.net/video/551153/trx-active-straight-leg-raises"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Assisted Bottom Up Squat",
+      "url": "https://www.dvidshub.net/video/692882/trx-assisted-bottom-up-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Assisted Squat",
+      "url": "https://www.dvidshub.net/video/642032/trx-assisted-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Assisted Squat to Press",
+      "url": "https://www.dvidshub.net/video/692887/trx-assisted-squat-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Atomic Oblique Push-Up",
+      "url": "https://www.dvidshub.net/video/642076/trx-atomic-oblique-pushups"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Atomic Push-Up",
+      "url": "https://www.dvidshub.net/search/?q=TRX+atomic&view=grid"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Balance Lunge",
+      "url": "https://www.dvidshub.net/video/549972/trx-balance-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Bicep Curl",
+      "url": "https://www.dvidshub.net/video/640262/trx-bicep-curls"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Body Saw",
+      "url": "https://www.dvidshub.net/video/642039/trx-body-saw"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Burpee",
+      "url": "https://www.dvidshub.net/video/640264/trx-burpee"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Chest Press",
+      "url": "https://www.dvidshub.net/video/640266/trx-chest-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Clock Press",
+      "url": "https://www.dvidshub.net/video/692885/trx-clock-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Cossack",
+      "url": "https://www.dvidshub.net/video/692889/trx-cossack"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Crossing Balance Lunge",
+      "url": "https://www.dvidshub.net/video/692893/trx-crossing-balance-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Crunch (Elbows)",
+      "url": "https://www.dvidshub.net/video/642040/trx-crunch-elbows"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Crunch (Hands)",
+      "url": "https://www.dvidshub.net/video/642042/trx-crunch-hands"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Forward Lunge w/ Hip Flexor Stretch",
+      "url": "https://www.dvidshub.net/video/551157/trx-forward-lunge-with-hip-flexor-stretch"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Half Kneeling Roll-Out",
+      "url": "https://www.dvidshub.net/video/692894/trx-half-kneeling-roll-out"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Half Kneeling Split Squat",
+      "url": "https://www.dvidshub.net/video/692897/trx-halk-kneeling-split-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Half Kneeling Y Fly",
+      "url": "https://www.dvidshub.net/video/642043/trx-half-kneeling-y-fly"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Hamstring Curl",
+      "url": "https://www.dvidshub.net/video/692901/trx-hmastring-curl"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX High Row",
+      "url": "https://www.dvidshub.net/video/640267/trx-high-row"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Hip Abduction",
+      "url": "https://www.dvidshub.net/video/692904/trx-hip-abduction"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Hip Drop",
+      "url": "https://www.dvidshub.net/video/642044/trx-hip-drop"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Hip Hinge",
+      "url": "https://www.dvidshub.net/video/642046/trx-hip-hinge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Hip Press",
+      "url": "https://www.dvidshub.net/video/692907/trx-hip-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Hurdle Step w/ Core Activation",
+      "url": "https://www.dvidshub.net/video/694594/trx-hurdle-step-w-core-activation"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Incline Press",
+      "url": "https://www.dvidshub.net/video/640269/trx-incline-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Inverted Row",
+      "url": "https://www.dvidshub.net/video/640272/trx-inverted-row"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Jump Squat",
+      "url": "https://www.dvidshub.net/video/551169/trx-jump-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Jump Squat (Single Leg)",
+      "url": "https://www.dvidshub.net/video/694416/trx-single-leg-jump-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Long Torso Stretch",
+      "url": "https://www.dvidshub.net/video/694593/trx-long-torso-stretch"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Low Row",
+      "url": "https://www.dvidshub.net/video/640277/trx-low-row"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Lunge",
+      "url": "https://www.dvidshub.net/video/549980/trx-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Lunge w/ Hop",
+      "url": "https://www.dvidshub.net/video/694606/trx-lunge-with-hop"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Mid Row",
+      "url": "https://www.dvidshub.net/video/694415/trx-mid-row"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Mountain Climber",
+      "url": "https://www.dvidshub.net/video/642048/trx-mountain-climbers"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Oblique Crunch (Hands)",
+      "url": "https://www.dvidshub.net/video/642049/trx-oblique-crunch"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Overhead Back Extension",
+      "url": "https://www.dvidshub.net/video/694414/trx-overhead-back-extension"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Overhead Squat",
+      "url": "https://www.dvidshub.net/video/517570/trx-overhead-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Pendulum",
+      "url": "https://www.dvidshub.net/video/694418/trx-pendulum"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Pike",
+      "url": "https://www.dvidshub.net/video/642051/trx-pike"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Plank (Elbows)",
+      "url": "https://www.dvidshub.net/video/642052/trx-plank-elbow"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Plank (Hands)",
+      "url": "https://www.dvidshub.net/video/642053/trx-plank-hands"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Power Pull",
+      "url": "https://www.dvidshub.net/video/694600/trx-power-pull"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Push-Up",
+      "url": "https://www.dvidshub.net/video/694423/trx-push-up"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Resisted Torso Rotation",
+      "url": "https://www.dvidshub.net/video/694425/trx-resisted-torso-rotation"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Row (Single Arm)",
+      "url": "https://www.dvidshub.net/video/640281/trx-single-arm-row"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Side Plank",
+      "url": "https://www.dvidshub.net/video/642054/trx-side-plank"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Single Leg Squat",
+      "url": "https://www.dvidshub.net/video/642055/trx-single-leg-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Speed Skater",
+      "url": "https://www.dvidshub.net/video/549988/trx-speed-skater"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Spiderman Push-Up",
+      "url": "https://www.dvidshub.net/video/694427/trx-spiderman-push-up"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Split Fly",
+      "url": "https://www.dvidshub.net/video/694429/trx-split-fly"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Split Squat",
+      "url": "https://www.dvidshub.net/video/548828/trx-split-squat"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Split Squat w/ M Deltoid Fly",
+      "url": "https://www.dvidshub.net/video/694603/trx-split-squat-w-m-deltoid-fly"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Split Squat w/ T Deltoid Fly",
+      "url": "https://www.dvidshub.net/video/694432/trx-split-squat-w-t-deltoid-fly"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Split Squat w/ Y Deltoid Fly",
+      "url": "https://www.dvidshub.net/video/694431/trx-split-squat-w-y-deltoid-fly"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Sprinters Row",
+      "url": "https://www.dvidshub.net/video/640283/trx-sprinter-row"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Sprinters Start",
+      "url": "https://www.dvidshub.net/video/694433/trx-sprinter-start"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Sprinters Start w/ Hop",
+      "url": "https://www.dvidshub.net/video/694435/trx-sprinter-start-with-hop"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Squat",
+      "url": "http://www.dartfish.tv/Player.aspx?CR=p96647c67492m1721948"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Step Back Lunge",
+      "url": "https://www.dvidshub.net/video/694607/trx-step-back-lunge"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Supine Plank",
+      "url": "https://www.dvidshub.net/video/694436/trx-supine-plank"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX Tricep Press",
+      "url": "https://www.dvidshub.net/video/640286/trx-tricep-press"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX T-Spine Rotation",
+      "url": "https://www.dvidshub.net/video/694439/trx-t-spine-rotation"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "TRX V-Sit",
+      "url": "https://www.dvidshub.net/video/694443/trx-v-sit"
+    },
+    {
+      "type": "Strength & Power",
+      "name": "V-Ups",
+      "url": "https://www.dvidshub.net/video/640287/v-ups"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "10 Yard Crossover Shuttle Run",
+      "url": "https://www.dvidshub.net/video/695724/10-yard-crossover-shuttle-run"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "10 Yard Resisted Carioca Shuttle",
+      "url": "https://www.dvidshub.net/video/695726/10-yard-resisted-carioca-shuttle"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "10 Yard Resisted Forward Shuttle",
+      "url": "https://www.dvidshub.net/video/695729/10-yard-resisted-forward-shuttle"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "10 Yard Resisted Shuffle Shuttle",
+      "url": "http://www.dvidshub.net/video/695731/10-yard-resisted-shuffle-shuttle"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "20 Yard Cone Weave",
+      "url": "https://www.dvidshub.net/video/695733/20-yard-cone-weave"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "3 Hop Start",
+      "url": "https://www.dvidshub.net/video/695739/3-hop-start"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "60 Yard Reverse Shuttle Run",
+      "url": "https://www.dvidshub.net/video/695740/60-yard-reverse-shuttle-run"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "60 Yard Reverse Shuttle Run (Carioca)",
+      "url": "https://www.dvidshub.net/video/695742/60-yard-reverse-carioca-shuttle-run"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "60 Yard Shuttle Run",
+      "url": "https://www.dvidshub.net/video/695745/60-yard-shuttle-run"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "60 Yard Shuttle Run (Carioca)",
+      "url": "https://www.dvidshub.net/video/695747/60-yard-carioca-shuttle-run"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "60 Yard Shuttle Run (Shuffle)",
+      "url": "https://www.dvidshub.net/video/695749/60-yard-shuffle-shuttle-run"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Ankling",
+      "url": "http://www.dvidshub.net/video/695750/ankling"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Ankling w/ Butt Kick",
+      "url": "http://www.dvidshub.net/video/695751/ankling-w-butt-kicker"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "A-Skip",
+      "url": "https://www.dvidshub.net/video/640967/skip"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Assisted Sprint",
+      "url": "https://www.dvidshub.net/video/695752/assisted-sprint"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Attack and Retreat",
+      "url": "https://www.dvidshub.net/video/695754/attack-and-retreat"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Box Drill 1",
+      "url": "https://www.dvidshub.net/video/696698/box-drill-1"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Box Drill 2",
+      "url": "https://www.dvidshub.net/video/695755/box-drill-2"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Broad Jump Start",
+      "url": "https://www.dvidshub.net/video/640972/broad-jump-start"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "B-Skip",
+      "url": "http://www.dvidshub.net/video/696701/b-skip"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Carioca",
+      "url": "https://www.dvidshub.net/video/558561/carioca"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Chest Throw Sprawl",
+      "url": "https://www.dvidshub.net/video/696734/chest-throw-sprawl"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Combat Glide Shuffle",
+      "url": "http://www.dvidshub.net/video/696711/combat-glide-shuffle"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Crossover Run",
+      "url": "https://www.dvidshub.net/video/696708/crossover-run"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Crossover Skip",
+      "url": "https://www.dvidshub.net/video/558575/lateral-cross-over-skip"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Fast Claw (Continuous)",
+      "url": "http://www.dvidshub.net/video/696718/fast-claw-continuous"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Fast Claw (Ground Prep)",
+      "url": "http://www.dvidshub.net/search?q=fast+claw&view=grid"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Fast Claw (Recovery Prep)",
+      "url": "https://www.dvidshub.net/video/696725/fast-claw-recovery-prep"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Gassers",
+      "url": "http://www.dvidshub.net/video/696732/gassers"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Goalie Drill",
+      "url": "https://www.dvidshub.net/video/696737/goalie-drill"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Harness Resisted Sprint",
+      "url": "https://www.dvidshub.net/video/696742/harness-resisted-sprint"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "High Knees",
+      "url": "https://www.dvidshub.net/video/558574/high-knees"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Hills - Shuffle",
+      "url": "http://www.dvidshub.net/video/696754/hill-shuffle"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Hills - Sprint",
+      "url": "http://www.dvidshub.net/video/696745/hill-sprint"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Hour Glass Drill",
+      "url": "https://www.dvidshub.net/video/697231/hour-glass-drill"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Hurdle Hops - Single Leg (Backward/Forward)",
+      "url": "http://www.dvidshub.net/video/697225/hurdle-hops-single-leg-forward-backward"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Hurdle Hops - Single Leg (Forward)",
+      "url": "http://www.dvidshub.net/video/697228/hurdle-hops-single-leg-forward"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Hurdle Hops - Single Leg (Lateral)",
+      "url": "http://www.dvidshub.net/video/697227/hurdle-hops-single-leg-lateral"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Hurdle Hops (Backward/Forward)",
+      "url": "http://www.dvidshub.net/video/697841/hurdle-hops-forward-backward"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Hurdle Hops (Forward)",
+      "url": "http://www.dvidshub.net/video/697842/hurdle-hops-forward"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Hurdle Hops (Lateral)",
+      "url": "http://www.dvidshub.net/video/697845/hurdle-hops-lateral"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Icky Shuffle",
+      "url": "http://www.dvidshub.net/video/697848/icky-shuffle"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "In-In Out-Out (Forward)",
+      "url": "http://www.dvidshub.net/video/697854/out-out-forward"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "In-In Out-Out (Lateral)",
+      "url": "https://www.dvidshub.net/video/697858/out-out-lateral"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "J-Hook Reverse Sprint",
+      "url": "https://www.dvidshub.net/video/697861/j-hook-reverse-sprint"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Lateral Skip",
+      "url": "https://www.dvidshub.net/video/558579/lateral-skip"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Lateral Step Over Run",
+      "url": "https://www.dvidshub.net/video/697862/lateral-step-over-run"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Lateral W-Slide",
+      "url": "http://www.dvidshub.net/video/697864/lateral-w-slide"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Mountain Climber Start",
+      "url": "https://www.dvidshub.net/video/697865/mountain-climber-start"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Overhead Throw Sprawl",
+      "url": "https://www.dvidshub.net/video/697867/overhead-throw-sprawl"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Partner Resisted Sprint",
+      "url": "https://www.dvidshub.net/video/641005/partner-resisted-sprint"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Partner Resisted Sprint w/ Release",
+      "url": "https://www.dvidshub.net/video/641003/partner-resisted-sprint-with-release"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Prone 3 Cone Drill",
+      "url": "https://www.dvidshub.net/video/697868/prone-3-cone-drill"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Prone 5-10-5 Drill",
+      "url": "http://www.dvidshub.net/video/697870/prone-5-10-5-drill"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Prone Start",
+      "url": "https://www.dvidshub.net/video/641012/prone-start"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Prone T-Drill",
+      "url": "http://www.dvidshub.net/video/697874/prone-t-drill"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Push-Up Start",
+      "url": "https://www.dvidshub.net/video/641015/push-up-start"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Skiers",
+      "url": "http://www.dvidshub.net/video/697879/skiers"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Sprint Progression",
+      "url": "https://www.dvidshub.net/video/697881/sprint-progression"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Stadium Stairs (1 Foot)",
+      "url": "http://www.dvidshub.net/video/697884/stadium-stairs-1-foot-each-step"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Stadium Stairs (2 Feet)",
+      "url": "http://www.dvidshub.net/video/697885/stadium-stairs-2-feet-each-step"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Stadium Stairs Bunny Hops",
+      "url": "http://www.dvidshub.net/video/697888/stadium-stairs-bunny-hops"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Stadium Stairs Bunny Hops (Single Leg)",
+      "url": "http://www.dvidshub.net/video/697894/stadium-stairs-single-leg-bunny-hops"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Stadium Stairs Every Other (1 Foot)",
+      "url": "http://www.dvidshub.net/video/697891/stadium-stairs-one-foot-every-other-step"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Straight Leg Shuffle",
+      "url": "http://www.dvidshub.net/video/699153/straight-leg-shuffle"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Straight Leg Shuffle to Sprint",
+      "url": "https://www.dvidshub.net/video/699154/straight-leg-shuffle-sprint"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "TRX Sprinters Start - 1 Count",
+      "url": "https://www.dvidshub.net/video/699156/trx-sprinter-start-1-count"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "TRX Sprinters Start - 2 Count",
+      "url": "http://www.dvidshub.net/video/699157/trx-sprinter-start-2-count"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "TRX Sprinters Start - 3 Count",
+      "url": "http://www.dvidshub.net/video/699159/trx-sprinter-start-3-count"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "TRX Sprinters Start - Continuous",
+      "url": "https://www.dvidshub.net/video/699161/trx-sprinter-start-continuous"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Wall Drill - 2 Count",
+      "url": "https://www.dvidshub.net/video/642063/trx-wall-drill-2-count"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Wall Drill - 3 Count",
+      "url": "https://www.dvidshub.net/video/642065/trx-wall-drill-3-count"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Wall Drill - Continuous",
+      "url": "https://www.dvidshub.net/video/642058/trx-wall-drill-continuing"
+    },
+    {
+      "type": "Speed, Agility & Endurance",
+      "name": "Zig Zag Drill",
+      "url": "https://www.dvidshub.net/video/699163/zig-zag-drill"
+    },
+    {
+      "type": "Flexibility & Mobility",
+      "name": "Chest Stretch",
+      "url": "https://www.dvidshub.net/video/699167/chest-stretch"
+    },
+    {
+      "type": "Flexibility & Mobility",
+      "name": "Cross Body Stretch",
+      "url": "http://www.dvidshub.net/video/699168/cross-body-stretch"
+    },
+    {
+      "type": "Flexibility & Mobility",
+      "name": "Elbow To Instep",
+      "url": "https://www.dvidshub.net/video/636501/elbow-instep"
+    },
+    {
+      "type": "Flexibility & Mobility",
+      "name": "Glute Stretch",
+      "url": "https://www.dvidshub.net/video/699170/glute-stretch"
+    },
+    {
+      "type": "Flexibility & Mobility",
+      "name": "Half Kneeling Hip Flexor",
+      "url": "https://www.dvidshub.net/video/551136/pvc-half-kneeling-hip-flexor"
+    },
+    {
+      "type": "Flexibility & Mobility",
+      "name": "Hamstring Stretch",
+      "url": "http://www.dartfish.tv/Player.aspx?CR=p96647c67495m1753831"
+    },
+    {
+      "type": "Flexibility & Mobility",
+      "name": "Hip Flexor Stretch",
+      "url": "http://www.dartfish.tv/Player.aspx?CR=p96647c67495m1753832"
+    },
+    {
+      "type": "Flexibility & Mobility",
+      "name": "Neck Stretch",
+      "url": "https://www.dvidshub.net/video/699174/neck-stretch"
+    },
+    {
+      "type": "Flexibility & Mobility",
+      "name": "Quad Stretch",
+      "url": "https://www.dvidshub.net/video/699175/quad-stretch"
+    },
+    {
+      "type": "Flexibility & Mobility",
+      "name": "Shoulder Stretch",
+      "url": "https://www.dvidshub.net/video/699176/shoulder-stretch"
+    },
+    {
+      "type": "Flexibility & Mobility",
+      "name": "Side Bend Stretch",
+      "url": "https://www.dvidshub.net/video/699177/side-bend-stretch"
+    },
+    {
+      "type": "Flexibility & Mobility",
+      "name": "Sumo Stretch",
+      "url": "https://www.dvidshub.net/video/699179/sumo-stretch"
+    },
+    {
+      "type": "Flexibility & Mobility",
+      "name": "Tricep Stretch",
+      "url": "https://www.dvidshub.net/video/699182/tricep-stretch"
+    },
+    {
+      "type": "Flexibility & Mobility",
+      "name": "Upper Back Stretch",
+      "url": "http://www.dvidshub.net/video/699184/upper-back-stretch"
+    }
+  ],
+  "metadata": {
+    "total_exercises": 329,
+    "categories": [
+      "Movement Prep",
+      "Strength & Power",
+      "Speed, Agility & Endurance",
+      "Flexibility & Mobility"
+    ],
+    "category_counts": {
+      "Movement Prep": 71,
+      "Strength & Power": 192,
+      "Speed, Agility & Endurance": 66,
+      "Flexibility & Mobility": 14
+    }
+  }
+}
