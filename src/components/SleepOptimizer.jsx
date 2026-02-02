@@ -293,33 +293,33 @@ const SleepOptimizer = () => {
             case 'hygiene':
                 return (
                     <div className="space-y-6">
-                        <p className="text-gray-600">{sleepHygieneContent.subtitle}</p>
+                        <p className="text-gray-600 dark:text-gray-300">{sleepHygieneContent.subtitle}</p>
 
                         {sleepHygieneContent.categories.map((category, catIndex) => (
-                            <div key={catIndex} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                                <div className="flex items-center gap-3 p-4 bg-gray-50 border-b border-gray-200">
+                            <div key={catIndex} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                                     <category.icon className="w-5 h-5 text-marine-red" />
-                                    <h4 className="font-semibold text-gray-900">{category.name}</h4>
+                                    <h4 className="font-semibold text-gray-900 dark:text-white">{category.name}</h4>
                                 </div>
                                 <div className="p-4 space-y-3">
                                     {category.items.map((item, itemIndex) => (
                                         <div
                                             key={itemIndex}
                                             onClick={() => toggleCheck('hygiene-' + catIndex, itemIndex)}
-                                            className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
+                                            className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                                         >
                                             <div className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
                                                 checkedItems[`hygiene-${catIndex}-${itemIndex}`]
                                                     ? 'bg-green-500 border-green-500'
-                                                    : 'border-gray-300'
+                                                    : 'border-gray-300 dark:border-gray-500'
                                             }`}>
                                                 {checkedItems[`hygiene-${catIndex}-${itemIndex}`] && (
                                                     <CheckCircle2 className="w-4 h-4 text-white" />
                                                 )}
                                             </div>
                                             <div>
-                                                <h5 className="font-medium text-gray-900">{item.title}</h5>
-                                                <p className="text-sm text-gray-600 mt-1">{item.desc}</p>
+                                                <h5 className="font-medium text-gray-900 dark:text-white">{item.title}</h5>
+                                                <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{item.desc}</p>
                                             </div>
                                         </div>
                                     ))}
@@ -332,28 +332,28 @@ const SleepOptimizer = () => {
             case 'circadian':
                 return (
                     <div className="space-y-6">
-                        <p className="text-gray-600">{circadianContent.subtitle}</p>
+                        <p className="text-gray-600 dark:text-gray-300">{circadianContent.subtitle}</p>
 
-                        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                            <div className="p-4 bg-gray-50 border-b border-gray-200">
-                                <h4 className="font-semibold text-gray-900">Daily Rhythm Schedule</h4>
-                                <p className="text-sm text-gray-500 mt-1">Align your activities with your body's natural patterns</p>
+                        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <div className="p-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+                                <h4 className="font-semibold text-gray-900 dark:text-white">Daily Rhythm Schedule</h4>
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Align your activities with your body's natural patterns</p>
                             </div>
-                            <div className="divide-y divide-gray-100">
+                            <div className="divide-y divide-gray-100 dark:divide-gray-700">
                                 {circadianContent.schedules.map((phase, index) => (
                                     <div key={index} className="p-4">
                                         <div className="flex items-center gap-3 mb-3">
-                                            <div className={`p-2 rounded-lg ${phase.bg}`}>
+                                            <div className={`p-2 rounded-lg ${phase.bg} dark:bg-opacity-20`}>
                                                 <phase.icon className={`w-5 h-5 ${phase.color}`} />
                                             </div>
                                             <div>
-                                                <span className="font-mono text-sm text-gray-500">{phase.time}</span>
-                                                <h5 className="font-semibold text-gray-900">{phase.name}</h5>
+                                                <span className="font-mono text-sm text-gray-500 dark:text-gray-400">{phase.time}</span>
+                                                <h5 className="font-semibold text-gray-900 dark:text-white">{phase.name}</h5>
                                             </div>
                                         </div>
                                         <ul className="ml-12 space-y-1">
                                             {phase.actions.map((action, i) => (
-                                                <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
+                                                <li key={i} className="text-sm text-gray-600 dark:text-gray-300 flex items-start gap-2">
                                                     <span className="text-marine-red mt-1">•</span>
                                                     {action}
                                                 </li>
@@ -364,16 +364,16 @@ const SleepOptimizer = () => {
                             </div>
                         </div>
 
-                        <div className="bg-orange-50 rounded-xl p-4 border border-orange-200">
+                        <div className="bg-orange-50 dark:bg-orange-900/20 rounded-xl p-4 border border-orange-200 dark:border-orange-800">
                             <div className="flex items-center gap-2 mb-3">
                                 <Sun className="w-5 h-5 text-orange-600" />
-                                <h4 className="font-semibold text-orange-900">Light Exposure Guidelines</h4>
+                                <h4 className="font-semibold text-orange-900 dark:text-orange-300">Light Exposure Guidelines</h4>
                             </div>
                             <div className="space-y-2">
                                 {circadianContent.lightGuidelines.map((guideline, index) => (
-                                    <div key={index} className="flex justify-between items-center py-2 border-b border-orange-200 last:border-0">
-                                        <span className="text-sm font-medium text-orange-800">{guideline.condition}</span>
-                                        <span className="text-sm text-orange-700">{guideline.recommendation}</span>
+                                    <div key={index} className="flex justify-between items-center py-2 border-b border-orange-200 dark:border-orange-800 last:border-0">
+                                        <span className="text-sm font-medium text-orange-800 dark:text-orange-300">{guideline.condition}</span>
+                                        <span className="text-sm text-orange-700 dark:text-orange-400">{guideline.recommendation}</span>
                                     </div>
                                 ))}
                             </div>
@@ -384,14 +384,14 @@ const SleepOptimizer = () => {
             case 'recovery':
                 return (
                     <div className="space-y-6">
-                        <p className="text-gray-600">{recoveryContent.subtitle}</p>
+                        <p className="text-gray-600 dark:text-gray-300">{recoveryContent.subtitle}</p>
 
                         {/* Sleep Debt Calculator */}
-                        <div className="bg-white rounded-xl border border-gray-200 p-4">
-                            <h4 className="font-semibold text-gray-900 mb-4">Sleep Debt Calculator</h4>
+                        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+                            <h4 className="font-semibold text-gray-900 dark:text-white mb-4">Sleep Debt Calculator</h4>
                             <div className="grid grid-cols-2 gap-4 mb-4">
                                 <div>
-                                    <label className="block text-sm text-gray-600 mb-1">Hours Slept (avg/night)</label>
+                                    <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Hours Slept (avg/night)</label>
                                     <input
                                         type="number"
                                         min="0"
@@ -399,11 +399,11 @@ const SleepOptimizer = () => {
                                         step="0.5"
                                         value={sleepDebt.hoursSlept}
                                         onChange={(e) => setSleepDebt(prev => ({...prev, hoursSlept: parseFloat(e.target.value) || 0}))}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-marine-red focus:border-transparent"
+                                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-marine-red focus:border-transparent"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm text-gray-600 mb-1">Target Hours</label>
+                                    <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Target Hours</label>
                                     <input
                                         type="number"
                                         min="6"
@@ -411,22 +411,22 @@ const SleepOptimizer = () => {
                                         step="0.5"
                                         value={sleepDebt.targetHours}
                                         onChange={(e) => setSleepDebt(prev => ({...prev, targetHours: parseFloat(e.target.value) || 8}))}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-marine-red focus:border-transparent"
+                                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-marine-red focus:border-transparent"
                                     />
                                 </div>
                             </div>
                             <div className={`p-4 rounded-lg ${
-                                (sleepDebt.targetHours - sleepDebt.hoursSlept) * 7 <= 0 ? 'bg-green-50 border border-green-200' :
-                                (sleepDebt.targetHours - sleepDebt.hoursSlept) * 7 <= 5 ? 'bg-yellow-50 border border-yellow-200' :
-                                (sleepDebt.targetHours - sleepDebt.hoursSlept) * 7 <= 10 ? 'bg-orange-50 border border-orange-200' :
-                                'bg-red-50 border border-red-200'
+                                (sleepDebt.targetHours - sleepDebt.hoursSlept) * 7 <= 0 ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800' :
+                                (sleepDebt.targetHours - sleepDebt.hoursSlept) * 7 <= 5 ? 'bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800' :
+                                (sleepDebt.targetHours - sleepDebt.hoursSlept) * 7 <= 10 ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800' :
+                                'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800'
                             }`}>
                                 <div className="text-center">
-                                    <p className="text-sm text-gray-600">Weekly Sleep Debt</p>
-                                    <p className="text-3xl font-bold mt-1">
+                                    <p className="text-sm text-gray-600 dark:text-gray-300">Weekly Sleep Debt</p>
+                                    <p className="text-3xl font-bold mt-1 text-gray-900 dark:text-white">
                                         {Math.max(0, (sleepDebt.targetHours - sleepDebt.hoursSlept) * 7).toFixed(1)} hours
                                     </p>
-                                    <p className="text-sm text-gray-500 mt-2">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
                                         {(sleepDebt.targetHours - sleepDebt.hoursSlept) * 7 <= 0
                                             ? "No debt - maintaining optimal sleep!"
                                             : `Daily deficit: ${(sleepDebt.targetHours - sleepDebt.hoursSlept).toFixed(1)} hours`
@@ -437,8 +437,8 @@ const SleepOptimizer = () => {
                         </div>
 
                         {/* Sleep Stages */}
-                        <div className="bg-white rounded-xl border border-gray-200 p-4">
-                            <h4 className="font-semibold text-gray-900 mb-4">Sleep Stages & Their Purpose</h4>
+                        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+                            <h4 className="font-semibold text-gray-900 dark:text-white mb-4">Sleep Stages & Their Purpose</h4>
                             <div className="space-y-3">
                                 {recoveryContent.sleepStages.map((stage, index) => (
                                     <div key={index} className="flex items-center gap-4">
@@ -446,8 +446,8 @@ const SleepOptimizer = () => {
                                             <span className="text-xs font-bold text-white">{stage.percent}</span>
                                         </div>
                                         <div>
-                                            <h5 className="font-medium text-gray-900">{stage.name}</h5>
-                                            <p className="text-sm text-gray-600">{stage.purpose}</p>
+                                            <h5 className="font-medium text-gray-900 dark:text-white">{stage.name}</h5>
+                                            <p className="text-sm text-gray-600 dark:text-gray-300">{stage.purpose}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -455,34 +455,34 @@ const SleepOptimizer = () => {
                         </div>
 
                         {/* Debt Effects Table */}
-                        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                            <div className="p-4 bg-gray-50 border-b border-gray-200">
-                                <h4 className="font-semibold text-gray-900">Sleep Debt Impact on Training</h4>
+                        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <div className="p-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+                                <h4 className="font-semibold text-gray-900 dark:text-white">Sleep Debt Impact on Training</h4>
                             </div>
-                            <div className="divide-y divide-gray-100">
+                            <div className="divide-y divide-gray-100 dark:divide-gray-700">
                                 {recoveryContent.debtEffects.map((effect, index) => (
                                     <div key={index} className="p-4">
                                         <div className="flex items-center justify-between mb-2">
                                             <span className="font-semibold text-marine-red">{effect.debt} debt</span>
                                         </div>
-                                        <p className="text-sm text-gray-600 mb-1"><strong>Impact:</strong> {effect.impact}</p>
-                                        <p className="text-sm text-gray-600"><strong>Training:</strong> {effect.training}</p>
+                                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-1"><strong>Impact:</strong> {effect.impact}</p>
+                                        <p className="text-sm text-gray-600 dark:text-gray-300"><strong>Training:</strong> {effect.training}</p>
                                     </div>
                                 ))}
                             </div>
                         </div>
 
                         {/* Recovery Rates */}
-                        <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+                        <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 border border-green-200 dark:border-green-800">
                             <div className="flex items-center gap-2 mb-3">
                                 <Battery className="w-5 h-5 text-green-600" />
-                                <h4 className="font-semibold text-green-900">Recovery Rates</h4>
+                                <h4 className="font-semibold text-green-900 dark:text-green-300">Recovery Rates</h4>
                             </div>
                             <div className="space-y-2">
                                 {recoveryContent.recoveryRates.map((rate, index) => (
-                                    <div key={index} className="flex justify-between items-center py-2 border-b border-green-200 last:border-0">
-                                        <span className="text-sm font-medium text-green-800">{rate.method}</span>
-                                        <span className="text-sm text-green-700">{rate.rate}</span>
+                                    <div key={index} className="flex justify-between items-center py-2 border-b border-green-200 dark:border-green-800 last:border-0">
+                                        <span className="text-sm font-medium text-green-800 dark:text-green-300">{rate.method}</span>
+                                        <span className="text-sm text-green-700 dark:text-green-400">{rate.rate}</span>
                                     </div>
                                 ))}
                             </div>
@@ -493,27 +493,27 @@ const SleepOptimizer = () => {
             case 'napping':
                 return (
                     <div className="space-y-6">
-                        <p className="text-gray-600">{tacticalNappingContent.subtitle}</p>
+                        <p className="text-gray-600 dark:text-gray-300">{tacticalNappingContent.subtitle}</p>
 
                         {/* Napping Protocols */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {tacticalNappingContent.protocols.map((protocol, index) => (
-                                <div key={index} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                                    <div className={`p-4 ${protocol.bg} border-b border-gray-200`}>
+                                <div key={index} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                                    <div className={`p-4 ${protocol.bg} dark:bg-opacity-20 border-b border-gray-200 dark:border-gray-700`}>
                                         <div className="flex items-center gap-3">
                                             <protocol.icon className={`w-6 h-6 ${protocol.color}`} />
                                             <div>
-                                                <h4 className="font-bold text-gray-900">{protocol.name}</h4>
-                                                <p className="text-sm text-gray-600">{protocol.duration}</p>
+                                                <h4 className="font-bold text-gray-900 dark:text-white">{protocol.name}</h4>
+                                                <p className="text-sm text-gray-600 dark:text-gray-300">{protocol.duration}</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="p-4 space-y-4">
                                         <div>
-                                            <h5 className="text-sm font-semibold text-gray-700 mb-2">Benefits</h5>
+                                            <h5 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Benefits</h5>
                                             <ul className="space-y-1">
                                                 {protocol.benefits.map((benefit, i) => (
-                                                    <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
+                                                    <li key={i} className="text-sm text-gray-600 dark:text-gray-300 flex items-start gap-2">
                                                         <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                                                         {benefit}
                                                     </li>
@@ -521,18 +521,18 @@ const SleepOptimizer = () => {
                                             </ul>
                                         </div>
                                         <div>
-                                            <h5 className="text-sm font-semibold text-gray-700 mb-2">Instructions</h5>
+                                            <h5 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Instructions</h5>
                                             <ol className="space-y-1">
                                                 {protocol.instructions.map((instruction, i) => (
-                                                    <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
+                                                    <li key={i} className="text-sm text-gray-600 dark:text-gray-300 flex items-start gap-2">
                                                         <span className="font-semibold text-marine-red">{i + 1}.</span>
                                                         {instruction}
                                                     </li>
                                                 ))}
                                             </ol>
                                         </div>
-                                        <div className="pt-2 border-t border-gray-100">
-                                            <p className="text-xs text-gray-500"><strong>Best for:</strong> {protocol.bestFor}</p>
+                                        <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
+                                            <p className="text-xs text-gray-500 dark:text-gray-400"><strong>Best for:</strong> {protocol.bestFor}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -599,26 +599,26 @@ const SleepOptimizer = () => {
 
     return (
         <div className="space-y-6">
-            <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-200">
+            <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center gap-3">
                     {activeSection && (
                         <button
                             onClick={() => setActiveSection(null)}
-                            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                         >
-                            <ChevronLeft className="w-5 h-5 text-gray-600" />
+                            <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
                         </button>
                     )}
                     <div className="p-3 bg-marine-red/10 rounded-lg">
                         <Moon className="w-8 h-8 text-marine-red" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900 m-0">
+                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white m-0">
                             {activeSection
                                 ? sections.find(s => s.id === activeSection)?.title
                                 : 'Sleep Optimizer'}
                         </h1>
-                        <p className="text-gray-500">Recovery is a weapon system</p>
+                        <p className="text-gray-500 dark:text-gray-400">Recovery is a weapon system</p>
                     </div>
                 </div>
             </header>
@@ -642,18 +642,18 @@ const SleepOptimizer = () => {
                                     key={index}
                                     variants={item}
                                     onClick={() => setActiveSection(section.id)}
-                                    className="group bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                                    className="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 hover:shadow-xl transition-all duration-300 cursor-pointer"
                                 >
                                     <div className="flex items-start justify-between mb-4">
-                                        <div className={`p-3 rounded-xl ${section.bg}`}>
+                                        <div className={`p-3 rounded-xl ${section.bg} dark:bg-opacity-20`}>
                                             <section.icon className={`w-6 h-6 ${section.color}`} />
                                         </div>
-                                        <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-marine-red transition-colors" />
+                                        <ChevronRight className="w-5 h-5 text-gray-300 dark:text-gray-600 group-hover:text-marine-red transition-colors" />
                                     </div>
-                                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-marine-red transition-colors">
+                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-marine-red transition-colors">
                                         {section.title}
                                     </h3>
-                                    <p className="text-gray-500 text-sm leading-relaxed">
+                                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
                                         {section.desc}
                                     </p>
                                 </motion.div>

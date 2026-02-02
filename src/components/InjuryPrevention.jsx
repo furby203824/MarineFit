@@ -166,7 +166,7 @@ const InjuryPrevention = () => {
             desc: "Proactive exercises to strengthen vulnerable areas before injury occurs.",
             icon: Shield,
             color: "text-marine-red",
-            bg: "bg-red-50",
+            bg: "bg-red-50 dark:bg-red-900/20",
             content: prehabExercises
         },
         {
@@ -175,7 +175,7 @@ const InjuryPrevention = () => {
             desc: "Joint-specific routines to improve range of motion and functional movement.",
             icon: Activity,
             color: "text-blue-600",
-            bg: "bg-blue-50",
+            bg: "bg-blue-50 dark:bg-blue-900/20",
             content: mobilityRoutines
         },
         {
@@ -184,7 +184,7 @@ const InjuryPrevention = () => {
             desc: "Preparation routines for HITT, PFT, and CFT events.",
             icon: Zap,
             color: "text-yellow-600",
-            bg: "bg-yellow-50",
+            bg: "bg-yellow-50 dark:bg-yellow-900/20",
             content: warmupProtocols
         },
         {
@@ -193,7 +193,7 @@ const InjuryPrevention = () => {
             desc: "Post-workout strategies including foam rolling and stretching.",
             icon: Thermometer,
             color: "text-green-600",
-            bg: "bg-green-50",
+            bg: "bg-green-50 dark:bg-green-900/20",
             content: recoveryProtocols
         }
     ];
@@ -211,7 +211,7 @@ const InjuryPrevention = () => {
             >
                 <button
                     onClick={() => setActiveSection(null)}
-                    className="flex items-center gap-2 text-gray-600 hover:text-marine-red transition-colors"
+                    className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-marine-red transition-colors"
                 >
                     <ArrowLeft size={20} />
                     <span>Back to Overview</span>
@@ -222,8 +222,8 @@ const InjuryPrevention = () => {
                         <section.icon className={`w-8 h-8 ${section.color}`} />
                     </div>
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-900">{section.title}</h2>
-                        <p className="text-gray-500">{section.desc}</p>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{section.title}</h2>
+                        <p className="text-gray-500 dark:text-gray-400">{section.desc}</p>
                     </div>
                 </div>
 
@@ -231,11 +231,11 @@ const InjuryPrevention = () => {
                 {activeSection === 'prehab' && (
                     <div className="grid gap-3">
                         {prehabExercises.map((ex, idx) => (
-                            <div key={idx} className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-100 hover:shadow-sm transition-shadow">
+                            <div key={idx} className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 hover:shadow-sm transition-shadow">
                                 <div>
-                                    <span className="font-semibold text-gray-900">{ex.name}</span>
+                                    <span className="font-semibold text-gray-900 dark:text-white">{ex.name}</span>
                                     <div className="flex items-center gap-3 mt-1">
-                                        <span className="text-sm text-gray-500">{ex.target}</span>
+                                        <span className="text-sm text-gray-500 dark:text-gray-400">{ex.target}</span>
                                         <span className="text-sm bg-marine-red/10 text-marine-red px-2 py-0.5 rounded">{ex.reps}</span>
                                     </div>
                                 </div>
@@ -253,16 +253,16 @@ const InjuryPrevention = () => {
                 {activeSection === 'mobility' && (
                     <div className="space-y-6">
                         {mobilityRoutines.map((routine, idx) => (
-                            <div key={idx} className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-                                <div className="bg-blue-50 px-4 py-3 border-b border-blue-100">
-                                    <h3 className="font-bold text-blue-900">{routine.region}</h3>
+                            <div key={idx} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+                                <div className="bg-blue-50 dark:bg-blue-900/30 px-4 py-3 border-b border-blue-100 dark:border-blue-800">
+                                    <h3 className="font-bold text-blue-900 dark:text-blue-200">{routine.region}</h3>
                                 </div>
                                 <div className="p-4 grid gap-2">
                                     {routine.exercises.map((ex, exIdx) => (
-                                        <div key={exIdx} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
-                                            <span className="text-gray-900">{ex.name}</span>
+                                        <div key={exIdx} className="flex items-center justify-between py-2 border-b border-gray-50 dark:border-gray-700 last:border-0">
+                                            <span className="text-gray-900 dark:text-white">{ex.name}</span>
                                             <div className="flex items-center gap-2">
-                                                <span className="text-sm text-gray-500">{ex.reps}</span>
+                                                <span className="text-sm text-gray-500 dark:text-gray-400">{ex.reps}</span>
                                                 {ex.url && (
                                                     <a href={ex.url} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-600 transition-colors">
                                                         <PlayCircle size={18} />
@@ -281,19 +281,19 @@ const InjuryPrevention = () => {
                 {activeSection === 'warmup' && (
                     <div className="space-y-6">
                         {warmupProtocols.map((protocol, idx) => (
-                            <div key={idx} className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-                                <div className="bg-yellow-50 px-4 py-3 border-b border-yellow-100 flex justify-between items-center">
-                                    <h3 className="font-bold text-yellow-900">{protocol.name}</h3>
-                                    <span className="flex items-center gap-1 text-sm text-yellow-700">
+                            <div key={idx} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+                                <div className="bg-yellow-50 dark:bg-yellow-900/30 px-4 py-3 border-b border-yellow-100 dark:border-yellow-800 flex justify-between items-center">
+                                    <h3 className="font-bold text-yellow-900 dark:text-yellow-200">{protocol.name}</h3>
+                                    <span className="flex items-center gap-1 text-sm text-yellow-700 dark:text-yellow-300">
                                         <Clock size={14} /> {protocol.duration}
                                     </span>
                                 </div>
                                 <div className="p-4 grid gap-2">
                                     {protocol.exercises.map((ex, exIdx) => (
-                                        <div key={exIdx} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
-                                            <span className="text-gray-900">{ex.name}</span>
+                                        <div key={exIdx} className="flex items-center justify-between py-2 border-b border-gray-50 dark:border-gray-700 last:border-0">
+                                            <span className="text-gray-900 dark:text-white">{ex.name}</span>
                                             <div className="flex items-center gap-2">
-                                                <span className="text-sm text-gray-500">{ex.reps}</span>
+                                                <span className="text-sm text-gray-500 dark:text-gray-400">{ex.reps}</span>
                                                 {ex.url && (
                                                     <a href={ex.url} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-yellow-600 transition-colors">
                                                         <PlayCircle size={18} />
@@ -312,19 +312,19 @@ const InjuryPrevention = () => {
                 {activeSection === 'recovery' && (
                     <div className="space-y-6">
                         {recoveryProtocols.map((protocol, idx) => (
-                            <div key={idx} className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-                                <div className="bg-green-50 px-4 py-3 border-b border-green-100 flex justify-between items-center">
-                                    <h3 className="font-bold text-green-900">{protocol.name}</h3>
-                                    <span className="flex items-center gap-1 text-sm text-green-700">
+                            <div key={idx} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+                                <div className="bg-green-50 dark:bg-green-900/30 px-4 py-3 border-b border-green-100 dark:border-green-800 flex justify-between items-center">
+                                    <h3 className="font-bold text-green-900 dark:text-green-200">{protocol.name}</h3>
+                                    <span className="flex items-center gap-1 text-sm text-green-700 dark:text-green-300">
                                         <Clock size={14} /> {protocol.duration}
                                     </span>
                                 </div>
                                 <div className="p-4 grid gap-2">
                                     {protocol.exercises.map((ex, exIdx) => (
-                                        <div key={exIdx} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
-                                            <span className="text-gray-900">{ex.name}</span>
+                                        <div key={exIdx} className="flex items-center justify-between py-2 border-b border-gray-50 dark:border-gray-700 last:border-0">
+                                            <span className="text-gray-900 dark:text-white">{ex.name}</span>
                                             <div className="flex items-center gap-2">
-                                                <span className="text-sm text-gray-500">{ex.reps}</span>
+                                                <span className="text-sm text-gray-500 dark:text-gray-400">{ex.reps}</span>
                                                 {ex.url && (
                                                     <a href={ex.url} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-green-600 transition-colors">
                                                         <PlayCircle size={18} />
@@ -344,14 +344,14 @@ const InjuryPrevention = () => {
 
     return (
         <div className="space-y-6">
-            <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-200">
+            <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center gap-3">
                     <div className="p-3 bg-marine-red/10 rounded-lg">
                         <Shield className="w-8 h-8 text-marine-red" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900 m-0">Injury Prevention</h1>
-                        <p className="text-gray-500">Stay in the fight: Durability and Resilience</p>
+                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white m-0">Injury Prevention</h1>
+                        <p className="text-gray-500 dark:text-gray-400">Stay in the fight: Durability and Resilience</p>
                     </div>
                 </div>
             </header>
@@ -377,7 +377,7 @@ const InjuryPrevention = () => {
                                     key={index}
                                     variants={item}
                                     onClick={() => setActiveSection(section.id)}
-                                    className="group bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                                    className="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 hover:shadow-xl transition-all duration-300 cursor-pointer"
                                 >
                                     <div className="flex items-start justify-between mb-4">
                                         <div className={`p-3 rounded-xl ${section.bg}`}>
@@ -385,10 +385,10 @@ const InjuryPrevention = () => {
                                         </div>
                                         <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-marine-red transition-colors" />
                                     </div>
-                                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-marine-red transition-colors">
+                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-marine-red transition-colors">
                                         {section.title}
                                     </h3>
-                                    <p className="text-gray-500 text-sm leading-relaxed">
+                                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
                                         {section.desc}
                                     </p>
                                 </motion.div>
@@ -400,28 +400,28 @@ const InjuryPrevention = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4 }}
-                            className="bg-orange-50 border border-orange-100 rounded-2xl p-6 mt-8"
+                            className="bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-orange-800 rounded-2xl p-6 mt-8"
                         >
                             <div className="flex items-start gap-4">
                                 <AlertTriangle className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" />
                                 <div>
-                                    <h3 className="text-lg font-bold text-gray-900 mb-2">Pain vs. Injury</h3>
-                                    <p className="text-gray-700 mb-4">
+                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Pain vs. Injury</h3>
+                                    <p className="text-gray-700 dark:text-gray-300 mb-4">
                                         Learn to distinguish between the discomfort of training and the warning signs of injury.
                                     </p>
                                     <div className="grid md:grid-cols-2 gap-4 text-sm">
-                                        <div className="bg-white rounded-lg p-3">
-                                            <h4 className="font-semibold text-green-700 mb-2">Normal Training Discomfort</h4>
-                                            <ul className="text-gray-600 space-y-1">
+                                        <div className="bg-white dark:bg-gray-800 rounded-lg p-3">
+                                            <h4 className="font-semibold text-green-700 dark:text-green-400 mb-2">Normal Training Discomfort</h4>
+                                            <ul className="text-gray-600 dark:text-gray-300 space-y-1">
                                                 <li>• Muscle soreness 24-72 hrs post-workout</li>
                                                 <li>• Fatigue during exercise</li>
                                                 <li>• Mild burning sensation in muscles</li>
                                                 <li>• Temporary stiffness</li>
                                             </ul>
                                         </div>
-                                        <div className="bg-white rounded-lg p-3">
-                                            <h4 className="font-semibold text-red-700 mb-2">Seek Medical Attention</h4>
-                                            <ul className="text-gray-600 space-y-1">
+                                        <div className="bg-white dark:bg-gray-800 rounded-lg p-3">
+                                            <h4 className="font-semibold text-red-700 dark:text-red-400 mb-2">Seek Medical Attention</h4>
+                                            <ul className="text-gray-600 dark:text-gray-300 space-y-1">
                                                 <li>• Sharp, sudden pain</li>
                                                 <li>• Swelling or bruising</li>
                                                 <li>• Pain that worsens with activity</li>

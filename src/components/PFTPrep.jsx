@@ -606,36 +606,36 @@ const PFTPrep = () => {
 
     return (
         <div className="space-y-6">
-            <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-200">
+            <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center gap-3">
                     <div className="p-3 bg-marine-red/10 rounded-lg">
                         <Calculator className="w-8 h-8 text-marine-red" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900 m-0">PFT/CFT Calculator</h1>
-                        <p className="text-gray-500">Calculate your physical fitness score</p>
+                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white m-0">PFT/CFT Calculator</h1>
+                        <p className="text-gray-500 dark:text-gray-400">Calculate your physical fitness score</p>
                     </div>
                 </div>
-                
-                <div className="flex bg-gray-100 p-1 rounded-lg">
-                    <button 
-                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${testType === 'pft' ? 'bg-white text-marine-red shadow-sm' : 'text-gray-600 hover:text-gray-900'}`}
-                        onClick={() => { 
-                            setTestType('pft'); 
+
+                <div className="flex bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
+                    <button
+                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${testType === 'pft' ? 'bg-white dark:bg-gray-600 text-marine-red dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
+                        onClick={() => {
+                            setTestType('pft');
                             setSolveFor('run');
-                            setResult(null); 
-                            setError(null); 
+                            setResult(null);
+                            setError(null);
                         }}
                     >
                         PFT (Physical Fitness Test)
                     </button>
-                    <button 
-                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${testType === 'cft' ? 'bg-white text-marine-red shadow-sm' : 'text-gray-600 hover:text-gray-900'}`}
-                        onClick={() => { 
-                            setTestType('cft'); 
+                    <button
+                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${testType === 'cft' ? 'bg-white dark:bg-gray-600 text-marine-red dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
+                        onClick={() => {
+                            setTestType('cft');
                             setSolveFor('mtc');
-                            setResult(null); 
-                            setError(null); 
+                            setResult(null);
+                            setError(null);
                         }}
                     >
                         CFT (Combat Fitness Test)
@@ -784,7 +784,7 @@ const PFTPrep = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6"
                 >
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                         {mode === 'planner' ? <Target className="w-5 h-5 text-gray-400" /> : <Activity className="w-5 h-5 text-gray-400" />}
                         {mode === 'planner' ? 'Define Your Scenario' : 'Enter Your Stats'}
                     </h3>
@@ -792,14 +792,14 @@ const PFTPrep = () => {
                     <div className="space-y-4">
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Gender</label>
                                 <select name="gender" value={inputs.gender} onChange={handleInputChange} className="input-field">
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Age Group</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Age Group</label>
                                 <select name="age" value={inputs.age} onChange={handleInputChange} className="input-field">
                                     <option value="17-20">17-20</option>
                                     <option value="21-25">21-25</option>
@@ -814,17 +814,17 @@ const PFTPrep = () => {
                         </div>
 
                         {mode === 'planner' && (
-                            <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 mb-4">
-                                <label className="block text-sm font-bold text-blue-900 mb-2">Target Total Score (0-300)</label>
-                                <input 
-                                    type="number" 
+                            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800 mb-4">
+                                <label className="block text-sm font-bold text-blue-900 dark:text-blue-300 mb-2">Target Total Score (0-300)</label>
+                                <input
+                                    type="number"
                                     value={plannerTarget}
                                     onChange={(e) => setPlannerTarget(parseInt(e.target.value) || 0)}
-                                    className="input-field text-lg font-bold text-blue-900"
+                                    className="input-field text-lg font-bold text-blue-900 dark:text-blue-100"
                                     min="0"
                                     max="300"
                                 />
-                                <p className="text-xs text-blue-700 mt-1">First Class: 235+ | Promotion Rec: ~285</p>
+                                <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">First Class: 235+ | Promotion Rec: ~285</p>
                             </div>
                         )}
 
@@ -833,22 +833,22 @@ const PFTPrep = () => {
                                 {/* Upper Body Section */}
                                 <div className={`space-y-3 transition-all ${mode === 'planner' && solveFor === 'upper' ? 'opacity-50 pointer-events-none' : ''}`}>
                                     <div className="flex justify-between items-center">
-                                        <label className="block text-sm font-medium text-gray-700">Upper Body Event</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Upper Body Event</label>
                                         {mode === 'planner' && (
-                                            <button 
+                                            <button
                                                 onClick={() => setSolveFor('upper')}
-                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'upper' ? 'bg-marine-red text-white border-marine-red' : 'bg-white text-gray-500 border-gray-200'}`}
+                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'upper' ? 'bg-marine-red text-white border-marine-red' : 'bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-300 border-gray-200 dark:border-gray-600'}`}
                                             >
                                                 {solveFor === 'upper' ? 'Solving...' : 'Solve for this'}
                                             </button>
                                         )}
                                     </div>
                                     <div className="flex gap-4">
-                                        <label className="flex items-center gap-2 cursor-pointer">
+                                        <label className="flex items-center gap-2 cursor-pointer text-gray-900 dark:text-gray-100">
                                             <input type="radio" name="upperBodyType" value="pullups" checked={inputs.upperBodyType === 'pullups'} onChange={handleInputChange} className="text-marine-red focus:ring-marine-red" />
                                             <span>Pull-ups</span>
                                         </label>
-                                        <label className="flex items-center gap-2 cursor-pointer">
+                                        <label className="flex items-center gap-2 cursor-pointer text-gray-900 dark:text-gray-100">
                                             <input type="radio" name="upperBodyType" value="pushups" checked={inputs.upperBodyType === 'pushups'} onChange={handleInputChange} className="text-marine-red focus:ring-marine-red" />
                                             <span>Push-ups</span>
                                         </label>
@@ -866,11 +866,11 @@ const PFTPrep = () => {
                                 {/* Plank Section */}
                                 <div className={`transition-all ${mode === 'planner' && solveFor === 'plank' ? 'opacity-50 pointer-events-none' : ''}`}>
                                     <div className="flex justify-between items-center mb-1">
-                                        <label className="block text-sm font-medium text-gray-700">Plank</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Plank</label>
                                         {mode === 'planner' && (
-                                            <button 
+                                            <button
                                                 onClick={() => setSolveFor('plank')}
-                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'plank' ? 'bg-marine-red text-white border-marine-red' : 'bg-white text-gray-500 border-gray-200'}`}
+                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'plank' ? 'bg-marine-red text-white border-marine-red' : 'bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-300 border-gray-200 dark:border-gray-600'}`}
                                             >
                                                 {solveFor === 'plank' ? 'Solving...' : 'Solve for this'}
                                             </button>
@@ -885,11 +885,11 @@ const PFTPrep = () => {
                                 {/* Run Section */}
                                 <div className={`transition-all ${mode === 'planner' && solveFor === 'run' ? 'opacity-50 pointer-events-none' : ''}`}>
                                     <div className="flex justify-between items-center mb-1">
-                                        <label className="block text-sm font-medium text-gray-700">3-Mile Run</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">3-Mile Run</label>
                                         {mode === 'planner' && (
-                                            <button 
+                                            <button
                                                 onClick={() => setSolveFor('run')}
-                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'run' ? 'bg-marine-red text-white border-marine-red' : 'bg-white text-gray-500 border-gray-200'}`}
+                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'run' ? 'bg-marine-red text-white border-marine-red' : 'bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-300 border-gray-200 dark:border-gray-600'}`}
                                             >
                                                 {solveFor === 'run' ? 'Solving...' : 'Solve for this'}
                                             </button>
@@ -905,11 +905,11 @@ const PFTPrep = () => {
                             <>
                                 <div className={`transition-all ${mode === 'planner' && solveFor === 'mtc' ? 'opacity-50 pointer-events-none' : ''}`}>
                                     <div className="flex justify-between items-center mb-1">
-                                        <label className="block text-sm font-medium text-gray-700">Movement to Contact (880 yds)</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Movement to Contact (880 yds)</label>
                                         {mode === 'planner' && (
-                                            <button 
+                                            <button
                                                 onClick={() => setSolveFor('mtc')}
-                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'mtc' ? 'bg-marine-red text-white border-marine-red' : 'bg-white text-gray-500 border-gray-200'}`}
+                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'mtc' ? 'bg-marine-red text-white border-marine-red' : 'bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-300 border-gray-200 dark:border-gray-600'}`}
                                             >
                                                 {solveFor === 'mtc' ? 'Solving...' : 'Solve for this'}
                                             </button>
@@ -923,11 +923,11 @@ const PFTPrep = () => {
 
                                 <div className={`transition-all ${mode === 'planner' && solveFor === 'al' ? 'opacity-50 pointer-events-none' : ''}`}>
                                     <div className="flex justify-between items-center mb-1">
-                                        <label className="block text-sm font-medium text-gray-700">Ammo Can Lifts (2 mins)</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Ammo Can Lifts (2 mins)</label>
                                         {mode === 'planner' && (
-                                            <button 
+                                            <button
                                                 onClick={() => setSolveFor('al')}
-                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'al' ? 'bg-marine-red text-white border-marine-red' : 'bg-white text-gray-500 border-gray-200'}`}
+                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'al' ? 'bg-marine-red text-white border-marine-red' : 'bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-300 border-gray-200 dark:border-gray-600'}`}
                                             >
                                                 {solveFor === 'al' ? 'Solving...' : 'Solve for this'}
                                             </button>
@@ -938,11 +938,11 @@ const PFTPrep = () => {
 
                                 <div className={`transition-all ${mode === 'planner' && solveFor === 'manuf' ? 'opacity-50 pointer-events-none' : ''}`}>
                                     <div className="flex justify-between items-center mb-1">
-                                        <label className="block text-sm font-medium text-gray-700">Maneuver Under Fire</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Maneuver Under Fire</label>
                                         {mode === 'planner' && (
-                                            <button 
+                                            <button
                                                 onClick={() => setSolveFor('manuf')}
-                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'manuf' ? 'bg-marine-red text-white border-marine-red' : 'bg-white text-gray-500 border-gray-200'}`}
+                                                className={`text-xs px-2 py-1 rounded border ${solveFor === 'manuf' ? 'bg-marine-red text-white border-marine-red' : 'bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-300 border-gray-200 dark:border-gray-600'}`}
                                             >
                                                 {solveFor === 'manuf' ? 'Solving...' : 'Solve for this'}
                                             </button>
@@ -956,7 +956,7 @@ const PFTPrep = () => {
                                 
                                 <label className="flex items-center gap-2 cursor-pointer pt-2">
                                     <input type="checkbox" name="isAltitude" checked={inputs.isAltitude} onChange={handleInputChange} className="rounded text-marine-red focus:ring-marine-red" />
-                                    <span className="text-sm text-gray-700">Test conducted at Altitude (4500ft+)</span>
+                                    <span className="text-sm text-gray-700 dark:text-gray-300">Test conducted at Altitude (4500ft+)</span>
                                 </label>
                             </>
                         )}
@@ -979,11 +979,11 @@ const PFTPrep = () => {
 
                 <AnimatePresence>
                     {result && (
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: 20 }}
-                            className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col"
+                            className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col"
                         >
                             <div className={`p-6 text-center ${result.isPlanner ? 'bg-blue-600' : 'bg-marine-red'} text-white`}>
                                 <h3 className="text-white text-lg font-medium opacity-90 mb-1">
@@ -1000,61 +1000,61 @@ const PFTPrep = () => {
                             <div className="p-6 space-y-4 flex-1">
                                 {result.isPlanner ? (
                                     <div className="space-y-4">
-                                        <div className="p-4 bg-gray-50 rounded-lg">
+                                        <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                                             <div className="flex justify-between items-center mb-2">
-                                                <span className="text-gray-600">Points from Locked Events</span>
-                                                <span className="font-bold text-gray-900">{result.currentPoints}</span>
+                                                <span className="text-gray-600 dark:text-gray-300">Points from Locked Events</span>
+                                                <span className="font-bold text-gray-900 dark:text-white">{result.currentPoints}</span>
                                             </div>
                                             <div className="flex justify-between items-center">
-                                                <span className="text-gray-600">Points Needed</span>
-                                                <span className="font-bold text-blue-600">{result.pointsNeeded}</span>
+                                                <span className="text-gray-600 dark:text-gray-300">Points Needed</span>
+                                                <span className="font-bold text-blue-600 dark:text-blue-400">{result.pointsNeeded}</span>
                                             </div>
                                         </div>
-                                        <p className="text-sm text-gray-500 italic text-center">
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 italic text-center">
                                             Based on simplified scoring tiers. Aim slightly higher to ensure score.
                                         </p>
                                     </div>
                                 ) : (
                                     testType === 'pft' ? (
                                         <>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                                            <span className="text-gray-600">Upper Body</span>
-                                            <span className="font-bold text-gray-900">{result.upperBodyScore} pts</span>
+                                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                            <span className="text-gray-600 dark:text-gray-300">Upper Body</span>
+                                            <span className="font-bold text-gray-900 dark:text-white">{result.upperBodyScore} pts</span>
                                         </div>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                                            <span className="text-gray-600">Plank</span>
-                                            <span className="font-bold text-gray-900">{result.plankScore} pts</span>
+                                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                            <span className="text-gray-600 dark:text-gray-300">Plank</span>
+                                            <span className="font-bold text-gray-900 dark:text-white">{result.plankScore} pts</span>
                                         </div>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                                            <span className="text-gray-600">Run</span>
-                                            <span className="font-bold text-gray-900">{result.runScore} pts</span>
+                                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                            <span className="text-gray-600 dark:text-gray-300">Run</span>
+                                            <span className="font-bold text-gray-900 dark:text-white">{result.runScore} pts</span>
                                         </div>
                                     </>
                                 ) : (
                                     <>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                                            <span className="text-gray-600">MTC</span>
-                                            <span className="font-bold text-gray-900">{result.mtcScore} pts</span>
+                                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                            <span className="text-gray-600 dark:text-gray-300">MTC</span>
+                                            <span className="font-bold text-gray-900 dark:text-white">{result.mtcScore} pts</span>
                                         </div>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                                            <span className="text-gray-600">ACL</span>
-                                            <span className="font-bold text-gray-900">{result.alScore} pts</span>
+                                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                            <span className="text-gray-600 dark:text-gray-300">ACL</span>
+                                            <span className="font-bold text-gray-900 dark:text-white">{result.alScore} pts</span>
                                         </div>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                                            <span className="text-gray-600">MANUF</span>
-                                            <span className="font-bold text-gray-900">{result.manufScore} pts</span>
+                                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                            <span className="text-gray-600 dark:text-gray-300">MANUF</span>
+                                            <span className="font-bold text-gray-900 dark:text-white">{result.manufScore} pts</span>
                                         </div>
                                     </>
                                 ))}
 
-                                <div className="mt-6 pt-6 border-t border-gray-100">
+                                <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-700">
                                     {(result.totalScore >= 235) ? (
                                         <>
                                             <h4 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
                                                 <Trophy size={16} className="text-marine-gold" />
                                                 First Class Performance
                                             </h4>
-                                            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                                                 Outstanding work! Maintain this level of fitness and focus on injury prevention.
                                                 Consider working toward a 285+ score for promotion competitiveness.
                                             </p>

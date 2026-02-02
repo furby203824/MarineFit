@@ -79,10 +79,10 @@ const BodyComp = () => {
 
   const getStatusColor = (level) => {
     switch (level) {
-      case 'optimal': return 'text-green-600 bg-green-50 border-green-200';
-      case 'compliant': return 'text-blue-600 bg-blue-50 border-blue-200';
-      case 'fail': return 'text-red-600 bg-red-50 border-red-200';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200';
+      case 'optimal': return 'text-green-600 bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800';
+      case 'compliant': return 'text-blue-600 bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800';
+      case 'fail': return 'text-red-600 bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800';
+      default: return 'text-gray-600 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600';
     }
   };
 
@@ -97,13 +97,13 @@ const BodyComp = () => {
 
   return (
     <div className="space-y-6">
-      <header className="flex items-center gap-4 pb-6 border-b border-gray-200">
+      <header className="flex items-center gap-4 pb-6 border-b border-gray-200 dark:border-gray-700">
         <div className="p-3 bg-marine-red/10 rounded-xl">
           <Heart className="w-8 h-8 text-marine-red" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 m-0">Body Composition</h1>
-          <p className="text-gray-500 mt-1">Waist-to-Height Ratio (WHtR) Calculator</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white m-0">Body Composition</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Waist-to-Height Ratio (WHtR) Calculator</p>
         </div>
       </header>
 
@@ -113,19 +113,19 @@ const BodyComp = () => {
             animate={{ opacity: 1, y: 0 }}
             className="card space-y-6"
         >
-            <div className="flex items-start gap-4 p-4 bg-blue-50 rounded-lg text-blue-800 text-sm">
+            <div className="flex items-start gap-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-blue-800 dark:text-blue-300 text-sm">
                 <Info className="w-5 h-5 flex-shrink-0 mt-0.5" />
                 <p>
-                    Per DoD Instruction 1308.03, the Waist-to-Height Ratio (WHtR) is the primary method for assessing body composition. 
+                    Per DoD Instruction 1308.03, the Waist-to-Height Ratio (WHtR) is the primary method for assessing body composition.
                     The standard is a WHtR of less than 0.55.
                 </p>
             </div>
 
             <div className="space-y-4">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                    <select 
-                        value={gender} 
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Gender</label>
+                    <select
+                        value={gender}
                         onChange={(e) => setGender(e.target.value)}
                         className="input-field"
                     >
@@ -136,9 +136,9 @@ const BodyComp = () => {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Height (Inches)</label>
-                    <select 
-                        value={height} 
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Height (Inches)</label>
+                    <select
+                        value={height}
                         onChange={(e) => setHeight(e.target.value)}
                         className="input-field"
                     >
@@ -148,16 +148,16 @@ const BodyComp = () => {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Waist Circumference (Inches)</label>
-                    <select 
-                        value={waist} 
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Waist Circumference (Inches)</label>
+                    <select
+                        value={waist}
                         onChange={(e) => setWaist(e.target.value)}
                         className="input-field"
                     >
                         <option value="">Select Waist</option>
                         {generateOptions(20, 60, 0.5)}
                     </select>
-                    <p className="text-xs text-gray-500 mt-1">Measure at the navel (belly button).</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Measure at the navel (belly button).</p>
                 </div>
 
                 <button 
@@ -172,37 +172,37 @@ const BodyComp = () => {
 
         <AnimatePresence>
             {result && (
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 20 }}
                     className="card flex flex-col justify-center items-center text-center p-8"
                 >
-                    <motion.div 
+                    <motion.div
                         initial={{ scale: 0.8 }}
                         animate={{ scale: 1 }}
-                        className={`mb-6 p-6 rounded-full bg-gray-50 ${result.statusLevel === 'fail' ? 'bg-red-50' : 'bg-green-50'}`}
+                        className={`mb-6 p-6 rounded-full ${result.statusLevel === 'fail' ? 'bg-red-50 dark:bg-red-900/30' : 'bg-green-50 dark:bg-green-900/30'}`}
                     >
                         {getStatusIcon(result.statusLevel)}
                     </motion.div>
 
-                    <h2 className="text-4xl font-bold text-gray-900 mb-2">{result.whtr}</h2>
-                    <p className="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-6">Waist-to-Height Ratio</p>
+                    <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">{result.whtr}</h2>
+                    <p className="text-sm font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-6">Waist-to-Height Ratio</p>
 
-                    <div className={`px-4 py-2 rounded-full font-bold text-sm mb-6 ${getStatusColor(result.statusLevel)}`}>
+                    <div className={`px-4 py-2 rounded-full font-bold text-sm mb-6 border ${getStatusColor(result.statusLevel)}`}>
                         {result.status}
                     </div>
 
-                    <p className="text-gray-600 max-w-sm mx-auto mb-6">
+                    <p className="text-gray-600 dark:text-gray-300 max-w-sm mx-auto mb-6">
                         {result.message}
                     </p>
 
                     {result.requiresSecondary && (
-                         <div className="w-full p-4 bg-red-50 border border-red-100 rounded-lg flex items-center gap-3 text-left">
+                         <div className="w-full p-4 bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800 rounded-lg flex items-center gap-3 text-left">
                             <AlertTriangle className="text-red-600 flex-shrink-0" />
                             <div>
-                                <h4 className="font-bold text-red-800 text-sm">Action Required</h4>
-                                <p className="text-red-700 text-xs">Report for secondary body fat taping (neck/waist/hips).</p>
+                                <h4 className="font-bold text-red-800 dark:text-red-300 text-sm">Action Required</h4>
+                                <p className="text-red-700 dark:text-red-400 text-xs">Report for secondary body fat taping (neck/waist/hips).</p>
                             </div>
                          </div>
                     )}
