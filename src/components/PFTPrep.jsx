@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
     calculatePFTScore,
     calculateCFTScore,
@@ -9,8 +9,213 @@ import {
     getRequiredAmmoLifts,
     getRequiredMANUF
 } from '../utils/pftScoring';
-import { Calculator, Activity, Trophy, AlertCircle, Target, Calendar, ChevronDown, ChevronUp, CheckCircle2 } from 'lucide-react';
+import { hittExercises } from '../data/hittData';
+import { Calculator, Activity, Trophy, AlertCircle, Target, Calendar, ChevronDown, ChevronUp, CheckCircle2, Dumbbell, PlayCircle, TrendingUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+// Exercise recommendations based on weak PFT/CFT events
+const exerciseRecommendations = {
+    pft: {
+        upper: {
+            pullups: {
+                title: "Pull-up Improvement",
+                focus: "Upper body pulling strength and grip endurance",
+                exercises: ['Bent Over Row', 'Lat Pull Down', 'Inverted Row', 'Dead Hang', 'Scapular Pull-up', 'Negative Pull-up'],
+                tips: [
+                    "Practice pull-up negatives (slow lowering) to build strength",
+                    "Grease the groove: do submaximal sets throughout the day",
+                    "Focus on grip strength with dead hangs"
+                ]
+            },
+            pushups: {
+                title: "Push-up Improvement",
+                focus: "Upper body pushing endurance and core stability",
+                exercises: ['Push-up', 'Incline Push-up', 'Diamond Push-up', 'Dumbbell Bench Press', 'Tricep Dip', 'Plank'],
+                tips: [
+                    "Practice push-up pyramids: 1-2-3-4-5-4-3-2-1",
+                    "Focus on core engagement during the movement",
+                    "Build tricep endurance with close-grip variations"
+                ]
+            }
+        },
+        plank: {
+            title: "Plank Improvement",
+            focus: "Core endurance and anti-extension strength",
+            exercises: ['Plank', 'Side Plank', 'Dead Bug', 'Bird Dog', 'Hollow Body Hold', 'Ab Wheel Rollout'],
+            tips: [
+                "Practice daily planks, gradually increasing duration",
+                "Focus on proper form: straight line from head to heels",
+                "Breathe steadily - don't hold your breath"
+            ]
+        },
+        run: {
+            title: "3-Mile Run Improvement",
+            focus: "Aerobic capacity and running economy",
+            exercises: ['High Knees', 'Butt Kicks', 'A-Skip', 'B-Skip', 'Bounding', 'Sprint'],
+            tips: [
+                "Mix long slow runs with interval training",
+                "Include tempo runs at goal pace",
+                "Don't neglect recovery between hard sessions"
+            ]
+        }
+    },
+    cft: {
+        mtc: {
+            title: "Movement to Contact Improvement",
+            focus: "Sprint speed and anaerobic capacity",
+            exercises: ['Sprint', 'High Knees', 'A-Skip', 'Bounding', 'Shuttle Run', 'Hill Sprint'],
+            tips: [
+                "Practice 440yd repeats at race pace",
+                "Include hill sprints for power development",
+                "Work on sprint mechanics with drills"
+            ]
+        },
+        al: {
+            title: "Ammo Can Lift Improvement",
+            focus: "Shoulder endurance and overhead pressing power",
+            exercises: ['Overhead Press', 'Push Press', 'Dumbbell Shoulder Press', 'Ammo Can Press', 'Front Raise', 'Lateral Raise'],
+            tips: [
+                "Practice with actual ammo can weight (30 lbs)",
+                "Build shoulder endurance with EMOM workouts",
+                "Strengthen your pressing lockout"
+            ]
+        },
+        manuf: {
+            title: "Maneuver Under Fire Improvement",
+            focus: "Full body conditioning and functional movement",
+            exercises: ['Buddy Drag', 'Bear Crawl', 'Sprint', 'Farmer Carry', 'Sandbag Carry', 'Agility Ladder'],
+            tips: [
+                "Practice each component separately at race pace",
+                "Build grip strength for carries and drags",
+                "Work on transitions between movements"
+            ]
+        }
+    }
+};
+
+// Helper function to get recommended exercises from HITT database
+const getRecommendedExercises = (exerciseNames) => {
+    return hittExercises.filter(ex =>
+        exerciseNames.some(name =>
+            ex.name.toLowerCase().includes(name.toLowerCase()) ||
+            name.toLowerCase().includes(ex.name.toLowerCase())
+        )
+    ).slice(0, 5); // Limit to 5 exercises
+};
+
+// Component to show improvement recommendations based on weak events
+const ImprovementRecommendations = ({ result, testType, upperBodyType }) => {
+    // Identify the weakest event
+    const getWeakestEvent = () => {
+        if (testType === 'pft') {
+            const scores = [
+                { event: 'upper', score: result.upperBodyScore, label: 'Upper Body' },
+                { event: 'plank', score: result.plankScore, label: 'Plank' },
+                { event: 'run', score: result.runScore, label: '3-Mile Run' }
+            ];
+            return scores.reduce((min, curr) => curr.score < min.score ? curr : min);
+        } else {
+            const scores = [
+                { event: 'mtc', score: result.mtcScore, label: 'Movement to Contact' },
+                { event: 'al', score: result.alScore, label: 'Ammo Can Lifts' },
+                { event: 'manuf', score: result.manufScore, label: 'Maneuver Under Fire' }
+            ];
+            return scores.reduce((min, curr) => curr.score < min.score ? curr : min);
+        }
+    };
+
+    const weakest = getWeakestEvent();
+    const pointsToFirstClass = 235 - result.totalScore;
+
+    // Get recommendations based on weakest event
+    let recommendations;
+    if (testType === 'pft') {
+        if (weakest.event === 'upper') {
+            recommendations = exerciseRecommendations.pft.upper[upperBodyType];
+        } else {
+            recommendations = exerciseRecommendations.pft[weakest.event];
+        }
+    } else {
+        recommendations = exerciseRecommendations.cft[weakest.event];
+    }
+
+    // Get matching exercises from HITT database
+    const matchingExercises = getRecommendedExercises(recommendations.exercises);
+
+    return (
+        <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-3">
+                <TrendingUp size={18} className="text-orange-500" />
+                <h4 className="font-semibold text-gray-900 dark:text-white">
+                    Improvement Plan
+                </h4>
+                <span className="text-xs bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 px-2 py-0.5 rounded-full">
+                    {pointsToFirstClass} pts to 1st Class
+                </span>
+            </div>
+
+            {/* Limiting Factor */}
+            <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                    <AlertCircle size={16} className="text-orange-600" />
+                    <span className="font-semibold text-orange-800 dark:text-orange-300">Limiting Factor: {weakest.label}</span>
+                </div>
+                <p className="text-sm text-orange-700 dark:text-orange-400">
+                    Your {weakest.label.toLowerCase()} score ({weakest.score} pts) is holding back your overall score.
+                    Focus training here for the biggest improvement.
+                </p>
+            </div>
+
+            {/* Recommendations */}
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                <h5 className="font-semibold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
+                    <Dumbbell size={16} className="text-marine-red" />
+                    {recommendations.title}
+                </h5>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">{recommendations.focus}</p>
+
+                {/* Tips */}
+                <ul className="space-y-1 mb-4">
+                    {recommendations.tips.map((tip, i) => (
+                        <li key={i} className="text-sm text-gray-600 dark:text-gray-300 flex items-start gap-2">
+                            <CheckCircle2 size={14} className="text-green-500 mt-0.5 flex-shrink-0" />
+                            {tip}
+                        </li>
+                    ))}
+                </ul>
+
+                {/* Recommended HITT Exercises */}
+                {matchingExercises.length > 0 && (
+                    <div className="border-t border-gray-200 dark:border-gray-600 pt-3 mt-3">
+                        <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+                            Recommended HITT Exercises
+                        </p>
+                        <div className="space-y-2">
+                            {matchingExercises.map((ex) => (
+                                <div key={ex.id} className="flex items-center justify-between bg-white dark:bg-gray-800 p-2 rounded border border-gray-100 dark:border-gray-600">
+                                    <div>
+                                        <span className="text-sm font-medium text-gray-900 dark:text-white">{ex.name}</span>
+                                        <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">{ex.equipment}</span>
+                                    </div>
+                                    {ex.url && (
+                                        <a
+                                            href={ex.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center gap-1 text-xs text-marine-red hover:underline"
+                                        >
+                                            <PlayCircle size={14} /> Demo
+                                        </a>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
 
 // Training Plan Templates
 const trainingPlans = {
@@ -843,16 +1048,24 @@ const PFTPrep = () => {
                                 ))}
 
                                 <div className="mt-6 pt-6 border-t border-gray-100">
-                                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                                        <Trophy size={16} className="text-marine-gold" />
-                                        Performance Insight
-                                    </h4>
-                                    <p className="text-sm text-gray-600 leading-relaxed">
-                                        {result.classification === '1st' || (result.classification && result.classification.class === 'first-class')
-                                            ? "Outstanding work. Maintain this level of fitness and focus on injury prevention."
-                                            : "Good effort. Review the score breakdown to identify your weakest event and focus training there."
-                                        }
-                                    </p>
+                                    {(result.totalScore >= 235) ? (
+                                        <>
+                                            <h4 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                                                <Trophy size={16} className="text-marine-gold" />
+                                                First Class Performance
+                                            </h4>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                                Outstanding work! Maintain this level of fitness and focus on injury prevention.
+                                                Consider working toward a 285+ score for promotion competitiveness.
+                                            </p>
+                                        </>
+                                    ) : (
+                                        <ImprovementRecommendations
+                                            result={result}
+                                            testType={testType}
+                                            upperBodyType={inputs.upperBodyType}
+                                        />
+                                    )}
                                 </div>
                             </div>
                         </motion.div>
