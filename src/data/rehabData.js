@@ -2,7 +2,7 @@ export const returnToRunData = {
     title: "Running Injury Prevention & Return to Run",
     source: "Department of Rehabilitation Services - Physical Therapy",
     intro: "The intent of these guidelines is to provide the athlete with a framework for return to sports activity following injury. These guidelines should not take the place of medical advice. If an athlete requires assistance, they should consult with their primary care physician, surgeon, or physical therapist.",
-    
+
     sections: [
         {
             title: "Injury Prevention Tips",
@@ -154,7 +154,7 @@ export const returnToRunData = {
                 { step: "Step 2", walk: "3 min", jog: "2 min", reps: "4x", total: "20 min" },
                 { step: "Step 3", walk: "2 min", jog: "3 min", reps: "4x", total: "20 min" },
                 { step: "Step 4", walk: "1 min", jog: "4 min", reps: "4x", total: "20 min" },
-                { step: "Step 5", walk: "1 min", jog: "4 min", reps: "6x", total: "30 min" } // Advanced step
+                { step: "Step 5", walk: "1 min", jog: "4 min", reps: "6x", total: "30 min" }
             ]
         },
         {
