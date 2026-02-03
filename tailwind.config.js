@@ -17,6 +17,9 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        bebas: ['"Bebas Neue"', 'sans-serif'],
+        'plex-mono': ['"IBM Plex Mono"', 'monospace'],
+        'plex-sans': ['"IBM Plex Sans"', 'sans-serif'],
       },
     },
   },

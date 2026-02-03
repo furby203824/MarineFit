@@ -3,7 +3,13 @@ import PullupProgram from './PullupProgram';
 import {
     calculatePFTScore,
     calculateCFTScore,
-    getAgeGroup,
+    ageGroups,
+    pullupMax, pullupMin,
+    pushupMax, pushupMin,
+    runMax, runMin,
+    mtcMax, mtcMin,
+    ammoMax, ammoMin,
+    manufMax, manufMin,
     getRequiredRunTime,
     getRequiredUpperBodyReps,
     getRequiredPlankTime,
@@ -12,8 +18,267 @@ import {
     getRequiredMANUF
 } from '../utils/pftScoring';
 import { hittExercises } from '../data/hittData';
-import { Calculator, Activity, Trophy, AlertCircle, Target, Calendar, ChevronDown, ChevronUp, CheckCircle2, Dumbbell, PlayCircle, TrendingUp, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
+import { returnToRunData } from '../data/rehabData';
+import { Calculator, Activity, Trophy, AlertCircle, Target, Calendar, ChevronDown, ChevronUp, CheckCircle2, Dumbbell, PlayCircle, TrendingUp, FileText, ChevronLeft, ChevronRight, Table as TableIcon, X, Footprints, Clock, List } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+// Walk to Run Program Component
+const WalkToRunProgram = () => {
+    const { title, phases, intro } = returnToRunData;
+
+    return (
+        <div className="space-y-6">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+                        <Footprints size={24} />
+                    </div>
+                    <div>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{title}</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Department of Rehabilitation Services - Physical Therapy</p>
+                    </div>
+                </div>
+                <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed border-l-4 border-blue-500 pl-4 bg-blue-50 dark:bg-blue-900/10 p-3 rounded-r-lg">
+                    {intro}
+                </p>
+            </div>
+
+            <div className="space-y-6">
+                {phases.map((phase, index) => (
+                    <div key={index} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                        <div className="bg-gray-50 dark:bg-gray-700/50 p-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                            <h4 className="font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                <span className="bg-marine-red text-white text-xs px-2 py-1 rounded uppercase tracking-wider">{phase.phase}</span>
+                                {phase.title}
+                            </h4>
+                        </div>
+                        
+                        <div className="p-5">
+                            <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">{phase.description}</p>
+                            
+                            {/* Phase II: Plyometrics */}
+                            {phase.exercises && (
+                                <div className="space-y-4">
+                                    <div className="grid grid-cols-2 gap-4 text-xs mb-4">
+                                        <div className="bg-orange-50 dark:bg-orange-900/20 p-3 rounded-lg">
+                                            <span className="font-bold text-orange-700 dark:text-orange-300 block mb-1">Rest Between Sets</span>
+                                            {phase.restBetweenSets}
+                                        </div>
+                                        <div className="bg-orange-50 dark:bg-orange-900/20 p-3 rounded-lg">
+                                            <span className="font-bold text-orange-700 dark:text-orange-300 block mb-1">Rest Between Exercises</span>
+                                            {phase.restBetweenExercises}
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full text-sm text-left">
+                                            <thead className="bg-gray-100 dark:bg-gray-700 text-xs uppercase text-gray-500 font-semibold">
+                                                <tr>
+                                                    <th className="px-4 py-2 rounded-l-lg">Exercise</th>
+                                                    <th className="px-4 py-2">Sets</th>
+                                                    <th className="px-4 py-2">Contacts/Set</th>
+                                                    <th className="px-4 py-2 rounded-r-lg">Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                                                {phase.exercises.map((ex, i) => (
+                                                    <tr key={i}>
+                                                        <td className="px-4 py-2 font-medium">{ex.name}</td>
+                                                        <td className="px-4 py-2">{ex.sets}</td>
+                                                        <td className="px-4 py-2">{ex.contactsPerSet}</td>
+                                                        <td className="px-4 py-2 font-bold text-gray-900 dark:text-white">{ex.totalContacts}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                            <tfoot>
+                                                <tr className="bg-gray-50 dark:bg-gray-800 font-bold">
+                                                    <td colSpan="3" className="px-4 py-2 text-right">Total Contacts:</td>
+                                                    <td className="px-4 py-2">{phase.totalContacts}</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    
+                                    {phase.guidelines && (
+                                        <div className="mt-4 bg-yellow-50 dark:bg-yellow-900/10 p-3 rounded-lg border border-yellow-100 dark:border-yellow-800">
+                                            <h5 className="text-xs font-bold text-yellow-700 dark:text-yellow-400 uppercase mb-2 flex items-center gap-1">
+                                                <AlertCircle size={12} /> Guidelines
+                                            </h5>
+                                            <ul className="list-disc list-inside text-xs text-yellow-800 dark:text-yellow-300 space-y-1">
+                                                {phase.guidelines.map((g, i) => (
+                                                    <li key={i}>{g}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* Phase III: Interval Schedule */}
+                            {phase.type === 'interval' && phase.schedule && (
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-sm text-left">
+                                        <thead className="bg-gray-100 dark:bg-gray-700 text-xs uppercase text-gray-500 font-semibold">
+                                            <tr>
+                                                <th className="px-4 py-2 rounded-l-lg">Step</th>
+                                                <th className="px-4 py-2">Walk</th>
+                                                <th className="px-4 py-2">Jog</th>
+                                                <th className="px-4 py-2">Reps</th>
+                                                <th className="px-4 py-2 rounded-r-lg">Total Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                                            {phase.schedule.map((row, i) => (
+                                                <tr key={i}>
+                                                    <td className="px-4 py-2 font-bold text-marine-red">{row.step}</td>
+                                                    <td className="px-4 py-2">{row.walk}</td>
+                                                    <td className="px-4 py-2">{row.jog}</td>
+                                                    <td className="px-4 py-2">{row.reps}</td>
+                                                    <td className="px-4 py-2 font-medium">{row.total}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+
+                            {/* Phase IV: Continuous Schedule */}
+                            {phase.type === 'continuous' && phase.schedule && (
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-sm text-left">
+                                        <thead className="bg-gray-100 dark:bg-gray-700 text-xs uppercase text-gray-500 font-semibold">
+                                            <tr>
+                                                <th className="px-4 py-2 rounded-l-lg">Week</th>
+                                                <th className="px-4 py-2">Run Duration</th>
+                                                <th className="px-4 py-2 rounded-r-lg">Frequency</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                                            {phase.schedule.map((row, i) => (
+                                                <tr key={i}>
+                                                    <td className="px-4 py-2 font-bold text-marine-red">{row.step}</td>
+                                                    <td className="px-4 py-2">{row.run}</td>
+                                                    <td className="px-4 py-2 text-gray-500 dark:text-gray-400">{row.freq}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+// Event Standards Modal Component
+const EventStandardsModal = ({ isOpen, onClose, eventType, gender }) => {
+    if (!isOpen) return null;
+
+    const g = gender.toLowerCase();
+    
+    // Helper to get title and data based on event type
+    const getEventData = () => {
+        switch (eventType) {
+            case 'pullups':
+                return { title: 'Pull-up Standards', max: pullupMax, min: pullupMin, type: 'reps' };
+            case 'pushups':
+                return { title: 'Push-up Standards', max: pushupMax, min: pushupMin, type: 'reps' };
+            case 'plank':
+                return { title: 'Plank Standards', type: 'plank' };
+            case 'run':
+                return { title: '3-Mile Run Standards', max: runMax, min: runMin, type: 'time' };
+            case 'mtc':
+                return { title: 'Movement to Contact Standards', max: mtcMax, min: mtcMin, type: 'time' };
+            case 'ammo':
+                return { title: 'Ammo Can Lift Standards', max: ammoMax, min: ammoMin, type: 'reps' };
+            case 'manuf':
+                return { title: 'Maneuver Under Fire Standards', max: manufMax, min: manufMin, type: 'time' };
+            default:
+                return null;
+        }
+    };
+
+    const data = getEventData();
+    if (!data) return null;
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+            <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-200 dark:border-gray-700"
+            >
+                <div className="bg-marine-red p-4 flex justify-between items-center">
+                    <h3 className="text-white font-bold text-lg flex items-center gap-2">
+                        <TableIcon size={20} className="text-yellow-400" />
+                        {data.title} ({gender === 'male' ? 'Male' : 'Female'})
+                    </h3>
+                    <button onClick={onClose} className="text-white/80 hover:text-white transition-colors">
+                        <X size={24} />
+                    </button>
+                </div>
+                
+                <div className="p-0 overflow-x-auto max-h-[70vh] overflow-y-auto">
+                    {data.type === 'plank' ? (
+                        <div className="p-6 text-center space-y-4">
+                            <p className="text-gray-700 dark:text-gray-300">
+                                The plank is not age-dependent.
+                            </p>
+                            <div className="grid grid-cols-2 gap-4 max-w-xs mx-auto">
+                                <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-100 dark:border-green-800">
+                                    <div className="text-sm text-gray-500 dark:text-gray-400 uppercase font-bold">Max (100 pts)</div>
+                                    <div className="text-2xl font-bold text-green-700 dark:text-green-400">3:45</div>
+                                </div>
+                                <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-100 dark:border-red-800">
+                                    <div className="text-sm text-gray-500 dark:text-gray-400 uppercase font-bold">Min (40 pts)</div>
+                                    <div className="text-2xl font-bold text-red-700 dark:text-red-400">0:40</div>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <table className="w-full text-sm text-left">
+                            <thead className="bg-gray-50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 uppercase text-xs sticky top-0">
+                                <tr>
+                                    <th className="px-6 py-4 font-bold">Age Group</th>
+                                    <th className="px-6 py-4 text-center text-green-700 dark:text-green-400">Max (100 pts)</th>
+                                    <th className="px-6 py-4 text-center text-red-700 dark:text-red-400">Min (40 pts)</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                                {ageGroups.map((age) => (
+                                    <tr key={age} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+                                        <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">{age}</td>
+                                        <td className="px-6 py-4 text-center font-medium">
+                                            {data.type === 'time' 
+                                                ? formatTime(data.max[g][age])
+                                                : data.max[g][age]
+                                            }
+                                        </td>
+                                        <td className="px-6 py-4 text-center font-medium">
+                                            {data.type === 'time' 
+                                                ? formatTime(data.min[g][age])
+                                                : data.min[g][age]
+                                            }
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
+                </div>
+                
+                <div className="p-4 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-700 text-xs text-center text-gray-500">
+                    Based on MCO 6100.13A Standards
+                </div>
+            </motion.div>
+        </div>
+    );
+};
+
 
 // Exercise recommendations based on weak PFT/CFT events
 const exerciseRecommendations = {
@@ -352,6 +617,86 @@ const trainingPlans = {
     }
 };
 
+// Helper to format seconds to M:SS
+const formatTime = (seconds) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, '0')}`;
+};
+
+const PerformanceStandards = ({ testType, gender }) => {
+    const g = gender.toLowerCase();
+    
+    return (
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden mt-8">
+            <div className="bg-gradient-to-r from-gray-800 to-gray-900 p-4 border-b border-gray-700">
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                    <FileText size={20} className="text-yellow-400" />
+                    {testType.toUpperCase()} Performance Standards ({gender === 'male' ? 'Male' : 'Female'})
+                </h3>
+            </div>
+            <div className="overflow-x-auto">
+                <table className="w-full text-sm text-left">
+                    <thead className="bg-gray-50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 uppercase text-xs">
+                        <tr>
+                            <th className="px-4 py-3 font-bold">Age Group</th>
+                            {testType === 'pft' ? (
+                                <>
+                                    <th className="px-4 py-3 text-center">Pull-ups (Max/Min)</th>
+                                    <th className="px-4 py-3 text-center">Push-ups (Max/Min)</th>
+                                    <th className="px-4 py-3 text-center">Plank (Max/Min)</th>
+                                    <th className="px-4 py-3 text-center">3-Mile Run (Max/Min)</th>
+                                </>
+                            ) : (
+                                <>
+                                    <th className="px-4 py-3 text-center">MTC (Max/Min)</th>
+                                    <th className="px-4 py-3 text-center">Ammo Lifts (Max/Min)</th>
+                                    <th className="px-4 py-3 text-center">MANUF (Max/Min)</th>
+                                </>
+                            )}
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                        {ageGroups.map((age) => (
+                            <tr key={age} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+                                <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{age}</td>
+                                {testType === 'pft' ? (
+                                    <>
+                                        <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
+                                            {pullupMax[g][age]} / {pullupMin[g][age]}
+                                        </td>
+                                        <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
+                                            {pushupMax[g][age]} / {pushupMin[g][age]}
+                                        </td>
+                                        <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
+                                            3:45 / 0:40
+                                        </td>
+                                        <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
+                                            {formatTime(runMax[g][age])} / {formatTime(runMin[g][age])}
+                                        </td>
+                                    </>
+                                ) : (
+                                    <>
+                                        <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
+                                            {formatTime(mtcMax[g][age])} / {formatTime(mtcMin[g][age])}
+                                        </td>
+                                        <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
+                                            {ammoMax[g][age]} / {ammoMin[g][age]}
+                                        </td>
+                                        <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
+                                            {formatTime(manufMax[g][age])} / {formatTime(manufMin[g][age])}
+                                        </td>
+                                    </>
+                                )}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+};
+
 const visualPlans = {
     pft: {
         title: "PFT Workout Cards",
@@ -371,7 +716,7 @@ const visualPlans = {
 const PFTPrep = () => {
     const [testType, setTestType] = useState('pft'); // 'pft' or 'cft'
     const [gender, setGender] = useState('male');
-    const [age, setAge] = useState(25);
+    const [ageGroup, setAgeGroup] = useState('21-25');
     const [altitude, setAltitude] = useState(false);
     const [activeTab, setActiveTab] = useState('calculator'); // 'calculator', 'cards', 'pullup'
 
@@ -434,8 +779,6 @@ const PFTPrep = () => {
     };
 
     const result = useMemo(() => {
-        const ageGroup = getAgeGroup(age);
-
         if (testType === 'pft') {
             const inputs = {
                 upperBodyType,
@@ -475,7 +818,10 @@ const PFTPrep = () => {
                 scoreClass: scores.classification.name
             };
         }
-    }, [testType, gender, age, altitude, pullups, pushups, plankTime, runTime, upperBodyType, mtcTime, alReps, manufTime]);
+    }, [testType, gender, ageGroup, altitude, pullups, pushups, plankTime, runTime, upperBodyType, mtcTime, alReps, manufTime]);
+
+    // State for Event Standards Modal
+    const [activeModalEvent, setActiveModalEvent] = useState(null);
 
     // Format time (seconds to MM:SS)
     const formatTime = (seconds) => {
@@ -484,7 +830,7 @@ const PFTPrep = () => {
         return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
 
-    const TimeInput = ({ label, totalSeconds, onChange }) => {
+    const TimeInput = ({ label, totalSeconds, onChange, onShowTable }) => {
         const minutes = Math.floor(totalSeconds / 60);
         const seconds = totalSeconds % 60;
 
@@ -502,7 +848,17 @@ const PFTPrep = () => {
 
         return (
             <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{label}</label>
+                <div className="flex justify-between mb-3">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
+                    {onShowTable && (
+                        <button 
+                            onClick={onShowTable}
+                            className="text-xs flex items-center gap-1 text-marine-red font-semibold hover:underline bg-white dark:bg-gray-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-500 shadow-sm"
+                        >
+                            <TableIcon size={12} /> Table
+                        </button>
+                    )}
+                </div>
                 <div className="flex items-center gap-3">
                     <div className="relative flex-1">
                         <input
@@ -531,11 +887,26 @@ const PFTPrep = () => {
         );
     };
 
-    const NumberInput = ({ label, value, onChange, max }) => (
+    const NumberInput = ({ label, value, onChange, max, onShowTable }) => (
         <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
             <div className="flex justify-between mb-3">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
-                <span className="text-xs text-gray-500 dark:text-gray-400">Max: {max}</span>
+                <div className="flex items-center gap-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
+                    {onShowTable && (
+                        <button 
+                            onClick={onShowTable}
+                            className="text-xs flex items-center gap-1 text-marine-red font-semibold hover:underline bg-white dark:bg-gray-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-500 shadow-sm"
+                        >
+                            <TableIcon size={12} /> Table
+                        </button>
+                    )}
+                </div>
+                <button 
+                    onClick={() => onChange(max)}
+                    className="text-xs text-marine-red font-semibold hover:underline bg-white dark:bg-gray-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-500 shadow-sm"
+                >
+                    Max: {max}
+                </button>
             </div>
             <div className="relative">
                 <input
@@ -631,12 +1002,28 @@ const PFTPrep = () => {
                         </div>
                     </button>
                 )}
+                {testType === 'pft' && (
+                    <button
+                        onClick={() => setActiveTab('walk_run')}
+                        className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                            activeTab === 'walk_run'
+                                ? 'border-marine-red text-marine-red'
+                                : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                        }`}
+                    >
+                        <div className="flex items-center gap-2">
+                            <Footprints size={16} />
+                            Walk to Run
+                        </div>
+                    </button>
+                )}
             </div>
 
             {/* Content Area */}
             <div className="space-y-6">
                 {activeTab === 'calculator' && (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="space-y-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {/* Inputs Column */}
                         <div className="md:col-span-2 space-y-6">
                             {/* Personal Details */}
@@ -648,34 +1035,40 @@ const PFTPrep = () => {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Gender</label>
-                                        <select
-                                            value={gender}
-                                            onChange={(e) => setGender(e.target.value)}
-                                            className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-marine-red focus:border-marine-red"
-                                        >
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
+                                        <div className="flex gap-2 bg-gray-100 dark:bg-gray-700/50 p-1 rounded-lg w-full">
+                                            <button
+                                                onClick={() => setGender('male')}
+                                                className={`flex-1 py-2 rounded-md text-sm font-semibold transition-all ${
+                                                    gender === 'male' 
+                                                        ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' 
+                                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'
+                                                }`}
+                                            >
+                                                Male
+                                            </button>
+                                            <button
+                                                onClick={() => setGender('female')}
+                                                className={`flex-1 py-2 rounded-md text-sm font-semibold transition-all ${
+                                                    gender === 'female' 
+                                                        ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' 
+                                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'
+                                                }`}
+                                            >
+                                                Female
+                                            </button>
+                                        </div>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Age</label>
-                                        <input
-                                            type="number"
-                                            value={age}
-                                            onChange={(e) => setAge(parseInt(e.target.value))}
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Age Group</label>
+                                        <select
+                                            value={ageGroup}
+                                            onChange={(e) => setAgeGroup(e.target.value)}
                                             className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-marine-red focus:border-marine-red"
-                                        />
-                                    </div>
-                                    <div className="col-span-2">
-                                        <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                                            <input
-                                                type="checkbox"
-                                                checked={altitude}
-                                                onChange={(e) => setAltitude(e.target.checked)}
-                                                className="rounded border-gray-300 text-marine-red focus:ring-marine-red"
-                                            />
-                                            High Altitude (>4500ft)
-                                        </label>
+                                        >
+                                            {ageGroups.map(group => (
+                                                <option key={group} value={group}>{group}</option>
+                                            ))}
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -692,132 +1085,92 @@ const PFTPrep = () => {
                                         {/* Upper Body */}
                                         <div>
                                             <div className="flex justify-between mb-2">
-                                                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Upper Body</label>
+                                                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Upper Body Event</label>
                                                 <div className="flex gap-2 text-xs">
                                                     <button
                                                         onClick={() => setUpperBodyType('pullups')}
-                                                        className={`px-2 py-0.5 rounded ${upperBodyType === 'pullups' ? 'bg-marine-red text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'}`}
+                                                        className={`px-3 py-1 rounded-full transition-colors ${upperBodyType === 'pullups' ? 'bg-marine-red text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'}`}
                                                     >
                                                         Pull-ups
                                                     </button>
                                                     <button
                                                         onClick={() => setUpperBodyType('pushups')}
-                                                        className={`px-2 py-0.5 rounded ${upperBodyType === 'pushups' ? 'bg-marine-red text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'}`}
+                                                        className={`px-3 py-1 rounded-full transition-colors ${upperBodyType === 'pushups' ? 'bg-marine-red text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'}`}
                                                     >
                                                         Push-ups
                                                     </button>
                                                 </div>
                                             </div>
-                                            <input
-                                                type="range"
-                                                min="0"
-                                                max={upperBodyType === 'pullups' ? "30" : "100"}
+                                            <NumberInput
+                                                label={upperBodyType === 'pullups' ? "Pull-up Reps" : "Push-up Reps"}
                                                 value={upperBodyType === 'pullups' ? pullups : pushups}
-                                                onChange={(e) => upperBodyType === 'pullups' ? setPullups(parseInt(e.target.value)) : setPushups(parseInt(e.target.value))}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-marine-red"
+                                                onChange={upperBodyType === 'pullups' ? setPullups : setPushups}
+                                                max={upperBodyType === 'pullups' ? 30 : 100}
+                                                onShowTable={() => setActiveModalEvent(upperBodyType)}
                                             />
-                                            <div className="flex justify-between mt-1">
-                                                <span className="text-xs text-gray-500">0</span>
-                                                <span className="font-bold text-marine-red">
-                                                    {upperBodyType === 'pullups' ? pullups : pushups} reps
-                                                </span>
-                                                <span className="text-xs text-gray-500">{upperBodyType === 'pullups' ? "30" : "100"}</span>
-                                            </div>
                                         </div>
 
                                         {/* Plank */}
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Plank (seconds)</label>
-                                            <input
-                                                type="range"
-                                                min="0"
-                                                max="285"
-                                                value={plankTime}
-                                                onChange={(e) => setPlankTime(parseInt(e.target.value))}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-marine-red"
-                                            />
-                                            <div className="flex justify-between mt-1">
-                                                <span className="text-xs text-gray-500">0:00</span>
-                                                <span className="font-bold text-marine-red">{formatTime(plankTime)}</span>
-                                                <span className="text-xs text-gray-500">4:45</span>
-                                            </div>
-                                        </div>
+                                        <TimeInput
+                                            label="Plank Duration"
+                                            totalSeconds={plankTime}
+                                            onChange={setPlankTime}
+                                            onShowTable={() => setActiveModalEvent('plank')}
+                                        />
 
                                         {/* Run */}
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">3-Mile Run</label>
-                                            <input
-                                                type="range"
-                                                min="1080"
-                                                max="2100"
-                                                step="10"
-                                                value={runTime}
-                                                onChange={(e) => setRunTime(parseInt(e.target.value))}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-marine-red"
-                                            />
-                                            <div className="flex justify-between mt-1">
-                                                <span className="text-xs text-gray-500">18:00</span>
-                                                <span className="font-bold text-marine-red">{formatTime(runTime)}</span>
-                                                <span className="text-xs text-gray-500">35:00</span>
-                                            </div>
-                                        </div>
+                                        <TimeInput
+                                            label="3-Mile Run Time"
+                                            totalSeconds={runTime}
+                                            onChange={setRunTime}
+                                            onShowTable={() => setActiveModalEvent('run')}
+                                        />
                                     </div>
                                 ) : (
                                     <div className="space-y-6">
                                         {/* MTC */}
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Movement to Contact (880 yds)</label>
-                                            <input
-                                                type="range"
-                                                min="120"
-                                                max="300"
-                                                step="1"
-                                                value={mtcTime}
-                                                onChange={(e) => setMtcTime(parseInt(e.target.value))}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-marine-red"
-                                            />
-                                            <div className="flex justify-between mt-1">
-                                                <span className="text-xs text-gray-500">2:00</span>
-                                                <span className="font-bold text-marine-red">{formatTime(mtcTime)}</span>
-                                                <span className="text-xs text-gray-500">5:00</span>
-                                            </div>
-                                        </div>
+                                        <TimeInput
+                                            label="Movement to Contact (880 yds)"
+                                            totalSeconds={mtcTime}
+                                            onChange={setMtcTime}
+                                            onShowTable={() => setActiveModalEvent('mtc')}
+                                        />
 
                                         {/* Ammo Lifts */}
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Ammo Can Lifts (2 mins)</label>
-                                            <input
-                                                type="range"
-                                                min="0"
-                                                max="150"
-                                                value={alReps}
-                                                onChange={(e) => setAlReps(parseInt(e.target.value))}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-marine-red"
-                                            />
-                                            <div className="flex justify-between mt-1">
-                                                <span className="text-xs text-gray-500">0</span>
-                                                <span className="font-bold text-marine-red">{alReps} reps</span>
-                                                <span className="text-xs text-gray-500">150</span>
-                                            </div>
-                                        </div>
+                                        <NumberInput
+                                            label="Ammo Can Lifts (2 mins)"
+                                            value={alReps}
+                                            onChange={setAlReps}
+                                            max={150}
+                                            onShowTable={() => setActiveModalEvent('ammo')}
+                                        />
 
                                         {/* MANUF */}
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Maneuver Under Fire</label>
-                                            <input
-                                                type="range"
-                                                min="120"
-                                                max="300"
-                                                step="1"
-                                                value={manufTime}
-                                                onChange={(e) => setManufTime(parseInt(e.target.value))}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-marine-red"
-                                            />
-                                            <div className="flex justify-between mt-1">
-                                                <span className="text-xs text-gray-500">2:00</span>
-                                                <span className="font-bold text-marine-red">{formatTime(manufTime)}</span>
-                                                <span className="text-xs text-gray-500">5:00</span>
-                                            </div>
+                                        <TimeInput
+                                            label="Maneuver Under Fire"
+                                            totalSeconds={manufTime}
+                                            onChange={setManufTime}
+                                            onShowTable={() => setActiveModalEvent('manuf')}
+                                        />
+
+                                        {/* Altitude Adjustment */}
+                                        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800/30 border-l-4 border-l-blue-500 dark:border-l-blue-400">
+                                            <label className="flex items-start gap-3 cursor-pointer">
+                                                <div className="relative flex items-center">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={altitude}
+                                                        onChange={(e) => setAltitude(e.target.checked)}
+                                                        className="w-5 h-5 rounded border-gray-300 text-marine-red focus:ring-marine-red"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <span className="block text-sm font-medium text-blue-900 dark:text-blue-100">High Altitude (&gt;4,500 ft MSL)</span>
+                                                    <span className="block text-xs text-blue-700 dark:text-blue-300 mt-1">
+                                                        Adjusts minimum requirements for MTC and MANUF events per MCO 6100.13A.
+                                                    </span>
+                                                </div>
+                                            </label>
                                         </div>
                                     </div>
                                 )}
@@ -878,6 +1231,31 @@ const PFTPrep = () => {
                                         </>
                                     )}
                                 </div>
+
+                                {altitude && (
+                                    <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 text-xs rounded border border-yellow-200 dark:border-yellow-800 flex items-start gap-2">
+                                        <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
+                                        <span>Scores calculated with high altitude consideration (&gt;4,500 ft MSL). Results are for reference only; consult MCO 6100.13A for official adjustments.</span>
+                                    </div>
+                                )}
+
+                                <div className="mt-6 border-t border-gray-100 dark:border-gray-700 pt-4">
+                                    <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Performance Standards</h4>
+                                    <div className="grid grid-cols-3 gap-2 text-center text-xs">
+                                        <div className="bg-green-50 dark:bg-green-900/20 p-2 rounded">
+                                            <div className="font-bold text-green-700 dark:text-green-300">1st Class</div>
+                                            <div className="text-green-600 dark:text-green-400">235 - 300</div>
+                                        </div>
+                                        <div className="bg-yellow-50 dark:bg-yellow-900/20 p-2 rounded">
+                                            <div className="font-bold text-yellow-700 dark:text-yellow-300">2nd Class</div>
+                                            <div className="text-yellow-600 dark:text-yellow-400">200 - 234</div>
+                                        </div>
+                                        <div className="bg-orange-50 dark:bg-orange-900/20 p-2 rounded">
+                                            <div className="font-bold text-orange-700 dark:text-orange-300">3rd Class</div>
+                                            <div className="text-orange-600 dark:text-orange-400">120 - 199</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Recommendations (Conditional) */}
@@ -890,6 +1268,9 @@ const PFTPrep = () => {
                             )}
                         </div>
                     </div>
+
+                    <PerformanceStandards testType={testType} gender={gender} />
+                </div>
                 )}
 
                 {activeTab === 'cards' && (
@@ -948,9 +1329,9 @@ const PFTPrep = () => {
                                 />
 
                                 {/* Navigation Overlay */}
-                                <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <button
-                                        onClick={() => setCurrentCardIndex(prev => Math.max(0, prev - 1))}
+                            <div className="absolute inset-0 flex items-center justify-between p-4">
+                                <button
+                                    onClick={() => setCurrentCardIndex(prev => Math.max(0, prev - 1))}
                                         disabled={currentCardIndex === 0}
                                         className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                                     >
@@ -990,7 +1371,22 @@ const PFTPrep = () => {
                 {activeTab === 'pullup' && (
                     <PullupProgram />
                 )}
+
+                {activeTab === 'walk_run' && (
+                    <WalkToRunProgram />
+                )}
             </div>
+
+            <AnimatePresence>
+                {activeModalEvent && (
+                    <EventStandardsModal 
+                        isOpen={!!activeModalEvent} 
+                        onClose={() => setActiveModalEvent(null)} 
+                        eventType={activeModalEvent}
+                        gender={gender}
+                    />
+                )}
+            </AnimatePresence>
         </div>
     );
 };

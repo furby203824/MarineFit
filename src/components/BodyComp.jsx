@@ -1,7 +1,118 @@
 import React, { useState } from 'react';
-import { Heart, Info, CheckCircle, AlertTriangle, AlertOctagon, Dumbbell, PlayCircle, TrendingUp, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Heart, Info, CheckCircle, AlertTriangle, AlertOctagon, Dumbbell, PlayCircle, TrendingUp, CheckCircle2, AlertCircle, Table as TableIcon, X, Activity } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ageGroups } from '../utils/pftScoring';
 import { hittExercises } from '../data/hittData';
+
+// Body Composition Standards Modal
+const BodyCompStandardsModal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+            <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-200 dark:border-gray-700"
+            >
+                <div className="bg-marine-red p-4 flex justify-between items-center">
+                    <h3 className="text-white font-bold text-lg flex items-center gap-2">
+                        <TableIcon size={20} className="text-yellow-400" />
+                        Body Composition Standards
+                    </h3>
+                    <button onClick={onClose} className="text-white/80 hover:text-white transition-colors">
+                        <X size={24} />
+                    </button>
+                </div>
+                
+                <div className="p-0 overflow-y-auto max-h-[70vh]">
+                    <div className="p-6 space-y-6">
+                        {/* WHtR Standards */}
+                        <div>
+                            <h4 className="font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                                <Activity size={18} className="text-marine-red" />
+                                Waist-to-Height Ratio (WHtR)
+                            </h4>
+                            <div className="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+                                <table className="w-full text-sm text-left">
+                                    <thead className="bg-gray-50 dark:bg-gray-700/50 uppercase text-xs">
+                                        <tr>
+                                            <th className="px-4 py-2 font-bold text-gray-700 dark:text-gray-300">Ratio</th>
+                                            <th className="px-4 py-2 font-bold text-gray-700 dark:text-gray-300">Classification</th>
+                                            <th className="px-4 py-2 font-bold text-gray-700 dark:text-gray-300">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                                        <tr className="bg-green-50/50 dark:bg-green-900/10">
+                                            <td className="px-4 py-2 font-bold text-green-700 dark:text-green-400">&lt; 0.50</td>
+                                            <td className="px-4 py-2 text-green-700 dark:text-green-400">Optimal Readiness</td>
+                                            <td className="px-4 py-2 text-gray-600 dark:text-gray-400">None</td>
+                                        </tr>
+                                        <tr className="bg-blue-50/50 dark:bg-blue-900/10">
+                                            <td className="px-4 py-2 font-bold text-blue-700 dark:text-blue-400">0.50 - 0.54</td>
+                                            <td className="px-4 py-2 text-blue-700 dark:text-blue-400">Compliant</td>
+                                            <td className="px-4 py-2 text-gray-600 dark:text-gray-400">None</td>
+                                        </tr>
+                                        <tr className="bg-red-50/50 dark:bg-red-900/10">
+                                            <td className="px-4 py-2 font-bold text-red-700 dark:text-red-400">≥ 0.55</td>
+                                            <td className="px-4 py-2 text-red-700 dark:text-red-400">High Risk</td>
+                                            <td className="px-4 py-2 text-gray-600 dark:text-gray-400">Secondary Eval</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        {/* Body Fat Standards */}
+                        <div>
+                            <h4 className="font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                                <AlertCircle size={18} className="text-orange-600" />
+                                Max Body Fat % (Secondary Eval)
+                            </h4>
+                            <div className="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+                                <table className="w-full text-sm text-left">
+                                    <thead className="bg-gray-50 dark:bg-gray-700/50 uppercase text-xs">
+                                        <tr>
+                                            <th className="px-4 py-2 font-bold text-gray-700 dark:text-gray-300">Age Group</th>
+                                            <th className="px-4 py-2 font-bold text-blue-700 dark:text-blue-400">Male Max %</th>
+                                            <th className="px-4 py-2 font-bold text-pink-700 dark:text-pink-400">Female Max %</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                                        <tr>
+                                            <td className="px-4 py-2 font-medium">17-20</td>
+                                            <td className="px-4 py-2">18%</td>
+                                            <td className="px-4 py-2">26%</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="px-4 py-2 font-medium">21-30</td>
+                                            <td className="px-4 py-2">19%</td>
+                                            <td className="px-4 py-2">27%</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="px-4 py-2 font-medium">31-40</td>
+                                            <td className="px-4 py-2">20%</td>
+                                            <td className="px-4 py-2">28%</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="px-4 py-2 font-medium">41+</td>
+                                            <td className="px-4 py-2">21%</td>
+                                            <td className="px-4 py-2">29%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                * Marines exceeding WHtR standards are measured for body fat percentage. Failure of both assessments constitutes BCP assignment.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </motion.div>
+        </div>
+    );
+};
 
 // Helper to get fat-burning exercises
 const getFatBurningExercises = () => {
@@ -97,11 +208,47 @@ const ImprovementRecommendations = ({ result }) => {
     );
 };
 
+const NumberInput = ({ label, value, onChange, min, max, step = 1, placeholder, onShowTable }) => (
+    <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
+        <div className="flex justify-between mb-3">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
+            <div className="flex items-center gap-3">
+                <span className="text-xs text-gray-500 dark:text-gray-400">Range: {min}"-{max}"</span>
+                {onShowTable && (
+                    <button
+                        onClick={onShowTable}
+                        className="flex items-center gap-1 text-xs font-bold text-marine-red hover:text-red-700 bg-white dark:bg-gray-600 px-2 py-1 rounded border border-marine-red/20 shadow-sm transition-colors"
+                        title="View Standards Table"
+                    >
+                        <TableIcon size={12} />
+                        Table
+                    </button>
+                )}
+            </div>
+        </div>
+        <div className="relative">
+            <input
+                type="number"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                className="w-full text-center text-lg font-bold rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-marine-red focus:border-marine-red py-3"
+                min={min}
+                max={max}
+                step={step}
+                placeholder={placeholder}
+            />
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-medium uppercase">Inches</span>
+        </div>
+    </div>
+);
+
 const BodyComp = () => {
   const [height, setHeight] = useState('');
   const [waist, setWaist] = useState('');
-  const [gender, setGender] = useState('');
+  const [gender, setGender] = useState('male');
+  const [ageGroup, setAgeGroup] = useState('21-25');
   const [result, setResult] = useState(null);
+  const [showStandards, setShowStandards] = useState(false);
 
   // Round down to nearest 0.5 inch per DoD 1308.03
   const roundDownToHalf = (value) => {
@@ -115,26 +262,6 @@ const BodyComp = () => {
     if (inches === 0) return `${feet} ft`;
     const inchDisplay = inches % 1 === 0.5 ? `${inches}` : `${inches}`;
     return `${feet} ft ${inchDisplay} in`;
-  };
-
-  const generateHeightOptions = (start, end, step) => {
-    const options = [];
-    for (let i = start; i <= end; i += step) {
-      options.push(
-        <option key={i} value={i}>
-          {i}" ({inchesToFeetAndInches(i)})
-        </option>
-      );
-    }
-    return options;
-  };
-
-  const generateOptions = (start, end, step) => {
-    const options = [];
-    for (let i = start; i <= end; i += step) {
-      options.push(<option key={i} value={i}>{i}"</option>);
-    }
-    return options;
   };
 
   const calculateWhtr = () => {
@@ -217,48 +344,79 @@ const BodyComp = () => {
             </div>
 
             <div className="space-y-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Gender</label>
-                    <select
-                        value={gender}
-                        onChange={(e) => setGender(e.target.value)}
-                        className="input-field"
-                    >
-                        <option value="">Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
+                {/* Personal Details */}
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Gender</label>
+                        <div className="flex gap-2 bg-gray-100 dark:bg-gray-700/50 p-1 rounded-lg w-full">
+                            <button
+                                onClick={() => setGender('male')}
+                                className={`flex-1 py-2 rounded-md text-sm font-semibold transition-all ${
+                                    gender === 'male' 
+                                        ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' 
+                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'
+                                }`}
+                            >
+                                Male
+                            </button>
+                            <button
+                                onClick={() => setGender('female')}
+                                className={`flex-1 py-2 rounded-md text-sm font-semibold transition-all ${
+                                    gender === 'female' 
+                                        ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' 
+                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'
+                                }`}
+                            >
+                                Female
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div className="col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Age Group</label>
+                        <select
+                            value={ageGroup}
+                            onChange={(e) => setAgeGroup(e.target.value)}
+                            className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-marine-red focus:border-marine-red py-2.5"
+                        >
+                            {ageGroups.map(group => (
+                                <option key={group} value={group}>{group}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Height (Inches)</label>
-                    <select
+                <div className="pt-2 space-y-4">
+                    <NumberInput
+                        label="Height"
                         value={height}
-                        onChange={(e) => setHeight(e.target.value)}
-                        className="input-field"
-                    >
-                        <option value="">Select Height</option>
-                        {generateHeightOptions(50, 96, 0.5)}
-                    </select>
-                </div>
+                        onChange={setHeight}
+                        min={48}
+                        max={96}
+                        step={0.5}
+                        placeholder="e.g. 70"
+                        onShowTable={() => setShowStandards(true)}
+                    />
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Waist Circumference (Inches)</label>
-                    <select
+                    <NumberInput
+                        label="Waist Circumference"
                         value={waist}
-                        onChange={(e) => setWaist(e.target.value)}
-                        className="input-field"
-                    >
-                        <option value="">Select Waist</option>
-                        {generateOptions(20, 60, 0.5)}
-                    </select>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Measure at the navel (belly button).</p>
+                        onChange={setWaist}
+                        min={20}
+                        max={60}
+                        step={0.5}
+                        placeholder="e.g. 34"
+                        onShowTable={() => setShowStandards(true)}
+                    />
+                    <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                        <Info size={12} /> Measure at the navel (belly button).
+                    </p>
                 </div>
 
                 <button 
                     onClick={calculateWhtr}
                     disabled={!height || !waist}
-                    className="w-full btn mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full btn mt-6 disabled:opacity-50 disabled:cursor-not-allowed py-3 text-lg"
                 >
                     Calculate WHtR
                 </button>
@@ -309,6 +467,11 @@ const BodyComp = () => {
             )}
         </AnimatePresence>
       </div>
+
+      <BodyCompStandardsModal 
+        isOpen={showStandards} 
+        onClose={() => setShowStandards(false)} 
+      />
     </div>
   );
 };
