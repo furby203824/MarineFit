@@ -8,6 +8,8 @@ import {
 import { keyPrinciples, sections } from '../data/nutritionData';
 import NutritionSectionContent from './nutrition/NutritionSectionContent';
 
+const BASE_URL = import.meta.env.BASE_URL;
+
 const Nutrition = () => {
     const [activeSection, setActiveSection] = useState(null);
     const [selectedResource, setSelectedResource] = useState(null);
@@ -179,7 +181,7 @@ const Nutrition = () => {
                             </button>
 
                             <img
-                                src={`/nutrition/${selectedResource.filename}`}
+                                src={`${BASE_URL}nutrition/${selectedResource.filename}`}
                                 alt={selectedResource.title}
                                 className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl bg-white"
                             />
@@ -190,7 +192,7 @@ const Nutrition = () => {
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        const src = `/nutrition/${selectedResource.filename}`;
+                                        const src = `${BASE_URL}nutrition/${selectedResource.filename}`;
                                         fetch(src)
                                             .then(r => r.blob())
                                             .then(blob => {
