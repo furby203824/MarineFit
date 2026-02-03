@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Shield, CheckCircle2, ChevronLeft, ChevronRight, ImageIcon, Target } from 'lucide-react';
 
+const BASE_URL = import.meta.env.BASE_URL;
+
 const plankVisuals = [
-    "/pft/Plank-Progression_Wk1-Wk4_page-0001.jpg",
-    "/pft/Plank-Progression_Wk1-Wk4_page-0002.jpg",
-    "/pft/Plank-Progression_Wk1-Wk4_page-0003.jpg",
-    "/pft/Plank-Progression_Wk1-Wk4_page-0004.jpg"
+    `${BASE_URL}pft/Plank-Progression_Wk1-Wk4_page-0001.jpg`,
+    `${BASE_URL}pft/Plank-Progression_Wk1-Wk4_page-0002.jpg`,
+    `${BASE_URL}pft/Plank-Progression_Wk1-Wk4_page-0003.jpg`,
+    `${BASE_URL}pft/Plank-Progression_Wk1-Wk4_page-0004.jpg`
 ];
 
 const PlankProgram = () => {
