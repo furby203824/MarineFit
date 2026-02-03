@@ -176,27 +176,29 @@ const WalkToRunProgram = () => {
 
 // Event Standards Modal Component
 const EventStandardsModal = ({ isOpen, onClose, eventType, gender }) => {
+    const [selectedAge, setSelectedAge] = useState('21-25');
+
     if (!isOpen) return null;
 
     const g = gender.toLowerCase();
-    
+
     // Helper to get title and data based on event type
     const getEventData = () => {
         switch (eventType) {
             case 'pullups':
-                return { title: 'Pull-up Standards', max: pullupMax, min: pullupMin, type: 'reps' };
+                return { title: 'Pull-up Standards', max: pullupMax, min: pullupMin, type: 'reps', unit: 'reps' };
             case 'pushups':
-                return { title: 'Push-up Standards', max: pushupMax, min: pushupMin, type: 'reps' };
+                return { title: 'Push-up Standards', max: pushupMax, min: pushupMin, type: 'reps', unit: 'reps' };
             case 'plank':
                 return { title: 'Plank Standards', type: 'plank' };
             case 'run':
-                return { title: '3-Mile Run Standards', max: runMax, min: runMin, type: 'time' };
+                return { title: '3-Mile Run Standards', max: runMax, min: runMin, type: 'time', unit: 'time' };
             case 'mtc':
-                return { title: 'Movement to Contact Standards', max: mtcMax, min: mtcMin, type: 'time' };
+                return { title: 'Movement to Contact Standards', max: mtcMax, min: mtcMin, type: 'time', unit: 'time' };
             case 'ammo':
-                return { title: 'Ammo Can Lift Standards', max: ammoMax, min: ammoMin, type: 'reps' };
+                return { title: 'Ammo Can Lift Standards', max: ammoMax, min: ammoMin, type: 'reps', unit: 'reps' };
             case 'manuf':
-                return { title: 'Maneuver Under Fire Standards', max: manufMax, min: manufMin, type: 'time' };
+                return { title: 'Maneuver Under Fire Standards', max: manufMax, min: manufMin, type: 'time', unit: 'time' };
             default:
                 return null;
         }
@@ -205,75 +207,136 @@ const EventStandardsModal = ({ isOpen, onClose, eventType, gender }) => {
     const data = getEventData();
     if (!data) return null;
 
+    // Generate full scoring table for the selected age group
+    const generateScoringTable = () => {
+        if (data.type === 'plank') {
+            // Plank scoring: 40 seconds (40 pts) to 225 seconds/3:45 (100 pts)
+            const rows = [];
+            for (let pts = 100; pts >= 40; pts -= 5) {
+                const ratio = (pts - 40) / 60;
+                const seconds = Math.round(40 + ratio * (225 - 40));
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                rows.push({ value: `${mins}:${secs.toString().padStart(2, '0')}`, points: pts });
+            }
+            return rows;
+        }
+
+        const maxVal = data.max[g][selectedAge];
+        const minVal = data.min[g][selectedAge];
+
+        if (data.type === 'reps') {
+            // Rep-based: higher is better
+            const rows = [];
+            for (let reps = maxVal; reps >= minVal; reps--) {
+                const pts = reps >= maxVal ? 100 :
+                    reps <= minVal ? 40 :
+                        Math.round(40 + ((reps - minVal) / (maxVal - minVal)) * 60);
+                rows.push({ value: reps, points: pts });
+            }
+            return rows;
+        } else {
+            // Time-based: lower is better (maxVal is fastest/best, minVal is slowest/worst)
+            const rows = [];
+            // Step by 5 seconds for granularity
+            for (let secs = maxVal; secs <= minVal; secs += 5) {
+                const pts = secs <= maxVal ? 100 :
+                    secs >= minVal ? 40 :
+                        Math.round(100 - ((secs - maxVal) / (minVal - maxVal)) * 60);
+                const mins = Math.floor(secs / 60);
+                const s = secs % 60;
+                rows.push({ value: `${mins}:${s.toString().padStart(2, '0')}`, points: pts });
+            }
+            return rows;
+        }
+    };
+
+    const scoringTable = generateScoringTable();
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-            <motion.div 
+            <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-200 dark:border-gray-700"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md overflow-hidden border border-gray-200 dark:border-gray-700"
             >
                 <div className="bg-marine-red p-4 flex justify-between items-center">
                     <h3 className="text-white font-bold text-lg flex items-center gap-2">
                         <TableIcon size={20} className="text-yellow-400" />
-                        {data.title} ({gender === 'male' ? 'Male' : 'Female'})
+                        {data.title}
                     </h3>
                     <button onClick={onClose} className="text-white/80 hover:text-white transition-colors">
                         <X size={24} />
                     </button>
                 </div>
-                
-                <div className="p-0 overflow-x-auto max-h-[70vh] overflow-y-auto">
-                    {data.type === 'plank' ? (
-                        <div className="p-6 text-center space-y-4">
-                            <p className="text-gray-700 dark:text-gray-300">
-                                The plank is not age-dependent.
-                            </p>
-                            <div className="grid grid-cols-2 gap-4 max-w-xs mx-auto">
-                                <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-100 dark:border-green-800">
-                                    <div className="text-sm text-gray-500 dark:text-gray-400 uppercase font-bold">Max (100 pts)</div>
-                                    <div className="text-2xl font-bold text-green-700 dark:text-green-400">3:45</div>
-                                </div>
-                                <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-100 dark:border-red-800">
-                                    <div className="text-sm text-gray-500 dark:text-gray-400 uppercase font-bold">Min (40 pts)</div>
-                                    <div className="text-2xl font-bold text-red-700 dark:text-red-400">0:40</div>
-                                </div>
-                            </div>
+
+                {/* Filters */}
+                <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+                    <div className="flex items-center gap-4 flex-wrap">
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs font-medium text-gray-500 uppercase">Gender:</span>
+                            <span className="text-sm font-bold text-gray-900 dark:text-white">
+                                {gender === 'male' ? 'Male' : 'Female'}
+                            </span>
                         </div>
-                    ) : (
-                        <table className="w-full text-sm text-left">
-                            <thead className="bg-gray-50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 uppercase text-xs sticky top-0">
-                                <tr>
-                                    <th className="px-6 py-4 font-bold">Age Group</th>
-                                    <th className="px-6 py-4 text-center text-green-700 dark:text-green-400">Max (100 pts)</th>
-                                    <th className="px-6 py-4 text-center text-red-700 dark:text-red-400">Min (40 pts)</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                                {ageGroups.map((age) => (
-                                    <tr key={age} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
-                                        <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">{age}</td>
-                                        <td className="px-6 py-4 text-center font-medium">
-                                            {data.type === 'time' 
-                                                ? formatTime(data.max[g][age])
-                                                : data.max[g][age]
-                                            }
-                                        </td>
-                                        <td className="px-6 py-4 text-center font-medium">
-                                            {data.type === 'time' 
-                                                ? formatTime(data.min[g][age])
-                                                : data.min[g][age]
-                                            }
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    )}
+                        {data.type !== 'plank' && (
+                            <div className="flex items-center gap-2">
+                                <span className="text-xs font-medium text-gray-500 uppercase">Age:</span>
+                                <select
+                                    value={selectedAge}
+                                    onChange={(e) => setSelectedAge(e.target.value)}
+                                    className="text-sm font-bold bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-gray-900 dark:text-white"
+                                >
+                                    {ageGroups.map(age => (
+                                        <option key={age} value={age}>{age}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
+                    </div>
                 </div>
-                
-                <div className="p-4 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-700 text-xs text-center text-gray-500">
-                    Based on MCO 6100.13A Standards
+
+                <div className="max-h-[50vh] overflow-y-auto">
+                    <table className="w-full text-sm">
+                        <thead className="bg-gray-100 dark:bg-gray-700 sticky top-0">
+                            <tr>
+                                <th className="px-4 py-3 text-left font-bold text-gray-700 dark:text-gray-300 uppercase text-xs">
+                                    {data.type === 'reps' ? 'Reps' : 'Time'}
+                                </th>
+                                <th className="px-4 py-3 text-center font-bold text-gray-700 dark:text-gray-300 uppercase text-xs">
+                                    Points
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                            {scoringTable.map((row, idx) => (
+                                <tr
+                                    key={idx}
+                                    className={`transition-colors ${
+                                        row.points === 100 ? 'bg-green-50 dark:bg-green-900/20' :
+                                            row.points === 40 ? 'bg-red-50 dark:bg-red-900/20' :
+                                                'hover:bg-gray-50 dark:hover:bg-gray-700/30'
+                                    }`}
+                                >
+                                    <td className="px-4 py-2 font-medium text-gray-900 dark:text-white">
+                                        {row.value}
+                                    </td>
+                                    <td className={`px-4 py-2 text-center font-bold ${
+                                        row.points === 100 ? 'text-green-600 dark:text-green-400' :
+                                            row.points === 40 ? 'text-red-600 dark:text-red-400' :
+                                                'text-gray-700 dark:text-gray-300'
+                                    }`}>
+                                        {row.points}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="p-3 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-700 text-xs text-center text-gray-500">
+                    Based on MCO 6100.13A Standards • Linear interpolation between min/max
                 </div>
             </motion.div>
         </div>
