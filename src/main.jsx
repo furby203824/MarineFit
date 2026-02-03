@@ -9,9 +9,9 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>
 );
 
-// Register service worker for offline support
+// Unregister any previously installed service workers
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {});
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    registrations.forEach((r) => r.unregister());
   });
 }
