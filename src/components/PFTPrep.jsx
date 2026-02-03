@@ -1517,77 +1517,74 @@ const PFTPrep = () => {
                                 <Calendar size={20} className="text-marine-red" />
                                 HITT Training Schedule
                             </h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">25-week CFT preparation program — tap a day to view the workout card</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">25-week CFT prep program — tap any cell to view the workout card</p>
 
-                            {/* Week Selector */}
-                            <div className="flex items-center justify-between mb-4 bg-gray-50 dark:bg-gray-700 p-2 rounded-lg">
-                                <button
-                                    onClick={() => setCftWeek(w => Math.max(1, w - 1))}
-                                    disabled={cftWeek === 1}
-                                    className="p-1.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                                >
-                                    <ChevronLeft size={20} />
-                                </button>
-                                <span className="font-bold text-gray-900 dark:text-white text-sm">
-                                    Week {cftWeek} of 25
-                                </span>
-                                <button
-                                    onClick={() => setCftWeek(w => Math.min(25, w + 1))}
-                                    disabled={cftWeek === 25}
-                                    className="p-1.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                                >
-                                    <ChevronRight size={20} />
-                                </button>
-                            </div>
-
-                            {/* Week Schedule Grid */}
-                            <div className="grid grid-cols-1 gap-2">
-                                {cftSchedule.days.map((dayInfo) => {
-                                    const cardIdx = getCftCardIndex(cftWeek, dayInfo.offset);
-                                    const num = dayInfo.type === 'REST' ? '' : ` ${cftWeek}`;
-                                    return (
-                                        <button
-                                            key={dayInfo.day}
-                                            onClick={() => {
-                                                if (cardIdx !== null) setCftViewCard(cardIdx);
-                                            }}
-                                            disabled={cardIdx === null}
-                                            className={`flex items-center gap-3 p-3 rounded-lg border transition-all text-left ${
-                                                cardIdx !== null
-                                                    ? 'border-gray-200 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-400 hover:shadow-sm cursor-pointer'
-                                                    : 'border-gray-100 dark:border-gray-700 opacity-60 cursor-default'
-                                            }`}
-                                        >
-                                            <span className="text-xs font-bold text-gray-400 dark:text-gray-500 w-8 flex-shrink-0">{dayInfo.day}</span>
-                                            <span className={`${dayInfo.color} ${dayInfo.textColor} text-xs font-bold px-2 py-1 rounded flex-shrink-0`}>
-                                                {dayInfo.type}{num}
-                                            </span>
-                                            {cardIdx !== null && (
-                                                <ChevronRight size={16} className="ml-auto text-gray-400" />
-                                            )}
-                                            {cardIdx === null && (
-                                                <span className="ml-auto text-xs text-gray-400 italic">Rest Day</span>
-                                            )}
-                                        </button>
-                                    );
-                                })}
-                            </div>
-
-                            {/* Quick Week Jump */}
-                            <div className="mt-4 flex flex-wrap gap-1 justify-center">
-                                {Array.from({ length: 25 }, (_, i) => i + 1).map(w => (
-                                    <button
-                                        key={w}
-                                        onClick={() => setCftWeek(w)}
-                                        className={`w-7 h-7 text-xs rounded font-medium transition-colors ${
-                                            w === cftWeek
-                                                ? 'bg-marine-red text-white'
-                                                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                                        }`}
-                                    >
-                                        {w}
-                                    </button>
-                                ))}
+                            {/* Schedule Table */}
+                            <div className="overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6">
+                                <table className="w-full text-xs border-collapse" style={{ minWidth: '580px' }}>
+                                    <thead>
+                                        <tr>
+                                            <th className="sticky left-0 z-10 bg-gray-700 text-white p-1.5 text-center font-bold border border-gray-600 w-16"></th>
+                                            {cftSchedule.days.map(d => (
+                                                <th key={d.day} className="bg-gray-700 text-white p-1.5 text-center font-bold border border-gray-600">
+                                                    {d.day.toUpperCase()}
+                                                </th>
+                                            ))}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {Array.from({ length: 25 }, (_, i) => i + 1).map(week => (
+                                            <tr key={week} className={cftWeek === week ? 'ring-2 ring-marine-red ring-inset' : ''}>
+                                                <td
+                                                    className={`sticky left-0 z-10 p-1.5 text-center font-bold border border-gray-300 dark:border-gray-600 cursor-pointer transition-colors ${
+                                                        cftWeek === week
+                                                            ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200'
+                                                            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                                                    }`}
+                                                    onClick={() => setCftWeek(week)}
+                                                >
+                                                    WK {week}
+                                                </td>
+                                                {cftSchedule.days.map(dayInfo => {
+                                                    const cardIdx = getCftCardIndex(week, dayInfo.offset);
+                                                    const isRest = dayInfo.type === 'REST';
+                                                    return (
+                                                        <td
+                                                            key={dayInfo.day}
+                                                            onClick={() => {
+                                                                if (!isRest) {
+                                                                    setCftWeek(week);
+                                                                    setCftViewCard(cardIdx);
+                                                                }
+                                                            }}
+                                                            className={`p-1 text-center border border-gray-300 dark:border-gray-600 transition-colors ${
+                                                                isRest
+                                                                    ? 'bg-gray-50 dark:bg-gray-800 text-gray-400 dark:text-gray-500'
+                                                                    : 'cursor-pointer hover:brightness-90 active:brightness-75'
+                                                            }`}
+                                                            style={!isRest ? {
+                                                                backgroundColor: dayInfo.day === 'Mon' ? '#dc2626'
+                                                                    : dayInfo.day === 'Tue' ? '#2563eb'
+                                                                    : dayInfo.day === 'Wed' ? '#16a34a'
+                                                                    : dayInfo.day === 'Thu' ? '#eab308'
+                                                                    : dayInfo.day === 'Fri' ? '#9333ea'
+                                                                    : '#16a34a',
+                                                                color: dayInfo.day === 'Thu' ? '#000' : '#fff'
+                                                            } : undefined}
+                                                        >
+                                                            <div className="font-bold leading-tight" style={{ fontSize: '10px' }}>
+                                                                {isRest ? 'REST' : dayInfo.type}
+                                                            </div>
+                                                            <div className="leading-tight" style={{ fontSize: '9px' }}>
+                                                                {isRest ? 'DAY' : week}
+                                                            </div>
+                                                        </td>
+                                                    );
+                                                })}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
