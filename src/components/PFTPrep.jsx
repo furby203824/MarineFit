@@ -732,16 +732,18 @@ const PerformanceStandards = ({ testType, gender }) => {
     );
 };
 
+const BASE_URL = import.meta.env.BASE_URL;
+
 const visualPlans = {
     pft: {
         title: "PFT Workout Cards",
-        path: "/pft/",
+        path: `${BASE_URL}pft/`,
         count: 16,
         description: "Official visual training guides for PFT events"
     },
     cft: {
         title: "CFT Workout Cards",
-        path: "/cft/",
+        path: `${BASE_URL}cft/`,
         count: 125,
         description: "Comprehensive CFT preparation guide and daily schedule",
         fileOffset: 2
