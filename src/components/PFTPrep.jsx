@@ -1060,6 +1060,25 @@ const PFTPrep = () => {
         }
     };
 
+    // Download a single image as file
+    const downloadImage = async (src, filename) => {
+        try {
+            const response = await fetch(src);
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            // Fallback: open in new tab
+            window.open(src, '_blank');
+        }
+    };
+
     const result = useMemo(() => {
         if (testType === 'pft') {
             const inputs = {
@@ -1585,10 +1604,17 @@ const PFTPrep = () => {
                                         {visualPlans.pft.description}
                                     </p>
                                 </div>
-                                <div className="text-right">
+                                <div className="flex items-center gap-2">
                                     <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
                                         Card {currentCardIndex + 1} of {visualPlans.pft.count}
                                     </span>
+                                    <button
+                                        onClick={() => downloadImage(getImageSource(), `PFT_Card_${currentCardIndex + 1}.jpg`)}
+                                        className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-500 dark:text-gray-400"
+                                        title="Download card"
+                                    >
+                                        <Download size={18} />
+                                    </button>
                                 </div>
                             </div>
 
@@ -1725,12 +1751,25 @@ const PFTPrep = () => {
                                                 return dayInfo ? `${dayInfo.type} HITT ${cftWeek}` : `Card ${cftViewCard + 1}`;
                                             })()}
                                         </span>
-                                        <button
-                                            onClick={() => setCftViewCard(null)}
-                                            className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                                        >
-                                            <X size={20} />
-                                        </button>
+                                        <div className="flex items-center gap-2">
+                                            <button
+                                                onClick={() => {
+                                                    const dayInfo = cftSchedule.days.find(d => d.offset !== null && getCftCardIndex(cftWeek, d.offset) === cftViewCard);
+                                                    const name = dayInfo ? `${dayInfo.type}_HITT_${cftWeek}` : `CFT_Card_${cftViewCard + 1}`;
+                                                    downloadImage(getCftImageSrc(cftViewCard), `${name}.jpg`);
+                                                }}
+                                                className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                                title="Download card"
+                                            >
+                                                <Download size={18} />
+                                            </button>
+                                            <button
+                                                onClick={() => setCftViewCard(null)}
+                                                className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                            >
+                                                <X size={20} />
+                                            </button>
+                                        </div>
                                     </div>
                                     <div className="overflow-auto flex-1 p-2 bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
                                         <img

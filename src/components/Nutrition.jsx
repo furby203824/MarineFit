@@ -6,7 +6,7 @@ import {
     CheckCircle2, AlertTriangle, XCircle, Salad, Wheat, Egg, Beef, Coffee,
     Clock, Activity, Flame, Brain, Heart, Gauge, ThermometerSun, AlertOctagon,
     Pill, FlaskConical, Info, Timer, Dumbbell, TrendingUp, Droplet, Package,
-    MapPin, Users, Mountain, Image as ImageIcon, X, Maximize2
+    MapPin, Users, Mountain, Image as ImageIcon, X, Maximize2, Download
 } from 'lucide-react';
 
 const Nutrition = () => {
@@ -1303,14 +1303,28 @@ const Nutrition = () => {
                             <div className="mt-4 text-center flex flex-col items-center gap-2">
                                 <h3 className="text-xl font-bold text-white">{selectedResource.title}</h3>
                                 <p className="text-white/70">{selectedResource.description}</p>
-                                <a 
-                                    href={`/nutrition/${selectedResource.filename}`} 
-                                    download 
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        const src = `/nutrition/${selectedResource.filename}`;
+                                        fetch(src)
+                                            .then(r => r.blob())
+                                            .then(blob => {
+                                                const url = URL.createObjectURL(blob);
+                                                const a = document.createElement('a');
+                                                a.href = url;
+                                                a.download = selectedResource.filename;
+                                                document.body.appendChild(a);
+                                                a.click();
+                                                document.body.removeChild(a);
+                                                URL.revokeObjectURL(url);
+                                            })
+                                            .catch(() => window.open(src, '_blank'));
+                                    }}
                                     className="mt-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg flex items-center gap-2 transition-colors text-sm font-medium"
-                                    onClick={(e) => e.stopPropagation()}
                                 >
-                                    <ExternalLink size={16} /> Open Original
-                                </a>
+                                    <Download size={16} /> Download
+                                </button>
                             </div>
                         </motion.div>
                     </motion.div>

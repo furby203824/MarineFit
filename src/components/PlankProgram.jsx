@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, CheckCircle2, ChevronLeft, ChevronRight, ImageIcon, Target } from 'lucide-react';
+import { Shield, CheckCircle2, ChevronLeft, ChevronRight, ImageIcon, Target, Download } from 'lucide-react';
 
 const BASE_URL = import.meta.env.BASE_URL;
 
@@ -23,6 +23,23 @@ const PlankProgram = () => {
         setCurrentImageIndex((prev) =>
             prev === 0 ? plankVisuals.length - 1 : prev - 1
         );
+    };
+
+    const downloadImage = async (src, filename) => {
+        try {
+            const response = await fetch(src);
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            window.open(src, '_blank');
+        }
     };
 
     return (
@@ -75,9 +92,18 @@ const PlankProgram = () => {
                             <ImageIcon size={20} />
                             Visual Guide
                         </h4>
-                        <span className="text-xs font-medium px-2 py-1 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded">
-                            Page {currentImageIndex + 1} of {plankVisuals.length}
-                        </span>
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs font-medium px-2 py-1 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded">
+                                Page {currentImageIndex + 1} of {plankVisuals.length}
+                            </span>
+                            <button
+                                onClick={() => downloadImage(plankVisuals[currentImageIndex], `Plank_Progression_Page_${currentImageIndex + 1}.jpg`)}
+                                className="p-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-gray-500 dark:text-gray-400"
+                                title="Download page"
+                            >
+                                <Download size={16} />
+                            </button>
+                        </div>
                     </div>
 
                     <div className="relative aspect-[3/4] w-full bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
