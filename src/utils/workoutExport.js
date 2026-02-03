@@ -1,9 +1,3 @@
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
-import * as XLSX from 'xlsx';
-import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, HeadingLevel, BorderStyle, WidthType, AlignmentType } from 'docx';
-import { saveAs } from 'file-saver';
-
 /**
  * Validate workout object has required structure
  */
@@ -35,12 +29,15 @@ const sanitizeFilename = (title, dateStr, ext) => {
 };
 
 /**
- * Export workout to PDF
+ * Export workout to PDF (lazy-loads jsPDF)
  */
-export const exportToPDF = (workout) => {
+export const exportToPDF = async (workout) => {
   if (!validateWorkout(workout)) {
     throw new Error('Invalid workout data for PDF export.');
   }
+
+  const { default: jsPDF } = await import('jspdf');
+  await import('jspdf-autotable');
 
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -74,7 +71,7 @@ export const exportToPDF = (workout) => {
   let yPos = 56;
 
   // Blocks
-  workout.blocks.forEach((block, blockIndex) => {
+  workout.blocks.forEach((block) => {
     // Check if we need a new page
     if (yPos > 250) {
       doc.addPage();
@@ -161,12 +158,14 @@ export const exportToPDF = (workout) => {
 };
 
 /**
- * Export workout to Excel
+ * Export workout to Excel (lazy-loads XLSX)
  */
-export const exportToExcel = (workout) => {
+export const exportToExcel = async (workout) => {
   if (!validateWorkout(workout)) {
     throw new Error('Invalid workout data for Excel export.');
   }
+
+  const XLSX = await import('xlsx');
 
   const workbook = XLSX.utils.book_new();
 
@@ -222,7 +221,7 @@ export const exportToExcel = (workout) => {
   XLSX.utils.book_append_sheet(workbook, workoutSheet, 'Workout');
 
   // Individual block sheets
-  workout.blocks.forEach((block, idx) => {
+  workout.blocks.forEach((block) => {
     const blockData = [
       ['#', 'Exercise', 'Equipment', 'Sets', 'Reps', 'Rest', 'Notes']
     ];
@@ -263,12 +262,15 @@ export const exportToExcel = (workout) => {
 };
 
 /**
- * Export workout to Word document
+ * Export workout to Word document (lazy-loads docx)
  */
 export const exportToWord = async (workout) => {
   if (!validateWorkout(workout)) {
     throw new Error('Invalid workout data for Word export.');
   }
+
+  const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, BorderStyle, WidthType, AlignmentType } = await import('docx');
+  const { saveAs } = await import('file-saver');
 
   const dateStr = getDateStr(workout);
 
