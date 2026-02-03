@@ -798,10 +798,10 @@ const PFTPrep = () => {
     const getImageSource = () => {
         const pageNum = padPage(getPage(currentCardIndex, testType));
         if (testType === 'pft') {
-            // Encode spaces to %20 to ensure valid URL
-            return `${visualPlans.pft.path}PFT%20Prep%20Program_page-${pageNum}.jpg`;
+            // Use hyphens instead of spaces for better web compatibility
+            return `${visualPlans.pft.path}PFT-Prep-Program_page-${pageNum}.jpg`;
         }
-        return `${visualPlans.cft.path}CFT%20PREP%20GUIDANCE_page-${pageNum}.jpg`;
+        return `${visualPlans.cft.path}CFT-PREP-GUIDANCE_page-${pageNum}.jpg`;
     };
 
     const handleJumpToPage = (e) => {

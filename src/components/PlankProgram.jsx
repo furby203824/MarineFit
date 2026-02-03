@@ -6,10 +6,10 @@ const plankLevels = {
         title: "Foundation (Weeks 1-4)",
         focus: "Build core stability and form",
         visuals: [
-            "/PFT/Plank Progression_Wk1-Wk4_page-0001.jpg",
-            "/PFT/Plank Progression_Wk1-Wk4_page-0002.jpg",
-            "/PFT/Plank Progression_Wk1-Wk4_page-0003.jpg",
-            "/PFT/Plank Progression_Wk1-Wk4_page-0004.jpg"
+            "/pft/Plank-Progression_Wk1-Wk4_page-0001.jpg",
+            "/pft/Plank-Progression_Wk1-Wk4_page-0002.jpg",
+            "/pft/Plank-Progression_Wk1-Wk4_page-0003.jpg",
+            "/pft/Plank-Progression_Wk1-Wk4_page-0004.jpg"
         ],
         workout: [
             { name: "Standard Plank", duration: "30-45 sec", sets: 3, rest: "60 sec" },
