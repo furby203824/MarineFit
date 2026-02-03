@@ -1,5 +1,15 @@
 import { hittExercises, categories, goals, prescriptionTemplates } from '../data/hittData';
 
+// Fisher-Yates shuffle for uniform random ordering
+const shuffleArray = (array) => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 // Get prescription based on category, goal, and exercise tags
 const getPrescription = (exercise, category, goal) => {
   const tags = exercise.tags || [];
@@ -148,7 +158,7 @@ export const generateWorkout = (options) => {
       candidates = candidates.sort((a, b) => a.difficulty - b.difficulty);
     } else {
        // Standard/Neutral -> Pure Shuffle
-       candidates = candidates.sort(() => 0.5 - Math.random());
+       candidates = shuffleArray(candidates);
     }
 
     const selected = [];

@@ -1,6 +1,7 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import Navigation from './components/Navigation';
 import Dashboard from './components/Dashboard';
 import PTCoach from './components/PTCoach';
@@ -20,16 +21,18 @@ function App() {
           <Navigation />
           <main className="flex-1 md:ml-[240px] p-4 md:p-8 pt-20 md:pt-8 transition-all duration-300">
             <div className="max-w-7xl mx-auto">
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/pt-coach" element={<PTCoach />} />
-                <Route path="/exercises" element={<ExerciseLibrary />} />
-                <Route path="/pft-prep" element={<PFTPrep />} />
-                <Route path="/nutrition" element={<Nutrition />} />
-                <Route path="/injury-prevention" element={<InjuryPrevention />} />
-                <Route path="/sleep" element={<SleepOptimizer />} />
-                <Route path="/body-comp" element={<BodyComp />} />
-              </Routes>
+              <ErrorBoundary>
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/pt-coach" element={<ErrorBoundary><PTCoach /></ErrorBoundary>} />
+                  <Route path="/exercises" element={<ErrorBoundary><ExerciseLibrary /></ErrorBoundary>} />
+                  <Route path="/pft-prep" element={<ErrorBoundary><PFTPrep /></ErrorBoundary>} />
+                  <Route path="/nutrition" element={<ErrorBoundary><Nutrition /></ErrorBoundary>} />
+                  <Route path="/injury-prevention" element={<ErrorBoundary><InjuryPrevention /></ErrorBoundary>} />
+                  <Route path="/sleep" element={<ErrorBoundary><SleepOptimizer /></ErrorBoundary>} />
+                  <Route path="/body-comp" element={<ErrorBoundary><BodyComp /></ErrorBoundary>} />
+                </Routes>
+              </ErrorBoundary>
               <Footer />
             </div>
           </main>

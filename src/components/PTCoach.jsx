@@ -80,9 +80,16 @@ const PTCoach = () => {
 
   // Load history on mount
   useEffect(() => {
-    const history = localStorage.getItem('marine_fitness_history');
-    if (history) {
-      setSavedWorkouts(JSON.parse(history));
+    try {
+      const history = localStorage.getItem('marine_fitness_history');
+      if (history) {
+        const parsed = JSON.parse(history);
+        if (Array.isArray(parsed)) {
+          setSavedWorkouts(parsed);
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load workout history:', e);
     }
   }, []);
 
@@ -96,8 +103,13 @@ const PTCoach = () => {
 
   const handleGenerate = () => {
     // Get user profile for difficulty modifier
-    const userProfile = JSON.parse(localStorage.getItem('marine_user_profile') || '{}');
-    const difficultyModifier = userProfile.difficultyModifier || 0;
+    let difficultyModifier = 0;
+    try {
+      const userProfile = JSON.parse(localStorage.getItem('marine_user_profile') || '{}');
+      difficultyModifier = userProfile.difficultyModifier || 0;
+    } catch (e) {
+      console.error('Failed to load user profile:', e);
+    }
 
     const newWorkout = generateWorkout({
       time,
@@ -110,13 +122,21 @@ const PTCoach = () => {
     setActiveTab('generator');
   };
 
+  const saveToLocalStorage = (key, data) => {
+    try {
+      localStorage.setItem(key, JSON.stringify(data));
+    } catch (e) {
+      console.error(`Failed to save to ${key}:`, e);
+    }
+  };
+
   const saveWorkout = () => {
     if (!workout) return;
-    
+
     const newHistory = [workout, ...savedWorkouts];
     setSavedWorkouts(newHistory);
-    localStorage.setItem('marine_fitness_history', JSON.stringify(newHistory));
-    
+    saveToLocalStorage('marine_fitness_history', newHistory);
+
     // Visual feedback could be added here
     alert("Mission saved to History Log.");
   };
@@ -124,7 +144,7 @@ const PTCoach = () => {
   const deleteWorkout = (id) => {
     const newHistory = savedWorkouts.filter(w => w.id !== id);
     setSavedWorkouts(newHistory);
-    localStorage.setItem('marine_fitness_history', JSON.stringify(newHistory));
+    saveToLocalStorage('marine_fitness_history', newHistory);
   };
 
   const handleSwapExercise = (blockIndex, exerciseIndex) => {
@@ -175,30 +195,35 @@ const PTCoach = () => {
     if (workout) {
       const updatedWorkout = { ...workout, feedback: feedbackData };
       setWorkout(updatedWorkout);
-      
+
       // Update in history if it exists there
       const historyIndex = savedWorkouts.findIndex(w => w.id === workout.id);
       if (historyIndex >= 0) {
         const newHistory = [...savedWorkouts];
         newHistory[historyIndex] = updatedWorkout;
         setSavedWorkouts(newHistory);
-        localStorage.setItem('marine_fitness_history', JSON.stringify(newHistory));
+        saveToLocalStorage('marine_fitness_history', newHistory);
       } else {
         // If not saved yet, save it now with feedback
         const newHistory = [updatedWorkout, ...savedWorkouts];
         setSavedWorkouts(newHistory);
-        localStorage.setItem('marine_fitness_history', JSON.stringify(newHistory));
+        saveToLocalStorage('marine_fitness_history', newHistory);
       }
     }
 
     // 2. Update User Profile (Semper Admin Feedback Loop)
-    const userProfile = JSON.parse(localStorage.getItem('marine_user_profile') || '{}');
+    let userProfile = {};
+    try {
+      userProfile = JSON.parse(localStorage.getItem('marine_user_profile') || '{}');
+    } catch (e) {
+      console.error('Failed to load user profile:', e);
+    }
     if (rating === 'hard') {
       userProfile.difficultyModifier = (userProfile.difficultyModifier || 0) - 1;
     } else {
       userProfile.difficultyModifier = (userProfile.difficultyModifier || 0) + 1; // Progressive Overload
     }
-    localStorage.setItem('marine_user_profile', JSON.stringify(userProfile));
+    saveToLocalStorage('marine_user_profile', userProfile);
 
     setShowFeedback(false);
     alert("AAR Submitted. Training variables updated for next cycle.");
@@ -369,7 +394,7 @@ const PTCoach = () => {
 
     const newHistory = [workoutToSave, ...savedWorkouts];
     setSavedWorkouts(newHistory);
-    localStorage.setItem('marine_fitness_history', JSON.stringify(newHistory));
+    saveToLocalStorage('marine_fitness_history', newHistory);
     alert("Custom workout saved to History Log!");
   };
 
@@ -534,19 +559,19 @@ const PTCoach = () => {
                           {showExportMenu && (
                             <div className="absolute right-0 top-full mt-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 py-1 z-50 min-w-[140px]">
                               <button
-                                onClick={() => { exportToPDF(workout); setShowExportMenu(false); }}
+                                onClick={() => { try { exportToPDF(workout); } catch (e) { console.error('PDF export failed:', e); alert('Export failed. Please try again.'); } setShowExportMenu(false); }}
                                 className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
                               >
                                 <FileText size={16} className="text-red-600" /> PDF
                               </button>
                               <button
-                                onClick={() => { exportToExcel(workout); setShowExportMenu(false); }}
+                                onClick={() => { try { exportToExcel(workout); } catch (e) { console.error('Excel export failed:', e); alert('Export failed. Please try again.'); } setShowExportMenu(false); }}
                                 className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
                               >
                                 <FileSpreadsheet size={16} className="text-green-600" /> Excel
                               </button>
                               <button
-                                onClick={() => { exportToWord(workout); setShowExportMenu(false); }}
+                                onClick={async () => { try { await exportToWord(workout); } catch (e) { console.error('Word export failed:', e); alert('Export failed. Please try again.'); } setShowExportMenu(false); }}
                                 className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
                               >
                                 <File size={16} className="text-blue-600" /> Word
@@ -853,8 +878,10 @@ const PTCoach = () => {
                         <div className="absolute right-0 top-full mt-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 py-1 z-50 min-w-[140px]">
                           <button
                             onClick={() => {
-                              const workoutToExport = { ...customWorkout, date: new Date().toISOString() };
-                              exportToPDF(workoutToExport);
+                              try {
+                                const workoutToExport = { ...customWorkout, date: new Date().toISOString() };
+                                exportToPDF(workoutToExport);
+                              } catch (e) { console.error('PDF export failed:', e); alert('Export failed. Please try again.'); }
                               setShowCustomExportMenu(false);
                             }}
                             className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
@@ -863,8 +890,10 @@ const PTCoach = () => {
                           </button>
                           <button
                             onClick={() => {
-                              const workoutToExport = { ...customWorkout, date: new Date().toISOString() };
-                              exportToExcel(workoutToExport);
+                              try {
+                                const workoutToExport = { ...customWorkout, date: new Date().toISOString() };
+                                exportToExcel(workoutToExport);
+                              } catch (e) { console.error('Excel export failed:', e); alert('Export failed. Please try again.'); }
                               setShowCustomExportMenu(false);
                             }}
                             className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
@@ -872,9 +901,11 @@ const PTCoach = () => {
                             <FileSpreadsheet size={16} className="text-green-600" /> Excel
                           </button>
                           <button
-                            onClick={() => {
-                              const workoutToExport = { ...customWorkout, date: new Date().toISOString() };
-                              exportToWord(workoutToExport);
+                            onClick={async () => {
+                              try {
+                                const workoutToExport = { ...customWorkout, date: new Date().toISOString() };
+                                await exportToWord(workoutToExport);
+                              } catch (e) { console.error('Word export failed:', e); alert('Export failed. Please try again.'); }
                               setShowCustomExportMenu(false);
                             }}
                             className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
