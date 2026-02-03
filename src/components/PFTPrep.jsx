@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import PullupProgram from './PullupProgram';
+import PlankProgram from './PlankProgram';
 import {
     calculatePFTScore,
     calculateCFTScore,
@@ -19,7 +20,7 @@ import {
 } from '../utils/pftScoring';
 import { hittExercises } from '../data/hittData';
 import { returnToRunData } from '../data/rehabData';
-import { Calculator, Activity, Trophy, AlertCircle, Target, Calendar, ChevronDown, ChevronUp, CheckCircle2, Dumbbell, PlayCircle, TrendingUp, FileText, ChevronLeft, ChevronRight, Table as TableIcon, X, Footprints, Clock, List } from 'lucide-react';
+import { Calculator, Activity, Trophy, AlertCircle, Target, Calendar, ChevronDown, ChevronUp, CheckCircle2, Dumbbell, PlayCircle, TrendingUp, FileText, ChevronLeft, ChevronRight, Table as TableIcon, X, Footprints, Clock, List, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Walk to Run Program Component
@@ -389,6 +390,44 @@ const getRecommendedExercises = (criteria) => {
     }).slice(0, 5); // Limit to 5 exercises
 };
 
+// Component for collapsible sections with toggle
+const CollapsibleSection = ({ title, children }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <div className="flex flex-col">
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full flex items-center justify-between mb-2 pb-1 border-b border-gray-100 dark:border-gray-700/50 group hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors rounded-sm px-1"
+            >
+                <h6 className="text-xs font-bold text-gray-400 uppercase tracking-wider group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
+                    {title}
+                </h6>
+                <div
+                    className="text-xs flex items-center gap-1 text-marine-red font-semibold group-hover:underline bg-white dark:bg-gray-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-500 shadow-sm"
+                >
+                    {isOpen ? 'Hide' : 'Show'}
+                    {isOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                </div>
+            </button>
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="overflow-hidden"
+                    >
+                        <div className="pt-2 text-left">
+                            {children}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+};
+
 // Component to show improvement recommendations based on weak events
 const ImprovementRecommendations = ({ result, testType, upperBodyType }) => {
     // Identify all weak events (score < 80)
@@ -485,10 +524,9 @@ const ImprovementRecommendations = ({ result, testType, upperBodyType }) => {
                                 "{recommendations.focus}"
                             </p>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-6">
                                 {/* Tips */}
-                                <div>
-                                    <h6 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Pro Tips</h6>
+                                <CollapsibleSection title="Pro Tips">
                                     <ul className="space-y-2">
                                         {recommendations.tips.map((tip, i) => (
                                             <li key={i} className="text-sm text-gray-600 dark:text-gray-300 flex items-start gap-2">
@@ -497,14 +535,11 @@ const ImprovementRecommendations = ({ result, testType, upperBodyType }) => {
                                             </li>
                                         ))}
                                     </ul>
-                                </div>
+                                </CollapsibleSection>
 
                                 {/* Recommended HITT Exercises */}
                                 {matchingExercises.length > 0 && (
-                                    <div>
-                                        <h6 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
-                                            HITT Center Tools
-                                        </h6>
+                                    <CollapsibleSection title="HITT Center Tools">
                                         <div className="space-y-2">
                                             {matchingExercises.map((ex) => (
                                                 <div key={ex.id} className="flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 p-2.5 rounded-lg border border-gray-100 dark:border-gray-700 hover:border-marine-red/30 transition-colors">
@@ -525,7 +560,7 @@ const ImprovementRecommendations = ({ result, testType, upperBodyType }) => {
                                                 </div>
                                             ))}
                                         </div>
-                                    </div>
+                                    </CollapsibleSection>
                                 )}
                             </div>
                         </div>
@@ -890,23 +925,15 @@ const PFTPrep = () => {
     const NumberInput = ({ label, value, onChange, max, onShowTable }) => (
         <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
             <div className="flex justify-between mb-3">
-                <div className="flex items-center gap-2">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
-                    {onShowTable && (
-                        <button 
-                            onClick={onShowTable}
-                            className="text-xs flex items-center gap-1 text-marine-red font-semibold hover:underline bg-white dark:bg-gray-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-500 shadow-sm"
-                        >
-                            <TableIcon size={12} /> Table
-                        </button>
-                    )}
-                </div>
-                <button 
-                    onClick={() => onChange(max)}
-                    className="text-xs text-marine-red font-semibold hover:underline bg-white dark:bg-gray-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-500 shadow-sm"
-                >
-                    Max: {max}
-                </button>
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
+                {onShowTable && (
+                    <button 
+                        onClick={onShowTable}
+                        className="text-xs flex items-center gap-1 text-marine-red font-semibold hover:underline bg-white dark:bg-gray-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-500 shadow-sm"
+                    >
+                        <TableIcon size={12} /> Table
+                    </button>
+                )}
             </div>
             <div className="relative">
                 <input
@@ -999,6 +1026,21 @@ const PFTPrep = () => {
                         <div className="flex items-center gap-2">
                             <Dumbbell size={16} />
                             Pull-up Program
+                        </div>
+                    </button>
+                )}
+                {testType === 'pft' && (
+                    <button
+                        onClick={() => setActiveTab('plank')}
+                        className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                            activeTab === 'plank'
+                                ? 'border-marine-red text-marine-red'
+                                : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                        }`}
+                    >
+                        <div className="flex items-center gap-2">
+                            <Shield size={16} />
+                            Plank Program
                         </div>
                     </button>
                 )}
@@ -1370,6 +1412,10 @@ const PFTPrep = () => {
 
                 {activeTab === 'pullup' && (
                     <PullupProgram />
+                )}
+
+                {activeTab === 'plank' && (
+                    <PlankProgram />
                 )}
 
                 {activeTab === 'walk_run' && (

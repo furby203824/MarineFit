@@ -1300,9 +1300,17 @@ const Nutrition = () => {
                                 className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl bg-white"
                             />
                             
-                            <div className="mt-4 text-center">
+                            <div className="mt-4 text-center flex flex-col items-center gap-2">
                                 <h3 className="text-xl font-bold text-white">{selectedResource.title}</h3>
                                 <p className="text-white/70">{selectedResource.description}</p>
+                                <a 
+                                    href={`/nutrition/${selectedResource.filename}`} 
+                                    download 
+                                    className="mt-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg flex items-center gap-2 transition-colors text-sm font-medium"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <ExternalLink size={16} /> Open Original
+                                </a>
                             </div>
                         </motion.div>
                     </motion.div>
