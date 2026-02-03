@@ -29,6 +29,9 @@ const PerformanceStandardsModal = ({ isOpen, onClose, testType, gender }) => {
         >
             <div
                 ref={trapRef}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Performance Standards"
                 className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col"
                 onClick={e => e.stopPropagation()}
             >

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Footprints, ChevronDown, ChevronUp, Clock, Activity, Target, Shield, CheckCircle2 } from 'lucide-react';
+import { Footprints, ChevronDown, ChevronUp, Clock, Activity, Target, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { returnToRunData } from '../data/rehabData';
 
@@ -37,7 +37,6 @@ const PhaseCard = ({ phase, phaseIndex }) => {
         'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800',
         'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800',
         'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800',
-        'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
     ];
 
     const iconColors = [
@@ -45,7 +44,6 @@ const PhaseCard = ({ phase, phaseIndex }) => {
         'text-blue-600 dark:text-blue-400',
         'text-purple-600 dark:text-purple-400',
         'text-orange-600 dark:text-orange-400',
-        'text-red-600 dark:text-red-400'
     ];
 
     return (
@@ -60,9 +58,9 @@ const PhaseCard = ({ phase, phaseIndex }) => {
                     </div>
                     <div className="text-left">
                         <h4 className="font-bold text-gray-900 dark:text-white text-sm">
-                            Phase {phaseIndex + 1}: {phase.name}
+                            Phase {phaseIndex + 1}: {phase.title}
                         </h4>
-                        <p className="text-xs text-gray-500">{phase.duration} | {phase.frequency}</p>
+                        <p className="text-xs text-gray-500">{phase.type}</p>
                     </div>
                 </div>
                 {isExpanded ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}
@@ -77,34 +75,44 @@ const PhaseCard = ({ phase, phaseIndex }) => {
                         className="overflow-hidden"
                     >
                         <div className="px-4 pb-4 space-y-3">
-                            {phase.goal && (
-                                <div className="flex items-start gap-2 text-sm">
-                                    <Target size={14} className="text-marine-red mt-0.5 flex-shrink-0" />
-                                    <span className="text-gray-600 dark:text-gray-300"><strong>Goal:</strong> {phase.goal}</span>
+                            <div className="flex items-start gap-2 text-sm">
+                                <Target size={14} className="text-marine-red mt-0.5 flex-shrink-0" />
+                                <span className="text-gray-600 dark:text-gray-300">{phase.description}</span>
+                            </div>
+
+                            {phase.guidelines && phase.guidelines.length > 0 && (
+                                <div className="space-y-1">
+                                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1">
+                                        <Shield size={12} /> Guidelines
+                                    </p>
+                                    <ul className="list-disc list-inside text-sm text-gray-600 dark:text-gray-300 space-y-1 ml-1">
+                                        {phase.guidelines.map((g, i) => (
+                                            <li key={i}>{g}</li>
+                                        ))}
+                                    </ul>
                                 </div>
                             )}
 
-                            {phase.warmup && (
-                                <div className="flex items-start gap-2 text-sm">
-                                    <Clock size={14} className="text-orange-500 mt-0.5 flex-shrink-0" />
-                                    <span className="text-gray-600 dark:text-gray-300"><strong>Warm-up:</strong> {phase.warmup}</span>
-                                </div>
-                            )}
-
-                            {phase.sessions && phase.sessions.length > 0 && (
+                            {phase.schedule && phase.schedule.length > 0 && (
                                 <div className="space-y-2">
                                     <p className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1">
-                                        <Activity size={12} /> Sessions
+                                        <Clock size={12} /> Schedule
                                     </p>
-                                    {phase.sessions.map((session, sIdx) => (
+                                    {phase.schedule.map((item, sIdx) => (
                                         <div key={sIdx} className="bg-white/80 dark:bg-gray-700/50 rounded-lg p-3 text-sm">
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <span className="font-bold text-marine-red text-xs">{session.week}</span>
+                                            <div className="flex items-center justify-between mb-1">
+                                                <span className="font-bold text-marine-red text-xs">{item.step}</span>
+                                                <span className="text-xs text-gray-500">{item.total}</span>
                                             </div>
-                                            <p className="text-gray-700 dark:text-gray-300">{session.workout}</p>
-                                            {session.totalTime && (
-                                                <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
-                                                    <Clock size={10} /> Total: {session.totalTime}
+                                            <p className="text-gray-700 dark:text-gray-300">{item.activity}</p>
+                                            {item.sets && (
+                                                <p className="text-xs text-gray-500 mt-1">
+                                                    {item.sets} sets x {item.reps} reps
+                                                </p>
+                                            )}
+                                            {!item.sets && item.reps > 1 && (
+                                                <p className="text-xs text-gray-500 mt-1">
+                                                    {item.reps}x repeats
                                                 </p>
                                             )}
                                         </div>
@@ -112,17 +120,9 @@ const PhaseCard = ({ phase, phaseIndex }) => {
                                 </div>
                             )}
 
-                            {phase.notes && (
-                                <div className="flex items-start gap-2 text-sm bg-yellow-50 dark:bg-yellow-900/20 p-2 rounded-lg">
-                                    <Shield size={14} className="text-yellow-600 mt-0.5 flex-shrink-0" />
-                                    <span className="text-gray-600 dark:text-gray-300"><strong>Note:</strong> {phase.notes}</span>
-                                </div>
-                            )}
-
-                            {phase.criteria && (
-                                <div className="flex items-start gap-2 text-sm bg-green-50 dark:bg-green-900/20 p-2 rounded-lg">
-                                    <CheckCircle2 size={14} className="text-green-600 mt-0.5 flex-shrink-0" />
-                                    <span className="text-gray-600 dark:text-gray-300"><strong>Progress Criteria:</strong> {phase.criteria}</span>
+                            {phase.totalContacts && (
+                                <div className="text-xs text-gray-500 text-right font-medium">
+                                    Total foot contacts: {phase.totalContacts}
                                 </div>
                             )}
                         </div>

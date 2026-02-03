@@ -23,6 +23,9 @@ const ExercisePickerModal = ({
     >
       <motion.div
         ref={trapRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Add Exercise"
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}

@@ -15,6 +15,9 @@ const BodyCompStandardsModal = ({ isOpen, onClose }) => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
             <motion.div
                 ref={trapRef}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Body Composition Standards"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
@@ -239,6 +242,7 @@ const NumberInput = ({ label, value, onChange, min, max, step = 1, placeholder, 
                 min={min}
                 max={max}
                 step={step}
+                maxLength={6}
                 placeholder={placeholder}
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-medium uppercase">Inches</span>
@@ -430,6 +434,8 @@ const BodyComp = () => {
         <AnimatePresence>
             {result && (
                 <motion.div
+                    aria-live="polite"
+                    aria-atomic="true"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 20 }}

@@ -118,56 +118,69 @@ export const returnToRunData = {
 
     phases: [
         {
-            phase: "Phase I",
+            type: "walking",
             title: "Walking Program",
-            description: "You should be able to walk, pain free, aggressively (roughly 4.2 to 5.2 miles per hour), in a controlled environment, preferably on a treadmill, before beginning the plyometric and walk/jog program."
+            description: "You should be able to walk, pain free, aggressively (roughly 4.2 to 5.2 miles per hour), in a controlled environment, preferably on a treadmill, before beginning the plyometric and walk/jog program.",
+            guidelines: [
+                "Walk pain-free at 4.2-5.2 mph before progressing.",
+                "Use a treadmill for a controlled environment.",
+                "Maintain proper posture and gait throughout."
+            ],
+            schedule: []
         },
         {
-            phase: "Phase II",
+            type: "plyometric",
             title: "Plyometric Routine",
             description: "A mile run typically consists of 1500 foot contacts (750 per foot). This program integrates 470 foot contacts per leg (approx. 2/3 of a mile run). Successful completion indicates readiness for 0.5 - 0.75 mile run.",
-            restBetweenSets: "90 seconds",
-            restBetweenExercises: "3 minutes",
             guidelines: [
+                "Rest 90 seconds between sets, 3 minutes between exercises.",
                 "Stretch Gastro, Soleus, Quads and Hamstrings between exercises.",
                 "If you experience pain or unable to complete, stop, stretch and ice.",
                 "If pain free next day, attempt to re-start."
             ],
-            exercises: [
-                { name: "Two-leg ankle hops: in place", sets: 3, contactsPerSet: 30, totalContacts: 90 },
-                { name: "Two-leg ankle hops: forward/backward", sets: 3, contactsPerSet: 30, totalContacts: 90 },
-                { name: "Two-leg ankle hops: side to side", sets: 3, contactsPerSet: 30, totalContacts: 90 },
-                { name: "One-leg ankle hops: in place", sets: 3, contactsPerSet: 20, totalContacts: 60 },
-                { name: "One-leg ankle hops: forward/backward", sets: 3, contactsPerSet: 20, totalContacts: 60 },
-                { name: "One-leg ankle hops: side to side", sets: 3, contactsPerSet: 20, totalContacts: 60 },
-                { name: "One-leg broad hop", sets: 4, contactsPerSet: 5, totalContacts: 20 }
+            schedule: [
+                { step: "Exercise 1", activity: "Two-leg ankle hops: in place", sets: 3, reps: 30, total: "90 contacts" },
+                { step: "Exercise 2", activity: "Two-leg ankle hops: forward/backward", sets: 3, reps: 30, total: "90 contacts" },
+                { step: "Exercise 3", activity: "Two-leg ankle hops: side to side", sets: 3, reps: 30, total: "90 contacts" },
+                { step: "Exercise 4", activity: "One-leg ankle hops: in place", sets: 3, reps: 20, total: "60 contacts" },
+                { step: "Exercise 5", activity: "One-leg ankle hops: forward/backward", sets: 3, reps: 20, total: "60 contacts" },
+                { step: "Exercise 6", activity: "One-leg ankle hops: side to side", sets: 3, reps: 20, total: "60 contacts" },
+                { step: "Exercise 7", activity: "One-leg broad hop", sets: 4, reps: 5, total: "20 contacts" }
             ],
             totalContacts: 470
         },
         {
-            phase: "Phase III",
+            type: "interval",
             title: "Walk / Jog Progression",
             description: "Do not advance to the next step if you experience pain or soreness. Perform each step 2-3 times before advancing. Run on soft surfaces (track, trail) if possible.",
-            type: "interval",
+            guidelines: [
+                "Perform each step 2-3 times before advancing.",
+                "Run on soft surfaces (track, trail) if possible.",
+                "Stop and consult a provider if pain increases during activity."
+            ],
             schedule: [
-                { step: "Step 1", walk: "4 min", jog: "1 min", reps: "4x", total: "20 min" },
-                { step: "Step 2", walk: "3 min", jog: "2 min", reps: "4x", total: "20 min" },
-                { step: "Step 3", walk: "2 min", jog: "3 min", reps: "4x", total: "20 min" },
-                { step: "Step 4", walk: "1 min", jog: "4 min", reps: "4x", total: "20 min" },
-                { step: "Step 5", walk: "1 min", jog: "4 min", reps: "6x", total: "30 min" }
+                { step: "Step 1", activity: "Walk 4 min / Jog 1 min", reps: 4, total: "20 min" },
+                { step: "Step 2", activity: "Walk 3 min / Jog 2 min", reps: 4, total: "20 min" },
+                { step: "Step 3", activity: "Walk 2 min / Jog 3 min", reps: 4, total: "20 min" },
+                { step: "Step 4", activity: "Walk 1 min / Jog 4 min", reps: 4, total: "20 min" },
+                { step: "Step 5", activity: "Walk 1 min / Jog 4 min", reps: 6, total: "30 min" }
             ]
         },
         {
-            phase: "Phase IV",
+            type: "continuous",
             title: "Return to Continuous Running",
             description: "Begin with every other day running. Increase volume by no more than 10% per week.",
-            type: "continuous",
+            guidelines: [
+                "Run every other day to allow recovery.",
+                "Increase total volume by no more than 10% per week.",
+                "Return to previous step if pain returns."
+            ],
             schedule: [
-                { step: "Week 1", run: "20 min", freq: "Every other day" },
-                { step: "Week 2", run: "25 min", freq: "Every other day" },
-                { step: "Week 3", run: "30 min", freq: "Every other day" },
-                { step: "Week 4", run: "35 min", freq: "Every other day" },
-                { step: "Week 5", run: "40 min", freq: "Every other day" }
+                { step: "Week 1", activity: "Run 20 min", reps: 1, total: "Every other day" },
+                { step: "Week 2", activity: "Run 25 min", reps: 1, total: "Every other day" },
+                { step: "Week 3", activity: "Run 30 min", reps: 1, total: "Every other day" },
+                { step: "Week 4", activity: "Run 35 min", reps: 1, total: "Every other day" },
+                { step: "Week 5", activity: "Run 40 min", reps: 1, total: "Every other day" }
             ]
         }
     ]

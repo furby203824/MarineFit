@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { AlertCircle, Shield, AlertTriangle, FileText } from 'lucide-react';
 
 const Footer = () => {
+    const dialogRef = useRef(null);
+
     return (
         <div className="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 text-center pb-8">
             <button
-                onClick={() => {
-                    const dialog = document.getElementById('disclaimer-modal');
-                    if (dialog) dialog.showModal();
-                }}
+                onClick={() => dialogRef.current?.showModal()}
                 className="group flex items-center justify-center gap-2 mx-auto px-4 py-2 rounded-full bg-gray-50 hover:bg-marine-red/10 dark:bg-gray-800 dark:hover:bg-marine-red/20 transition-all duration-300"
             >
                 <AlertCircle size={16} className="text-gray-400 group-hover:text-marine-red transition-colors" />
@@ -17,22 +16,22 @@ const Footer = () => {
                 </span>
             </button>
 
-            <dialog id="disclaimer-modal" className="bg-white dark:bg-gray-800 p-0 rounded-xl shadow-2xl backdrop:bg-black/60 max-w-lg w-[90%] m-auto border border-gray-100 dark:border-gray-700">
+            <dialog ref={dialogRef} className="bg-white dark:bg-gray-800 p-0 rounded-xl shadow-2xl backdrop:bg-black/60 max-w-lg w-[90%] m-auto border border-gray-100 dark:border-gray-700">
                 <div className="p-6">
                     <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-gray-700">
                         <div className="p-2 bg-marine-red/10 rounded-full">
                             <AlertCircle size={24} className="text-marine-red" />
                         </div>
                         <h3 className="text-xl font-bold text-gray-900 dark:text-white">Important Disclaimers</h3>
-                        <button 
-                            onClick={() => document.getElementById('disclaimer-modal').close()}
+                        <button
+                            onClick={() => dialogRef.current?.close()}
                             className="ml-auto text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
                         >
                             <span className="sr-only">Close</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                         </button>
                     </div>
-                    
+
                     <div className="space-y-6 text-left overflow-y-auto max-h-[60vh] pr-2 custom-scrollbar">
                         <section>
                             <h4 className="font-bold text-gray-900 dark:text-white text-sm mb-2 flex items-center gap-2">
@@ -67,7 +66,7 @@ const Footer = () => {
 
                     <div className="mt-8 pt-4 border-t border-gray-100 dark:border-gray-700 flex justify-end">
                         <button
-                            onClick={() => document.getElementById('disclaimer-modal').close()}
+                            onClick={() => dialogRef.current?.close()}
                             className="px-6 py-2.5 bg-marine-red text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-bold shadow-sm hover:shadow-md active:transform active:scale-95"
                         >
                             I Understand & Agree
