@@ -186,32 +186,32 @@ export const hittExercises = [
   // =====================
   { id: 'sae-1', name: '60 Yard Shuttle Run', category: categories.SPEED_AGILITY, equipment: equipmentTags.CONES, difficulty: 3, url: 'https://www.dvidshub.net/video/695745/60-yard-shuttle-run', tags: ['Running', 'Anaerobic'] },
   { id: 'sae-2', name: 'A-Skip', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/640967/skip', tags: ['Running Mechanics', 'Warmup'] },
-  { id: 'sae-3', name: 'B-Skip', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'http://www.dvidshub.net/video/696701/b-skip', tags: ['Running Mechanics', 'Warmup'] },
+  { id: 'sae-3', name: 'B-Skip', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/696701/b-skip', tags: ['Running Mechanics', 'Warmup'] },
   { id: 'sae-4', name: 'Box Drill 1', category: categories.SPEED_AGILITY, equipment: equipmentTags.CONES, difficulty: 2, url: 'https://www.dvidshub.net/video/696698/box-drill-1', tags: ['Agility', 'Change of Direction'] },
   { id: 'sae-5', name: 'Broad Jump Start', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/640972/broad-jump-start', tags: ['Power', 'Acceleration'] },
   { id: 'sae-6', name: 'Carioca', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/558561/carioca', tags: ['Agility', 'Hips'] },
   { id: 'sae-7', name: 'Crossover Run', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/696708/crossover-run', tags: ['Agility', 'Footwork'] },
-  { id: 'sae-8', name: 'Gassers', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 4, url: 'http://www.dvidshub.net/video/696732/gassers', tags: ['Conditioning', 'Anaerobic'] },
+  { id: 'sae-8', name: 'Gassers', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 4, url: 'https://www.dvidshub.net/video/696732/gassers', tags: ['Conditioning', 'Anaerobic'] },
   { id: 'sae-9', name: 'High Knees', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/558574/high-knees', tags: ['Cardio', 'Running Mechanics'] },
-  { id: 'sae-10', name: 'Hill Sprint', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 4, url: 'http://www.dvidshub.net/video/696745/hill-sprint', tags: ['Power', 'Conditioning'] },
+  { id: 'sae-10', name: 'Hill Sprint', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 4, url: 'https://www.dvidshub.net/video/696745/hill-sprint', tags: ['Power', 'Conditioning'] },
   { id: 'sae-11', name: 'Hour Glass Drill', category: categories.SPEED_AGILITY, equipment: equipmentTags.CONES, difficulty: 3, url: 'https://www.dvidshub.net/video/697231/hour-glass-drill', tags: ['Agility', 'Change of Direction'] },
-  { id: 'sae-12', name: 'Hurdle Hops (Forward)', category: categories.SPEED_AGILITY, equipment: equipmentTags.HURDLES, difficulty: 2, url: 'http://www.dvidshub.net/video/697842/hurdle-hops-forward', tags: ['Plyometric', 'Coordination'] },
-  { id: 'sae-13', name: 'Hurdle Hops (Lateral)', category: categories.SPEED_AGILITY, equipment: equipmentTags.HURDLES, difficulty: 2, url: 'http://www.dvidshub.net/video/697845/hurdle-hops-lateral', tags: ['Plyometric', 'Agility'] },
-  { id: 'sae-14', name: 'Icky Shuffle', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'http://www.dvidshub.net/video/697848/icky-shuffle', tags: ['Footwork', 'Agility'] },
+  { id: 'sae-12', name: 'Hurdle Hops (Forward)', category: categories.SPEED_AGILITY, equipment: equipmentTags.HURDLES, difficulty: 2, url: 'https://www.dvidshub.net/video/697842/hurdle-hops-forward', tags: ['Plyometric', 'Coordination'] },
+  { id: 'sae-13', name: 'Hurdle Hops (Lateral)', category: categories.SPEED_AGILITY, equipment: equipmentTags.HURDLES, difficulty: 2, url: 'https://www.dvidshub.net/video/697845/hurdle-hops-lateral', tags: ['Plyometric', 'Agility'] },
+  { id: 'sae-14', name: 'Icky Shuffle', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/697848/icky-shuffle', tags: ['Footwork', 'Agility'] },
   { id: 'sae-15', name: 'Lateral Skip', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/558579/lateral-skip', tags: ['Agility', 'Cardio'] },
   { id: 'sae-16', name: 'Mountain Climber Start', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/697865/mountain-climber-start', tags: ['Acceleration', 'Core'] },
   { id: 'sae-17', name: 'Partner Resisted Sprint', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 3, url: 'https://www.dvidshub.net/video/641005/partner-resisted-sprint', tags: ['Power', 'Acceleration'] },
   { id: 'sae-18', name: 'Prone Start', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/641012/prone-start', tags: ['Acceleration', 'Reaction'] },
   { id: 'sae-19', name: 'Push-Up Start', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/641015/push-up-start', tags: ['Acceleration', 'Reaction'] },
   { id: 'sae-20', name: 'Sprint Progression', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/697881/sprint-progression', tags: ['Running Mechanics', 'Speed'] },
-  { id: 'sae-21', name: 'Stadium Stairs (1 Foot)', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 3, url: 'http://www.dvidshub.net/video/697884/stadium-stairs-1-foot-each-step', tags: ['Conditioning', 'Power'] },
+  { id: 'sae-21', name: 'Stadium Stairs (1 Foot)', category: categories.SPEED_AGILITY, equipment: equipmentTags.NONE, difficulty: 3, url: 'https://www.dvidshub.net/video/697884/stadium-stairs-1-foot-each-step', tags: ['Conditioning', 'Power'] },
   { id: 'sae-22', name: 'Zig Zag Drill', category: categories.SPEED_AGILITY, equipment: equipmentTags.CONES, difficulty: 2, url: 'https://www.dvidshub.net/video/699163/zig-zag-drill', tags: ['Agility', 'Change of Direction'] },
 
   // =====================
   // FLEXIBILITY & MOBILITY
   // =====================
   { id: 'flx-1', name: 'Chest Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/699167/chest-stretch', tags: ['Chest', 'Static'] },
-  { id: 'flx-2', name: 'Cross Body Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'http://www.dvidshub.net/video/699168/cross-body-stretch', tags: ['Shoulders', 'Static'] },
+  { id: 'flx-2', name: 'Cross Body Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/699168/cross-body-stretch', tags: ['Shoulders', 'Static'] },
   { id: 'flx-3', name: 'Elbow To Instep', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 2, url: 'https://www.dvidshub.net/video/636501/elbow-instep', tags: ['Hips', 'Dynamic'] },
   { id: 'flx-4', name: 'Glute Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/699170/glute-stretch', tags: ['Glutes', 'Static'] },
   { id: 'flx-5', name: 'Half Kneeling Hip Flexor', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/551136/pvc-half-kneeling-hip-flexor', tags: ['Hip Flexors', 'Static'] },
@@ -221,5 +221,5 @@ export const hittExercises = [
   { id: 'flx-9', name: 'Side Bend Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/699177/side-bend-stretch', tags: ['Core', 'Obliques'] },
   { id: 'flx-10', name: 'Sumo Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/699179/sumo-stretch', tags: ['Groin', 'Hips'] },
   { id: 'flx-11', name: 'Tricep Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/699182/tricep-stretch', tags: ['Triceps', 'Static'] },
-  { id: 'flx-12', name: 'Upper Back Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'http://www.dvidshub.net/video/699184/upper-back-stretch', tags: ['Back', 'Thoracic'] }
+  { id: 'flx-12', name: 'Upper Back Stretch', category: categories.FLEXIBILITY, equipment: equipmentTags.NONE, difficulty: 1, url: 'https://www.dvidshub.net/video/699184/upper-back-stretch', tags: ['Back', 'Thoracic'] }
 ];

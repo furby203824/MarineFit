@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useReducer } from 'react';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { Activity, Dumbbell, RefreshCw, Filter, PlayCircle, Clock, Target, Save, History, Trash2, Search, BookOpen, X, Plus, ChevronDown, ChevronUp, PlusCircle, FileText, FileSpreadsheet, File, Download } from 'lucide-react';
 import { equipmentTags, goals, hittExercises, categories } from '../data/hittData';
@@ -10,13 +10,45 @@ import ExercisePickerModal from './ptcoach/ExercisePickerModal';
 import SwapExerciseModal from './ptcoach/SwapExerciseModal';
 import HITTSidebar from './ptcoach/HITTSidebar';
 
+// UI state reducer for modal/menu toggles
+const uiInitialState = {
+  activeTab: 'generator',
+  showFeedback: false,
+  showExportMenu: false,
+  showCustomExportMenu: false,
+  showExercisePicker: false,
+  showSwapPicker: false,
+  activeBlockId: null,
+  swapTarget: null,
+};
+
+function uiReducer(state, action) {
+  switch (action.type) {
+    case 'SET_TAB':
+      return { ...state, activeTab: action.payload };
+    case 'TOGGLE_FEEDBACK':
+      return { ...state, showFeedback: action.payload };
+    case 'TOGGLE_EXPORT_MENU':
+      return { ...state, showExportMenu: action.payload };
+    case 'TOGGLE_CUSTOM_EXPORT_MENU':
+      return { ...state, showCustomExportMenu: action.payload };
+    case 'OPEN_EXERCISE_PICKER':
+      return { ...state, showExercisePicker: true, activeBlockId: action.payload };
+    case 'CLOSE_EXERCISE_PICKER':
+      return { ...state, showExercisePicker: false };
+    case 'OPEN_SWAP_PICKER':
+      return { ...state, showSwapPicker: true, swapTarget: action.payload };
+    case 'CLOSE_SWAP_PICKER':
+      return { ...state, showSwapPicker: false, swapTarget: null };
+    default:
+      return state;
+  }
+}
+
 const PTCoach = () => {
+  const [ui, dispatch] = useReducer(uiReducer, uiInitialState);
   const [workout, setWorkout] = useState(null);
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [activeTab, setActiveTab] = useState('generator'); // 'generator', 'history', 'library', or 'custom'
   const [savedWorkouts, setSavedWorkouts] = useState([]);
-  const [showExportMenu, setShowExportMenu] = useState(false); // For export dropdown
-  const [showCustomExportMenu, setShowCustomExportMenu] = useState(false); // For custom workout export
 
   // Custom Workout Builder State
   const [customWorkout, setCustomWorkout] = useState({
@@ -25,23 +57,18 @@ const PTCoach = () => {
   });
   const [customSearchQuery, setCustomSearchQuery] = useState('');
   const [customCategoryFilter, setCustomCategoryFilter] = useState('');
-  const [activeBlockId, setActiveBlockId] = useState(null);
-  const [showExercisePicker, setShowExercisePicker] = useState(false);
-
-  // Swap Exercise Picker State
-  const [showSwapPicker, setShowSwapPicker] = useState(false);
-  const [swapTarget, setSwapTarget] = useState(null); // { blockIndex, exerciseIndex, currentExercise }
   const [swapSearchQuery, setSwapSearchQuery] = useState('');
 
   // Focus traps for modals
-  const exercisePickerTrapRef = useFocusTrap(showExercisePicker, () => setShowExercisePicker(false));
-  const swapPickerTrapRef = useFocusTrap(showSwapPicker, () => { setShowSwapPicker(false); setSwapTarget(null); });
+  const exercisePickerTrapRef = useFocusTrap(ui.showExercisePicker, () => dispatch({ type: 'CLOSE_EXERCISE_PICKER' }));
+  const swapPickerTrapRef = useFocusTrap(ui.showSwapPicker, () => dispatch({ type: 'CLOSE_SWAP_PICKER' }));
 
   // Exercise Library filters
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [equipmentFilter, setEquipmentFilter] = useState('');
   const [difficultyFilter, setDifficultyFilter] = useState('');
+  const [libraryVisibleCount, setLibraryVisibleCount] = useState(30);
 
   // Advanced Filters
   const [time, setTime] = useState('30');
@@ -62,6 +89,11 @@ const PTCoach = () => {
     });
   }, [searchQuery, categoryFilter, equipmentFilter, difficultyFilter]);
 
+  // Reset visible count when filters change
+  useEffect(() => {
+    setLibraryVisibleCount(30);
+  }, [searchQuery, categoryFilter, equipmentFilter, difficultyFilter]);
+
   // Get unique values for filter dropdowns
   const allCategories = [...new Set(hittExercises.map(ex => ex.category))];
   const allEquipment = [...new Set(hittExercises.map(ex => ex.equipment))];
@@ -72,6 +104,7 @@ const PTCoach = () => {
     setCategoryFilter('');
     setEquipmentFilter('');
     setDifficultyFilter('');
+    setLibraryVisibleCount(30);
   };
 
   // Load history on mount
@@ -113,8 +146,8 @@ const PTCoach = () => {
       difficultyModifier
     });
     setWorkout(newWorkout);
-    setShowFeedback(false);
-    setActiveTab('generator');
+    dispatch({ type: 'TOGGLE_FEEDBACK', payload: false });
+    dispatch({ type: 'SET_TAB', payload: 'generator' });
   };
 
   const saveToLocalStorage = (key, data) => {
@@ -143,14 +176,13 @@ const PTCoach = () => {
     if (!workout) return;
     const block = workout.blocks[blockIndex];
     const currentExercise = block.exercises[exerciseIndex];
-    setSwapTarget({ blockIndex, exerciseIndex, currentExercise });
+    dispatch({ type: 'OPEN_SWAP_PICKER', payload: { blockIndex, exerciseIndex, currentExercise } });
     setSwapSearchQuery('');
-    setShowSwapPicker(true);
   };
 
   const confirmSwapExercise = (newExercise) => {
-    if (!workout || !swapTarget) return;
-    const { blockIndex, exerciseIndex, currentExercise } = swapTarget;
+    if (!workout || !ui.swapTarget) return;
+    const { blockIndex, exerciseIndex, currentExercise } = ui.swapTarget;
     const block = workout.blocks[blockIndex];
     const swappedExercise = { ...newExercise, prescription: currentExercise.prescription };
 
@@ -161,8 +193,7 @@ const PTCoach = () => {
     updatedWorkout.blocks[blockIndex].exercises[exerciseIndex] = swappedExercise;
 
     setWorkout(updatedWorkout);
-    setShowSwapPicker(false);
-    setSwapTarget(null);
+    dispatch({ type: 'CLOSE_SWAP_PICKER' });
   };
 
   const handleFeedback = (rating) => {
@@ -202,7 +233,7 @@ const PTCoach = () => {
     }
     saveToLocalStorage('marine_user_profile', userProfile);
 
-    setShowFeedback(false);
+    dispatch({ type: 'TOGGLE_FEEDBACK', payload: false });
     alert("AAR Submitted. Training variables updated for next cycle.");
   };
 
@@ -217,18 +248,18 @@ const PTCoach = () => {
   }, [customSearchQuery, customCategoryFilter]);
 
   const swapFilteredExercises = useMemo(() => {
-    if (!swapTarget || !workout) return [];
+    if (!ui.swapTarget || !workout) return [];
     const usedExerciseIds = workout.blocks.flatMap(b => b.exercises.map(ex => ex.id));
     return hittExercises.filter(ex => {
-      if (ex.category !== swapTarget.currentExercise.category) return false;
-      if (usedExerciseIds.includes(ex.id) && ex.id !== swapTarget.currentExercise.id) return false;
+      if (ex.category !== ui.swapTarget.currentExercise.category) return false;
+      if (usedExerciseIds.includes(ex.id) && ex.id !== ui.swapTarget.currentExercise.id) return false;
       const isBodyweight = ex.equipment === 'Bodyweight';
       const equipmentAvailable = selectedEquipment.length === 0 || selectedEquipment.includes(ex.equipment) || isBodyweight;
       if (!equipmentAvailable) return false;
       if (swapSearchQuery && !ex.name.toLowerCase().includes(swapSearchQuery.toLowerCase())) return false;
       return true;
     });
-  }, [swapTarget, workout, selectedEquipment, swapSearchQuery]);
+  }, [ui.swapTarget, workout, selectedEquipment, swapSearchQuery]);
 
   const addBlock = () => {
     const newBlock = { id: Date.now(), name: `BLOCK ${customWorkout.blocks.length + 1}`, exercises: [] };
@@ -251,14 +282,13 @@ const PTCoach = () => {
   };
 
   const openExercisePicker = (blockId) => {
-    setActiveBlockId(blockId);
-    setShowExercisePicker(true);
+    dispatch({ type: 'OPEN_EXERCISE_PICKER', payload: blockId });
     setCustomSearchQuery('');
     setCustomCategoryFilter('');
   };
 
   const addExerciseToBlock = (exercise) => {
-    if (!activeBlockId) return;
+    if (!ui.activeBlockId) return;
     const exerciseWithPrescription = {
       ...exercise,
       uniqueId: `${exercise.id}-${Date.now()}`,
@@ -267,10 +297,10 @@ const PTCoach = () => {
     setCustomWorkout(prev => ({
       ...prev,
       blocks: prev.blocks.map(b =>
-        b.id === activeBlockId ? { ...b, exercises: [...b.exercises, exerciseWithPrescription] } : b
+        b.id === ui.activeBlockId ? { ...b, exercises: [...b.exercises, exerciseWithPrescription] } : b
       )
     }));
-    setShowExercisePicker(false);
+    dispatch({ type: 'CLOSE_EXERCISE_PICKER' });
   };
 
   const removeExerciseFromBlock = (blockId, exerciseIndex) => {
@@ -351,26 +381,26 @@ const PTCoach = () => {
         {/* Tab Switcher */}
         <div className="flex bg-gray-100 dark:bg-gray-700 p-1 rounded-lg flex-wrap">
           <button
-            onClick={() => setActiveTab('generator')}
-            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'generator' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
+            onClick={() => dispatch({ type: 'SET_TAB', payload: 'generator' })}
+            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${ui.activeTab === 'generator' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
           >
             <RefreshCw size={16} /> <span className="hidden sm:inline">Generator</span>
           </button>
           <button
-            onClick={() => setActiveTab('custom')}
-            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'custom' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
+            onClick={() => dispatch({ type: 'SET_TAB', payload: 'custom' })}
+            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${ui.activeTab === 'custom' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
           >
             <PlusCircle size={16} /> <span className="hidden sm:inline">Create Custom</span>
           </button>
           <button
-            onClick={() => setActiveTab('library')}
-            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'library' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
+            onClick={() => dispatch({ type: 'SET_TAB', payload: 'library' })}
+            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${ui.activeTab === 'library' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
           >
             <BookOpen size={16} /> <span className="hidden sm:inline">Library</span>
           </button>
           <button
-            onClick={() => setActiveTab('history')}
-            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'history' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
+            onClick={() => dispatch({ type: 'SET_TAB', payload: 'history' })}
+            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${ui.activeTab === 'history' ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}`}
           >
             <History size={16} /> <span className="hidden sm:inline">History</span>
           </button>
@@ -381,7 +411,7 @@ const PTCoach = () => {
         {/* Main Content Area - Takes up 2 columns */}
         <div className="lg:col-span-2 space-y-6">
 
-          {activeTab === 'generator' ? (
+          {ui.activeTab === 'generator' ? (
             <div className="card border-t-4 border-t-marine-gold">
               <div className="mb-6">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white m-0 flex items-center gap-2 mb-4">
@@ -457,10 +487,10 @@ const PTCoach = () => {
                 {workout ? (
                   <WorkoutCard
                     workout={workout}
-                    showExportMenu={showExportMenu}
-                    setShowExportMenu={setShowExportMenu}
-                    showFeedback={showFeedback}
-                    setShowFeedback={setShowFeedback}
+                    showExportMenu={ui.showExportMenu}
+                    setShowExportMenu={(val) => dispatch({ type: 'TOGGLE_EXPORT_MENU', payload: val })}
+                    showFeedback={ui.showFeedback}
+                    setShowFeedback={(val) => dispatch({ type: 'TOGGLE_FEEDBACK', payload: val })}
                     onSave={saveWorkout}
                     onSwapExercise={handleSwapExercise}
                     onFeedback={handleFeedback}
@@ -473,7 +503,7 @@ const PTCoach = () => {
                 )}
               </AnimatePresence>
             </div>
-          ) : activeTab === 'library' ? (
+          ) : ui.activeTab === 'library' ? (
             // EXERCISE LIBRARY TAB
             <div className="space-y-4">
               <div className="card">
@@ -481,7 +511,7 @@ const PTCoach = () => {
                   <h2 className="text-xl font-bold text-gray-900 dark:text-white m-0 flex items-center gap-2">
                     <BookOpen className="text-marine-red" /> Exercise Library
                   </h2>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-gray-500" aria-live="polite">
                     {filteredExercises.length} of {hittExercises.length} exercises
                   </span>
                 </div>
@@ -494,6 +524,7 @@ const PTCoach = () => {
                     placeholder="Search exercises by name..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    maxLength={100}
                     className="w-full pl-10 pr-10 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-2 focus:ring-marine-red focus:border-transparent"
                   />
                   {searchQuery && (
@@ -566,7 +597,7 @@ const PTCoach = () => {
                 </div>
               ) : (
                 <div className="grid gap-3">
-                  {filteredExercises.map((ex) => (
+                  {filteredExercises.slice(0, libraryVisibleCount).map((ex) => (
                     <motion.div
                       key={ex.id}
                       initial={{ opacity: 0, y: 5 }}
@@ -612,10 +643,18 @@ const PTCoach = () => {
                       </div>
                     </motion.div>
                   ))}
+                  {filteredExercises.length > libraryVisibleCount && (
+                    <button
+                      onClick={() => setLibraryVisibleCount(prev => prev + 30)}
+                      className="w-full py-3 text-sm font-medium text-marine-red bg-marine-red/5 hover:bg-marine-red/10 rounded-lg transition-colors"
+                    >
+                      Load More ({filteredExercises.length - libraryVisibleCount} remaining)
+                    </button>
+                  )}
                 </div>
               )}
             </div>
-          ) : activeTab === 'custom' ? (
+          ) : ui.activeTab === 'custom' ? (
             // CUSTOM WORKOUT BUILDER TAB
             <div className="space-y-4">
               <div className="card border-t-4 border-t-marine-gold">
@@ -639,13 +678,13 @@ const PTCoach = () => {
                     {/* Export Dropdown for Custom Workout */}
                     <div className="relative">
                       <button
-                        onClick={() => setShowCustomExportMenu(!showCustomExportMenu)}
+                        onClick={() => dispatch({ type: 'TOGGLE_CUSTOM_EXPORT_MENU', payload: !ui.showCustomExportMenu })}
                         className="btn flex items-center gap-2 text-sm"
                         title="Export Workout"
                       >
                         <Download size={16} /> Export
                       </button>
-                      {showCustomExportMenu && (
+                      {ui.showCustomExportMenu && (
                         <div className="absolute right-0 top-full mt-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 py-1 z-50 min-w-[140px]">
                           <button
                             onClick={async () => {
@@ -653,7 +692,7 @@ const PTCoach = () => {
                                 const workoutToExport = { ...customWorkout, date: new Date().toISOString() };
                                 await exportToPDF(workoutToExport);
                               } catch (e) { console.error('PDF export failed:', e); alert('Export failed. Please try again.'); }
-                              setShowCustomExportMenu(false);
+                              dispatch({ type: 'TOGGLE_CUSTOM_EXPORT_MENU', payload: false });
                             }}
                             className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
                           >
@@ -665,7 +704,7 @@ const PTCoach = () => {
                                 const workoutToExport = { ...customWorkout, date: new Date().toISOString() };
                                 await exportToExcel(workoutToExport);
                               } catch (e) { console.error('Excel export failed:', e); alert('Export failed. Please try again.'); }
-                              setShowCustomExportMenu(false);
+                              dispatch({ type: 'TOGGLE_CUSTOM_EXPORT_MENU', payload: false });
                             }}
                             className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
                           >
@@ -677,7 +716,7 @@ const PTCoach = () => {
                                 const workoutToExport = { ...customWorkout, date: new Date().toISOString() };
                                 await exportToWord(workoutToExport);
                               } catch (e) { console.error('Word export failed:', e); alert('Export failed. Please try again.'); }
-                              setShowCustomExportMenu(false);
+                              dispatch({ type: 'TOGGLE_CUSTOM_EXPORT_MENU', payload: false });
                             }}
                             className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
                           >
@@ -698,6 +737,7 @@ const PTCoach = () => {
                     type="text"
                     value={customWorkout.title}
                     onChange={(e) => setCustomWorkout(prev => ({ ...prev, title: e.target.value }))}
+                    maxLength={80}
                     className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-marine-red focus:border-transparent"
                     placeholder="e.g., Monday Upper Body"
                   />
@@ -713,6 +753,7 @@ const PTCoach = () => {
                           type="text"
                           value={block.name}
                           onChange={(e) => updateBlockName(block.id, e.target.value)}
+                          maxLength={40}
                           className="font-bold text-sm uppercase tracking-wider text-marine-red bg-transparent border-none focus:outline-none focus:ring-0 w-40"
                         />
                         <div className="flex items-center gap-2">
@@ -790,6 +831,7 @@ const PTCoach = () => {
                                       <input
                                         type="number"
                                         min="1"
+                                        max="99"
                                         value={ex.prescription.sets}
                                         onChange={(e) => updateExercisePrescription(block.id, exIndex, 'sets', parseInt(e.target.value) || 1)}
                                         className="w-full px-2 py-1 text-sm border border-gray-200 dark:border-gray-500 rounded bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-100"
@@ -801,6 +843,7 @@ const PTCoach = () => {
                                         type="text"
                                         value={ex.prescription.reps}
                                         onChange={(e) => updateExercisePrescription(block.id, exIndex, 'reps', e.target.value)}
+                                        maxLength={20}
                                         className="w-full px-2 py-1 text-sm border border-gray-200 dark:border-gray-500 rounded bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-100"
                                         placeholder="e.g., 10 or 30s"
                                       />
@@ -811,6 +854,7 @@ const PTCoach = () => {
                                         type="text"
                                         value={ex.prescription.rest}
                                         onChange={(e) => updateExercisePrescription(block.id, exIndex, 'rest', e.target.value)}
+                                        maxLength={20}
                                         className="w-full px-2 py-1 text-sm border border-gray-200 dark:border-gray-500 rounded bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-100"
                                         placeholder="e.g., 60s"
                                       />
@@ -821,6 +865,7 @@ const PTCoach = () => {
                                         type="text"
                                         value={ex.prescription.notes}
                                         onChange={(e) => updateExercisePrescription(block.id, exIndex, 'notes', e.target.value)}
+                                        maxLength={100}
                                         className="w-full px-2 py-1 text-sm border border-gray-200 dark:border-gray-500 rounded bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-100"
                                         placeholder="Optional"
                                       />
@@ -847,7 +892,7 @@ const PTCoach = () => {
 
               {/* Exercise Picker Modal */}
               <AnimatePresence>
-                {showExercisePicker && (
+                {ui.showExercisePicker && (
                   <ExercisePickerModal
                     trapRef={exercisePickerTrapRef}
                     searchQuery={customSearchQuery}
@@ -857,12 +902,12 @@ const PTCoach = () => {
                     allCategories={allCategories}
                     filteredExercises={customFilteredExercises}
                     onAddExercise={addExerciseToBlock}
-                    onClose={() => setShowExercisePicker(false)}
+                    onClose={() => dispatch({ type: 'CLOSE_EXERCISE_PICKER' })}
                   />
                 )}
               </AnimatePresence>
             </div>
-          ) : activeTab === 'history' ? (
+          ) : ui.activeTab === 'history' ? (
             // HISTORY TAB
             <div className="space-y-4">
               {savedWorkouts.length === 0 ? (
@@ -886,7 +931,7 @@ const PTCoach = () => {
                     </div>
                     <div className="flex gap-2">
                        <button
-                         onClick={() => { setWorkout(w); setActiveTab('generator'); }}
+                         onClick={() => { setWorkout(w); dispatch({ type: 'SET_TAB', payload: 'generator' }); }}
                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-full"
                          title="Load Workout"
                        >
@@ -913,15 +958,15 @@ const PTCoach = () => {
 
       {/* Swap Exercise Picker Modal */}
       <AnimatePresence>
-        {showSwapPicker && swapTarget && (
+        {ui.showSwapPicker && ui.swapTarget && (
           <SwapExerciseModal
             trapRef={swapPickerTrapRef}
-            swapTarget={swapTarget}
+            swapTarget={ui.swapTarget}
             searchQuery={swapSearchQuery}
             setSearchQuery={setSwapSearchQuery}
             filteredExercises={swapFilteredExercises}
             onConfirmSwap={confirmSwapExercise}
-            onClose={() => { setShowSwapPicker(false); setSwapTarget(null); }}
+            onClose={() => dispatch({ type: 'CLOSE_SWAP_PICKER' })}
           />
         )}
       </AnimatePresence>

@@ -686,7 +686,7 @@ const PFTPrep = () => {
                         {/* Results Column */}
                         <div className="space-y-6">
                             {/* Score Card */}
-                            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border-t-4 border-marine-red">
+                            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border-t-4 border-marine-red" aria-live="polite" aria-atomic="true">
                                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                                     <Trophy size={20} className="text-yellow-500" />
                                     Results

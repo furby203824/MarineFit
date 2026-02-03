@@ -21,6 +21,9 @@ const SwapExerciseModal = ({
     >
       <motion.div
         ref={trapRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Swap Exercise"
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
