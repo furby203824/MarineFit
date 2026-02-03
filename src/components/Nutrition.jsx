@@ -6,11 +6,12 @@ import {
     CheckCircle2, AlertTriangle, XCircle, Salad, Wheat, Egg, Beef, Coffee,
     Clock, Activity, Flame, Brain, Heart, Gauge, ThermometerSun, AlertOctagon,
     Pill, FlaskConical, Info, Timer, Dumbbell, TrendingUp, Droplet, Package,
-    MapPin, Users, Mountain
+    MapPin, Users, Mountain, Image as ImageIcon, X, Maximize2
 } from 'lucide-react';
 
 const Nutrition = () => {
     const [activeSection, setActiveSection] = useState(null);
+    const [selectedResource, setSelectedResource] = useState(null);
 
     const container = {
         hidden: { opacity: 0 },
@@ -354,8 +355,48 @@ const Nutrition = () => {
         fat: { percent: "20-35%", example: "56-98g on 2500 kcal diet" }
     };
 
+    // Visual Resources
+    const visualResources = [
+        {
+            title: "Performance Plate",
+            filename: "Power Plate 20230103.png",
+            description: "Visual guide for building a high-performance meal plate with proper portioning."
+        },
+        {
+            title: "3 Keys to Nutrition",
+            filename: "3 keys 20230103.png",
+            description: "Core principles for nutritional success: Quality, Quantity, and Timing."
+        },
+        {
+            title: "Fueled for Fitness - Brochure",
+            filename: "Fueled for Fitness brochure web.Final__page-0001.jpg",
+            description: "Comprehensive guide to fueling for fitness - Part 1."
+        },
+        {
+            title: "Fueled for Fitness - Guide",
+            filename: "Fueled for Fitness brochure web.Final__page-0002.jpg",
+            description: "Comprehensive guide to fueling for fitness - Part 2."
+        },
+        {
+            title: "Operation Supplement Safety",
+            filename: "OPSS 220418.png",
+            description: "Official guidance on supplement safety and verification."
+        },
+        {
+            title: "Supplement Safety Guide",
+            filename: "Supplement safety 20230103.png",
+            description: "Key questions and warnings for supplement use."
+        },
+        {
+            title: "Supplement Safety - Additional",
+            filename: "Supplement safety 20230103 (1).png",
+            description: "Additional safety information and checklists."
+        }
+    ];
+
     // Sections
     const sections = [
+        { id: 'resources', title: 'Visual Guides', desc: 'Infographics and educational brochures', icon: ImageIcon, color: 'text-pink-600', bg: 'bg-pink-50' },
         { id: 'fueled', title: 'Fueled to Fight®', desc: 'USMC stoplight rating system for informed food choices', icon: Target, color: 'text-green-600', bg: 'bg-green-50' },
         { id: 'macros', title: 'Macronutrients', desc: 'Understanding carbs, protein, fat, and micronutrients', icon: Flame, color: 'text-amber-600', bg: 'bg-amber-50' },
         { id: 'timing', title: 'Nutrient Timing', desc: 'When to eat matters as much as what you eat', icon: Clock, color: 'text-blue-600', bg: 'bg-blue-50' },
@@ -369,6 +410,37 @@ const Nutrition = () => {
 
     const renderSectionContent = (section) => {
         switch(section) {
+            case 'resources':
+                return (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {visualResources.map((resource, idx) => (
+                            <div 
+                                key={idx} 
+                                className="group cursor-pointer bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all"
+                                onClick={() => setSelectedResource(resource)}
+                            >
+                                <div className="aspect-video w-full bg-gray-100 dark:bg-gray-700 relative overflow-hidden">
+                                    <img 
+                                        src={`/nutrition/${resource.filename}`} 
+                                        alt={resource.title}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        onError={(e) => {
+                                            e.target.onerror = null; 
+                                            e.target.src = 'https://placehold.co/600x400?text=Image+Not+Found';
+                                        }}
+                                    />
+                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                                        <Maximize2 className="text-white opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all drop-shadow-md" size={32} />
+                                    </div>
+                                </div>
+                                <div className="p-4">
+                                    <h4 className="font-bold text-gray-900 dark:text-white mb-1">{resource.title}</h4>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">{resource.description}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                );
             case 'fueled':
                 return (
                     <div className="space-y-6">
@@ -1194,6 +1266,53 @@ const Nutrition = () => {
                         exit={{ opacity: 0, x: -20 }}
                     >
                         {renderSectionContent(activeSection)}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Image Modal */}
+            <AnimatePresence>
+                {selectedResource && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+                        onClick={() => setSelectedResource(null)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            className="relative max-w-7xl max-h-[90vh] w-full bg-transparent flex flex-col items-center"
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <button
+                                onClick={() => setSelectedResource(null)}
+                                className="absolute -top-12 right-0 p-2 text-white/70 hover:text-white transition-colors"
+                            >
+                                <X size={32} />
+                            </button>
+                            
+                            <img
+                                src={`/nutrition/${selectedResource.filename}`}
+                                alt={selectedResource.title}
+                                className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl bg-white"
+                            />
+                            
+                            <div className="mt-4 text-center flex flex-col items-center gap-2">
+                                <h3 className="text-xl font-bold text-white">{selectedResource.title}</h3>
+                                <p className="text-white/70">{selectedResource.description}</p>
+                                <a 
+                                    href={`/nutrition/${selectedResource.filename}`} 
+                                    download 
+                                    className="mt-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg flex items-center gap-2 transition-colors text-sm font-medium"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <ExternalLink size={16} /> Open Original
+                                </a>
+                            </div>
+                        </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>

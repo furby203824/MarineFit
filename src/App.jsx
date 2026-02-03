@@ -10,6 +10,7 @@ import Nutrition from './components/Nutrition';
 import InjuryPrevention from './components/InjuryPrevention';
 import SleepOptimizer from './components/SleepOptimizer';
 import BodyComp from './components/BodyComp';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/sleep" element={<SleepOptimizer />} />
                 <Route path="/body-comp" element={<BodyComp />} />
               </Routes>
+              <Footer />
             </div>
           </main>
         </div>

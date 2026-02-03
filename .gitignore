@@ -103,12 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
-# Stores VSCode versions used for testing VSCode extensions
-.vscode-test
+# Strapi server
+.strapi-updater
 
-# yarn v2
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
-.pnp.*
+# Other Apps (References)
+PFT-CFT-CALCULATOR/
+Waist-to-Height-Ratio-WHtR--feature-whtr-calculator/
