@@ -5,9 +5,43 @@ import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, Headi
 import { saveAs } from 'file-saver';
 
 /**
+ * Validate workout object has required structure
+ */
+const validateWorkout = (workout) => {
+  if (!workout || typeof workout !== 'object') return false;
+  if (!workout.title || typeof workout.title !== 'string') return false;
+  if (!Array.isArray(workout.blocks)) return false;
+  return true;
+};
+
+/**
+ * Safely format a date string from workout data
+ */
+const getDateStr = (workout) => {
+  try {
+    return workout.date ? new Date(workout.date).toLocaleDateString() : new Date().toLocaleDateString();
+  } catch {
+    return new Date().toLocaleDateString();
+  }
+};
+
+/**
+ * Safely create a sanitized filename
+ */
+const sanitizeFilename = (title, dateStr, ext) => {
+  const safeName = (title || 'workout').replace(/[^a-z0-9]/gi, '_').substring(0, 50);
+  const safeDate = (dateStr || '').replace(/\//g, '-');
+  return `${safeName}_${safeDate}.${ext}`;
+};
+
+/**
  * Export workout to PDF
  */
 export const exportToPDF = (workout) => {
+  if (!validateWorkout(workout)) {
+    throw new Error('Invalid workout data for PDF export.');
+  }
+
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
 
@@ -34,7 +68,7 @@ export const exportToPDF = (workout) => {
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(100, 100, 100);
-  const dateStr = workout.date ? new Date(workout.date).toLocaleDateString() : new Date().toLocaleDateString();
+  const dateStr = getDateStr(workout);
   doc.text(`Date: ${dateStr}`, 14, 46);
 
   let yPos = 56;
@@ -122,7 +156,7 @@ export const exportToPDF = (workout) => {
   }
 
   // Save
-  const fileName = `${workout.title.replace(/[^a-z0-9]/gi, '_')}_${dateStr.replace(/\//g, '-')}.pdf`;
+  const fileName = sanitizeFilename(workout.title, dateStr, 'pdf');
   doc.save(fileName);
 };
 
@@ -130,6 +164,10 @@ export const exportToPDF = (workout) => {
  * Export workout to Excel
  */
 export const exportToExcel = (workout) => {
+  if (!validateWorkout(workout)) {
+    throw new Error('Invalid workout data for Excel export.');
+  }
+
   const workbook = XLSX.utils.book_new();
 
   // Summary sheet
@@ -137,7 +175,7 @@ export const exportToExcel = (workout) => {
     ['MarineFit Workout Card'],
     [''],
     ['Title:', workout.title],
-    ['Date:', workout.date ? new Date(workout.date).toLocaleDateString() : new Date().toLocaleDateString()],
+    ['Date:', getDateStr(workout)],
     ['Total Blocks:', workout.blocks.length],
     ['Total Exercises:', workout.blocks.reduce((sum, b) => sum + b.exercises.length, 0)],
     [''],
@@ -219,8 +257,8 @@ export const exportToExcel = (workout) => {
   });
 
   // Save
-  const dateStr = workout.date ? new Date(workout.date).toLocaleDateString().replace(/\//g, '-') : new Date().toLocaleDateString().replace(/\//g, '-');
-  const fileName = `${workout.title.replace(/[^a-z0-9]/gi, '_')}_${dateStr}.xlsx`;
+  const dateStr = getDateStr(workout);
+  const fileName = sanitizeFilename(workout.title, dateStr, 'xlsx');
   XLSX.writeFile(workbook, fileName);
 };
 
@@ -228,7 +266,11 @@ export const exportToExcel = (workout) => {
  * Export workout to Word document
  */
 export const exportToWord = async (workout) => {
-  const dateStr = workout.date ? new Date(workout.date).toLocaleDateString() : new Date().toLocaleDateString();
+  if (!validateWorkout(workout)) {
+    throw new Error('Invalid workout data for Word export.');
+  }
+
+  const dateStr = getDateStr(workout);
 
   // Build document sections
   const children = [
@@ -394,6 +436,6 @@ export const exportToWord = async (workout) => {
 
   // Generate and save
   const blob = await Packer.toBlob(doc);
-  const fileName = `${workout.title.replace(/[^a-z0-9]/gi, '_')}_${dateStr.replace(/\//g, '-')}.docx`;
+  const fileName = sanitizeFilename(workout.title, dateStr, 'docx');
   saveAs(blob, fileName);
 };

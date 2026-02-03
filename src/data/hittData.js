@@ -15,7 +15,8 @@ export const equipmentTags = {
   CONES: 'Cones',
   MED_BALL: 'Med Ball',
   HURDLES: 'Hurdles',
-  PVC: 'PVC Pipe'
+  PVC: 'PVC Pipe',
+  PULLUP_BAR: 'Pull-up Bar'
 };
 
 export const categories = {

@@ -89,6 +89,24 @@ export const manufMin = {
 };
 
 // ============================================
+// INPUT VALIDATION
+// ============================================
+
+const VALID_GENDERS = ['male', 'female'];
+
+const validateGender = (gender) => {
+    if (typeof gender !== 'string') return null;
+    const g = gender.toLowerCase();
+    return VALID_GENDERS.includes(g) ? g : null;
+};
+
+const validateNumber = (value, min = 0) => {
+    const num = Number(value);
+    if (isNaN(num) || num < min) return null;
+    return num;
+};
+
+// ============================================
 // SCORING CALCULATION FUNCTIONS
 // ============================================
 
@@ -185,21 +203,26 @@ export const getAgeGroup = (age) => {
 // ============================================
 
 export const calculateUpperBodyScore = (gender, ageGroup, type, reps) => {
-    const g = gender.toLowerCase();
-    const age = ageGroup || '21-25'; // Default to 21-25 if not specified
+    const g = validateGender(gender);
+    if (!g) return 0;
+    const validReps = validateNumber(reps);
+    if (validReps === null) return 0;
+    const age = ageGroup || '21-25';
 
     if (type === 'pullups') {
         const maxReps = pullupMax[g]?.[age] || pullupMax[g]?.['21-25'];
         const minReps = pullupMin[g]?.[age] || pullupMin[g]?.['21-25'];
+        if (maxReps == null || minReps == null) return 0;
 
-        if (reps < minReps) return 0;
-        return interpolateScore(reps, minReps, maxReps, false);
+        if (validReps < minReps) return 0;
+        return interpolateScore(validReps, minReps, maxReps, false);
     } else { // pushups
         const maxReps = pushupMax[g]?.[age] || pushupMax[g]?.['21-25'];
         const minReps = pushupMin[g]?.[age] || pushupMin[g]?.['21-25'];
+        if (maxReps == null || minReps == null) return 0;
 
-        if (reps < minReps) return 0;
-        return interpolateScore(reps, minReps, maxReps, false);
+        if (validReps < minReps) return 0;
+        return interpolateScore(validReps, minReps, maxReps, false);
     }
 };
 
@@ -208,7 +231,10 @@ export const calculateUpperBodyScore = (gender, ageGroup, type, reps) => {
 // ============================================
 
 export const calculatePlankScore = (minutes, seconds) => {
-    const totalSeconds = (minutes * 60) + seconds;
+    const validMins = validateNumber(minutes);
+    const validSecs = validateNumber(seconds);
+    if (validMins === null || validSecs === null) return 0;
+    const totalSeconds = (validMins * 60) + validSecs;
 
     if (totalSeconds < plankMinSeconds) return 0;
     if (totalSeconds >= plankMaxSeconds) return 100;
@@ -223,12 +249,17 @@ export const calculatePlankScore = (minutes, seconds) => {
 // ============================================
 
 export const calculateRunScore = (gender, ageGroup, minutes, seconds) => {
-    const g = gender.toLowerCase();
+    const g = validateGender(gender);
+    if (!g) return 0;
+    const validMins = validateNumber(minutes);
+    const validSecs = validateNumber(seconds);
+    if (validMins === null || validSecs === null) return 0;
     const age = ageGroup || '21-25';
-    const totalSeconds = (minutes * 60) + seconds;
+    const totalSeconds = (validMins * 60) + validSecs;
 
     const maxTime = runMax[g]?.[age] || runMax[g]?.['21-25'];
     const minTime = runMin[g]?.[age] || runMin[g]?.['21-25'];
+    if (maxTime == null || minTime == null) return 0;
 
     if (totalSeconds > minTime) return 0;
     return interpolateScore(totalSeconds, minTime, maxTime, true);
@@ -239,12 +270,17 @@ export const calculateRunScore = (gender, ageGroup, minutes, seconds) => {
 // ============================================
 
 export const calculateMTCScore = (gender, ageGroup, minutes, seconds) => {
-    const g = gender.toLowerCase();
+    const g = validateGender(gender);
+    if (!g) return 0;
+    const validMins = validateNumber(minutes);
+    const validSecs = validateNumber(seconds);
+    if (validMins === null || validSecs === null) return 0;
     const age = ageGroup || '21-25';
-    const totalSeconds = (minutes * 60) + seconds;
+    const totalSeconds = (validMins * 60) + validSecs;
 
     const maxTime = mtcMax[g]?.[age] || mtcMax[g]?.['21-25'];
     const minTime = mtcMin[g]?.[age] || mtcMin[g]?.['21-25'];
+    if (maxTime == null || minTime == null) return 0;
 
     if (totalSeconds > minTime) return 0;
     return interpolateScore(totalSeconds, minTime, maxTime, true);
@@ -255,14 +291,18 @@ export const calculateMTCScore = (gender, ageGroup, minutes, seconds) => {
 // ============================================
 
 export const calculateALScore = (gender, ageGroup, reps) => {
-    const g = gender.toLowerCase();
+    const g = validateGender(gender);
+    if (!g) return 0;
+    const validReps = validateNumber(reps);
+    if (validReps === null) return 0;
     const age = ageGroup || '21-25';
 
     const maxReps = ammoMax[g]?.[age] || ammoMax[g]?.['21-25'];
     const minReps = ammoMin[g]?.[age] || ammoMin[g]?.['21-25'];
+    if (maxReps == null || minReps == null) return 0;
 
-    if (reps < minReps) return 0;
-    return interpolateScore(reps, minReps, maxReps, false);
+    if (validReps < minReps) return 0;
+    return interpolateScore(validReps, minReps, maxReps, false);
 };
 
 // ============================================
@@ -270,12 +310,17 @@ export const calculateALScore = (gender, ageGroup, reps) => {
 // ============================================
 
 export const calculateMANUFScore = (gender, ageGroup, minutes, seconds) => {
-    const g = gender.toLowerCase();
+    const g = validateGender(gender);
+    if (!g) return 0;
+    const validMins = validateNumber(minutes);
+    const validSecs = validateNumber(seconds);
+    if (validMins === null || validSecs === null) return 0;
     const age = ageGroup || '21-25';
-    const totalSeconds = (minutes * 60) + seconds;
+    const totalSeconds = (validMins * 60) + validSecs;
 
     const maxTime = manufMax[g]?.[age] || manufMax[g]?.['21-25'];
     const minTime = manufMin[g]?.[age] || manufMin[g]?.['21-25'];
+    if (maxTime == null || minTime == null) return 0;
 
     if (totalSeconds > minTime) return 0;
     return interpolateScore(totalSeconds, minTime, maxTime, true);
@@ -289,12 +334,13 @@ export const getRequiredUpperBodyReps = (gender, ageGroup, type, targetScore) =>
     if (targetScore <= 0) return 0;
     if (targetScore > 100) targetScore = 100;
 
-    const g = gender.toLowerCase();
+    const g = validateGender(gender);
+    if (!g) return 0;
     const age = ageGroup || '21-25';
 
     if (type === 'pullups') {
-        const maxReps = pullupMax[g]?.[age] || pullupMax[g]['21-25'];
-        const minReps = pullupMin[g]?.[age] || pullupMin[g]['21-25'];
+        const maxReps = pullupMax[g]?.[age] || pullupMax[g]?.['21-25'];
+        const minReps = pullupMin[g]?.[age] || pullupMin[g]?.['21-25'];
 
         if (targetScore >= 100) return maxReps;
         if (targetScore <= 40) return minReps;
@@ -303,8 +349,8 @@ export const getRequiredUpperBodyReps = (gender, ageGroup, type, targetScore) =>
         const ratio = (targetScore - 40) / 60;
         return Math.ceil(minReps + (ratio * (maxReps - minReps)));
     } else { // pushups
-        const maxReps = pushupMax[g]?.[age] || pushupMax[g]['21-25'];
-        const minReps = pushupMin[g]?.[age] || pushupMin[g]['21-25'];
+        const maxReps = pushupMax[g]?.[age] || pushupMax[g]?.['21-25'];
+        const minReps = pushupMin[g]?.[age] || pushupMin[g]?.['21-25'];
 
         if (targetScore >= 100) return maxReps;
         if (targetScore <= 40) return minReps;
@@ -330,11 +376,12 @@ export const getRequiredRunTime = (gender, ageGroup, targetScore) => {
     if (targetScore <= 0) return "N/A";
     if (targetScore > 100) targetScore = 100;
 
-    const g = gender.toLowerCase();
+    const g = validateGender(gender);
+    if (!g) return "N/A";
     const age = ageGroup || '21-25';
 
-    const maxTime = runMax[g]?.[age] || runMax[g]['21-25'];
-    const minTime = runMin[g]?.[age] || runMin[g]['21-25'];
+    const maxTime = runMax[g]?.[age] || runMax[g]?.['21-25'];
+    const minTime = runMin[g]?.[age] || runMin[g]?.['21-25'];
 
     if (targetScore >= 100) {
         const mins = Math.floor(maxTime / 60);
@@ -359,11 +406,12 @@ export const getRequiredMTC = (gender, ageGroup, targetScore) => {
     if (targetScore <= 0) return "N/A";
     if (targetScore > 100) targetScore = 100;
 
-    const g = gender.toLowerCase();
+    const g = validateGender(gender);
+    if (!g) return "N/A";
     const age = ageGroup || '21-25';
 
-    const maxTime = mtcMax[g]?.[age] || mtcMax[g]['21-25'];
-    const minTime = mtcMin[g]?.[age] || mtcMin[g]['21-25'];
+    const maxTime = mtcMax[g]?.[age] || mtcMax[g]?.['21-25'];
+    const minTime = mtcMin[g]?.[age] || mtcMin[g]?.['21-25'];
 
     if (targetScore >= 100) {
         const mins = Math.floor(maxTime / 60);
@@ -387,11 +435,12 @@ export const getRequiredAmmoLifts = (gender, ageGroup, targetScore) => {
     if (targetScore <= 0) return 0;
     if (targetScore > 100) targetScore = 100;
 
-    const g = gender.toLowerCase();
+    const g = validateGender(gender);
+    if (!g) return 0;
     const age = ageGroup || '21-25';
 
-    const maxReps = ammoMax[g]?.[age] || ammoMax[g]['21-25'];
-    const minReps = ammoMin[g]?.[age] || ammoMin[g]['21-25'];
+    const maxReps = ammoMax[g]?.[age] || ammoMax[g]?.['21-25'];
+    const minReps = ammoMin[g]?.[age] || ammoMin[g]?.['21-25'];
 
     if (targetScore >= 100) return maxReps;
     if (targetScore <= 40) return minReps;
@@ -404,11 +453,12 @@ export const getRequiredMANUF = (gender, ageGroup, targetScore) => {
     if (targetScore <= 0) return "N/A";
     if (targetScore > 100) targetScore = 100;
 
-    const g = gender.toLowerCase();
+    const g = validateGender(gender);
+    if (!g) return "N/A";
     const age = ageGroup || '21-25';
 
-    const maxTime = manufMax[g]?.[age] || manufMax[g]['21-25'];
-    const minTime = manufMin[g]?.[age] || manufMin[g]['21-25'];
+    const maxTime = manufMax[g]?.[age] || manufMax[g]?.['21-25'];
+    const minTime = manufMin[g]?.[age] || manufMin[g]?.['21-25'];
 
     if (targetScore >= 100) {
         const mins = Math.floor(maxTime / 60);
@@ -433,7 +483,8 @@ export const getRequiredMANUF = (gender, ageGroup, targetScore) => {
 // ============================================
 
 export const getScoringThresholds = (gender, ageGroup, event) => {
-    const g = gender.toLowerCase();
+    const g = validateGender(gender);
+    if (!g) return null;
     const age = ageGroup || '21-25';
 
     switch (event) {
