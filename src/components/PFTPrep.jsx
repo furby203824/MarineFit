@@ -20,8 +20,9 @@ import {
 } from '../utils/pftScoring';
 import { hittExercises } from '../data/hittData';
 import { returnToRunData } from '../data/rehabData';
-import { Calculator, Activity, Trophy, AlertCircle, Target, Calendar, ChevronDown, ChevronUp, CheckCircle2, Dumbbell, PlayCircle, TrendingUp, FileText, ChevronLeft, ChevronRight, Table as TableIcon, X, Footprints, Clock, List, Shield } from 'lucide-react';
+import { Calculator, Activity, Trophy, AlertCircle, Target, Calendar, ChevronDown, ChevronUp, CheckCircle2, Dumbbell, PlayCircle, TrendingUp, FileText, ChevronLeft, ChevronRight, Table as TableIcon, X, Footprints, Clock, List, Shield, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import jsPDF from 'jspdf';
 
 // Walk to Run Program Component
 const WalkToRunProgram = () => {
@@ -867,17 +868,19 @@ const PFTPrep = () => {
     // CFT Schedule State
     const [cftWeek, setCftWeek] = useState(1);
     const [cftViewCard, setCftViewCard] = useState(null); // card index to view, or null
+    const [cftWeekView, setCftWeekView] = useState(null); // week number to show all cards, or null
+    const [cftDownloading, setCftDownloading] = useState(false);
 
     // CFT schedule mapping: workout type → card index offset
     const cftSchedule = {
         days: [
-            { day: 'Mon', type: 'WARRIOR', color: 'bg-red-600', textColor: 'text-white', offset: 0 },
-            { day: 'Tue', type: 'ATHLETE', color: 'bg-blue-600', textColor: 'text-white', offset: 100 },
-            { day: 'Wed', type: 'RELOAD', color: 'bg-green-600', textColor: 'text-white', offset: 25 },
-            { day: 'Thu', type: 'COMBAT', color: 'bg-yellow-500', textColor: 'text-black', offset: 75 },
-            { day: 'Fri', type: 'COMPANY', color: 'bg-purple-600', textColor: 'text-white', offset: 50 },
-            { day: 'Sat', type: 'RELOAD', color: 'bg-green-600', textColor: 'text-white', offset: 25 },
-            { day: 'Sun', type: 'REST', color: 'bg-gray-400', textColor: 'text-white', offset: null },
+            { day: 'Mon', type: 'WARRIOR', color: 'bg-red-600', textColor: 'text-white', hexColor: '#dc2626', offset: 0 },
+            { day: 'Tue', type: 'ATHLETE', color: 'bg-blue-600', textColor: 'text-white', hexColor: '#2563eb', offset: 100 },
+            { day: 'Wed', type: 'RELOAD', color: 'bg-green-600', textColor: 'text-white', hexColor: '#16a34a', offset: 25 },
+            { day: 'Thu', type: 'COMBAT', color: 'bg-yellow-500', textColor: 'text-black', hexColor: '#eab308', offset: 75 },
+            { day: 'Fri', type: 'COMPANY', color: 'bg-purple-600', textColor: 'text-white', hexColor: '#9333ea', offset: 50 },
+            { day: 'Sat', type: 'RELOAD', color: 'bg-green-600', textColor: 'text-white', hexColor: '#16a34a', offset: 25 },
+            { day: 'Sun', type: 'REST', color: 'bg-gray-400', textColor: 'text-white', hexColor: '#9ca3af', offset: null },
         ]
     };
 
@@ -890,6 +893,134 @@ const PFTPrep = () => {
         if (cardIndex === null) return null;
         const pageNum = padPage(cardIndex + 1 + (visualPlans.cft.fileOffset || 0));
         return `${visualPlans.cft.path}CFT-PREP-GUIDANCE_page-${pageNum}.jpg`;
+    };
+
+    // Get workout days (non-rest) for a week
+    const getWeekWorkouts = (weekNum) => {
+        return cftSchedule.days
+            .filter(d => d.offset !== null)
+            .map(d => ({
+                ...d,
+                cardIndex: getCftCardIndex(weekNum, d.offset),
+                label: `${d.type} HITT ${weekNum}`,
+                imgSrc: getCftImageSrc(getCftCardIndex(weekNum, d.offset))
+            }));
+    };
+
+    // Download week's cards as PDF
+    const downloadWeekPDF = async (weekNum) => {
+        setCftDownloading(true);
+        try {
+            const workouts = getWeekWorkouts(weekNum);
+            // Load all images first
+            const loadImage = (src) => new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => resolve(img);
+                img.onerror = () => reject(new Error(`Failed to load ${src}`));
+                img.src = src;
+            });
+
+            const images = await Promise.all(
+                workouts.map(w => loadImage(w.imgSrc).catch(() => null))
+            );
+
+            const doc = new jsPDF('p', 'mm', 'letter');
+            const pageW = doc.internal.pageSize.getWidth();
+            const pageH = doc.internal.pageSize.getHeight();
+
+            // Title page
+            doc.setFillColor(139, 0, 0);
+            doc.rect(0, 0, pageW, 30, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(22);
+            doc.setFont('helvetica', 'bold');
+            doc.text('HITT Training Schedule', pageW / 2, 18, { align: 'center' });
+            doc.setFontSize(14);
+            doc.text(`Week ${weekNum} of 25`, pageW / 2, 26, { align: 'center' });
+
+            // Schedule summary on title page
+            doc.setTextColor(0, 0, 0);
+            let yPos = 45;
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Weekly Schedule:', 20, yPos);
+            yPos += 10;
+
+            workouts.forEach((w) => {
+                const hex = w.hexColor;
+                const r = parseInt(hex.slice(1,3), 16);
+                const g = parseInt(hex.slice(3,5), 16);
+                const b = parseInt(hex.slice(5,7), 16);
+                doc.setFillColor(r, g, b);
+                doc.rect(20, yPos - 4, 40, 7, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'bold');
+                doc.text(`${w.day}`, 22, yPos);
+                doc.text(`${w.type} ${weekNum}`, 35, yPos);
+                doc.setTextColor(0, 0, 0);
+                yPos += 10;
+            });
+
+            // Add REST DAY
+            doc.setFillColor(156, 163, 175);
+            doc.rect(20, yPos - 4, 40, 7, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(10);
+            doc.text('Sun', 22, yPos);
+            doc.text('REST DAY', 35, yPos);
+
+            // Card pages
+            workouts.forEach((w, i) => {
+                doc.addPage();
+                // Header bar
+                const hex = w.hexColor;
+                const r = parseInt(hex.slice(1,3), 16);
+                const g = parseInt(hex.slice(3,5), 16);
+                const b = parseInt(hex.slice(5,7), 16);
+                doc.setFillColor(r, g, b);
+                doc.rect(0, 0, pageW, 12, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'bold');
+                doc.text(`${w.day.toUpperCase()} — ${w.label}`, pageW / 2, 8, { align: 'center' });
+
+                if (images[i]) {
+                    const img = images[i];
+                    const imgRatio = img.width / img.height;
+                    const maxW = pageW - 20;
+                    const maxH = pageH - 25;
+                    let drawW = maxW;
+                    let drawH = drawW / imgRatio;
+                    if (drawH > maxH) {
+                        drawH = maxH;
+                        drawW = drawH * imgRatio;
+                    }
+                    const x = (pageW - drawW) / 2;
+                    doc.addImage(img, 'JPEG', x, 14, drawW, drawH);
+                } else {
+                    doc.setTextColor(150, 150, 150);
+                    doc.setFontSize(14);
+                    doc.text('Image could not be loaded', pageW / 2, pageH / 2, { align: 'center' });
+                }
+            });
+
+            // Footer on all pages
+            const totalPages = doc.internal.getNumberOfPages();
+            for (let p = 1; p <= totalPages; p++) {
+                doc.setPage(p);
+                doc.setFontSize(7);
+                doc.setTextColor(150, 150, 150);
+                doc.text('MarineFit — COMBAT FIT. COMBAT READY.', pageW / 2, pageH - 5, { align: 'center' });
+            }
+
+            doc.save(`HITT_Week_${weekNum}_Schedule.pdf`);
+        } catch (err) {
+            console.error('PDF download failed:', err);
+        } finally {
+            setCftDownloading(false);
+        }
     };
 
     // Helper to get the actual image filename/index
@@ -1517,7 +1648,7 @@ const PFTPrep = () => {
                                 <Calendar size={20} className="text-marine-red" />
                                 HITT Training Schedule
                             </h3>
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">25-week CFT prep program — tap any cell to view the workout card</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">Tap a week to view all cards — tap any cell for a single card</p>
 
                             {/* Schedule Table */}
                             <div className="overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6">
@@ -1539,9 +1670,9 @@ const PFTPrep = () => {
                                                     className={`sticky left-0 z-10 p-1.5 text-center font-bold border border-gray-300 dark:border-gray-600 cursor-pointer transition-colors ${
                                                         cftWeek === week
                                                             ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200'
-                                                            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                                                            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                                                     }`}
-                                                    onClick={() => setCftWeek(week)}
+                                                    onClick={() => { setCftWeek(week); setCftWeekView(week); }}
                                                 >
                                                     WK {week}
                                                 </td>
@@ -1563,12 +1694,7 @@ const PFTPrep = () => {
                                                                     : 'cursor-pointer hover:brightness-90 active:brightness-75'
                                                             }`}
                                                             style={!isRest ? {
-                                                                backgroundColor: dayInfo.day === 'Mon' ? '#dc2626'
-                                                                    : dayInfo.day === 'Tue' ? '#2563eb'
-                                                                    : dayInfo.day === 'Wed' ? '#16a34a'
-                                                                    : dayInfo.day === 'Thu' ? '#eab308'
-                                                                    : dayInfo.day === 'Fri' ? '#9333ea'
-                                                                    : '#16a34a',
+                                                                backgroundColor: dayInfo.hexColor,
                                                                 color: dayInfo.day === 'Thu' ? '#000' : '#fff'
                                                             } : undefined}
                                                         >
@@ -1588,8 +1714,8 @@ const PFTPrep = () => {
                             </div>
                         </div>
 
-                        {/* Card Viewer Modal */}
-                        {cftViewCard !== null && (
+                        {/* Single Card Viewer Modal */}
+                        {cftViewCard !== null && !cftWeekView && (
                             <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4" onClick={() => setCftViewCard(null)}>
                                 <div className="bg-white dark:bg-gray-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
                                     <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700">
@@ -1616,6 +1742,93 @@ const PFTPrep = () => {
                                                 e.target.src = 'https://via.placeholder.com/800x600?text=Image+Not+Found';
                                             }}
                                         />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Week View Modal - All Cards */}
+                        {cftWeekView !== null && (
+                            <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-2 sm:p-4" onClick={() => setCftWeekView(null)}>
+                                <div className="bg-white dark:bg-gray-800 rounded-xl max-w-3xl w-full max-h-[95vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
+                                    {/* Header */}
+                                    <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+                                        <div className="flex items-center gap-2">
+                                            <button
+                                                onClick={() => setCftWeekView(w => Math.max(1, w - 1))}
+                                                disabled={cftWeekView === 1}
+                                                className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-30"
+                                            >
+                                                <ChevronLeft size={18} />
+                                            </button>
+                                            <span className="font-bold text-gray-900 dark:text-white text-sm">
+                                                Week {cftWeekView} of 25
+                                            </span>
+                                            <button
+                                                onClick={() => setCftWeekView(w => Math.min(25, w + 1))}
+                                                disabled={cftWeekView === 25}
+                                                className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-30"
+                                            >
+                                                <ChevronRight size={18} />
+                                            </button>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <button
+                                                onClick={() => downloadWeekPDF(cftWeekView)}
+                                                disabled={cftDownloading}
+                                                className="flex items-center gap-1.5 px-3 py-1.5 bg-marine-red hover:bg-red-700 text-white text-xs font-medium rounded-lg transition-colors disabled:opacity-50"
+                                            >
+                                                <Download size={14} />
+                                                {cftDownloading ? 'Saving...' : 'PDF'}
+                                            </button>
+                                            <button
+                                                onClick={() => setCftWeekView(null)}
+                                                className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                            >
+                                                <X size={20} />
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Cards List */}
+                                    <div className="overflow-auto flex-1 p-3 space-y-4">
+                                        {getWeekWorkouts(cftWeekView).map((workout) => (
+                                            <div key={workout.day} className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                                                {/* Day Header */}
+                                                <div
+                                                    className="px-3 py-2 font-bold text-sm flex items-center gap-2"
+                                                    style={{ backgroundColor: workout.hexColor, color: workout.day === 'Thu' ? '#000' : '#fff' }}
+                                                >
+                                                    <span>{workout.day.toUpperCase()}</span>
+                                                    <span className="opacity-80">—</span>
+                                                    <span>{workout.label}</span>
+                                                </div>
+                                                {/* Card Image */}
+                                                <div className="bg-gray-50 dark:bg-gray-900 p-2">
+                                                    <img
+                                                        src={workout.imgSrc}
+                                                        alt={workout.label}
+                                                        className="w-full h-auto object-contain"
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = 'https://via.placeholder.com/800x600?text=Image+Not+Found';
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                        {/* Rest Day Note */}
+                                        <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                                            <div className="px-3 py-2 font-bold text-sm bg-gray-400 text-white flex items-center gap-2">
+                                                <span>SUN</span>
+                                                <span className="opacity-80">—</span>
+                                                <span>REST DAY</span>
+                                            </div>
+                                            <div className="bg-gray-50 dark:bg-gray-900 p-4 text-center text-gray-400 dark:text-gray-500 text-sm italic">
+                                                Active recovery / rest day
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
