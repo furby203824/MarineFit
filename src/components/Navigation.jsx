@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Menu, X, Activity, Calculator, Heart, Shield, Moon, Sun, Utensils, Home,
@@ -9,12 +9,12 @@ import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { useTheme } from '../context/ThemeContext';
 
-const NavItem = ({ to, icon: Icon, label, isOpen }) => {
+const NavItem = ({ to, icon: Icon, label, isOpen, onClick }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
 
   return (
-    <Link to={to} className="w-full">
+    <Link to={to} className="w-full" onClick={onClick}>
       <div
         className={twMerge(
           "flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 group relative",
@@ -48,8 +48,25 @@ const NavItem = ({ to, icon: Icon, label, isOpen }) => {
 };
 
 const Navigation = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [sidebarExpanded, setSidebarExpanded] = useState(true); // Desktop sidebar expanded/collapsed
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false); // Mobile drawer open/closed
   const { theme, toggleTheme } = useTheme();
+
+  // Close mobile drawer on window resize to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMobileDrawerOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Close mobile drawer when clicking a nav link
+  const handleMobileNavClick = () => {
+    setMobileDrawerOpen(false);
+  };
 
   return (
     <>
@@ -66,8 +83,8 @@ const Navigation = () => {
           >
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
-          <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-gray-600 dark:text-gray-300">
-            {isOpen ? <X /> : <Menu />}
+          <button onClick={() => setMobileDrawerOpen(!mobileDrawerOpen)} className="p-2 text-gray-600 dark:text-gray-300">
+            {mobileDrawerOpen ? <X /> : <Menu />}
           </button>
         </div>
       </div>
@@ -75,13 +92,13 @@ const Navigation = () => {
       {/* Sidebar */}
       <motion.aside
         initial={false}
-        animate={{ width: isOpen ? 240 : 80 }}
+        animate={{ width: sidebarExpanded ? 240 : 80 }}
         className="hidden md:flex flex-col fixed left-0 top-0 bottom-0 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-40 shadow-sm transition-colors duration-200 no-print"
       >
         <div className="h-16 flex items-center px-4 border-b border-gray-100 dark:border-gray-700">
-          <div className={twMerge("flex items-center gap-2 overflow-hidden", !isOpen && "justify-center w-full")}>
+          <div className={twMerge("flex items-center gap-2 overflow-hidden", !sidebarExpanded && "justify-center w-full")}>
             <span className="text-2xl">⚓</span>
-            {isOpen && (
+            {sidebarExpanded && (
               <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -94,25 +111,25 @@ const Navigation = () => {
         </div>
 
         <div className="flex-1 py-6 px-3 space-y-2 overflow-y-auto">
-          <div className={clsx("text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 px-3", !isOpen && "text-center")}>
-            {isOpen ? "Menu" : "..."}
+          <div className={clsx("text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 px-3", !sidebarExpanded && "text-center")}>
+            {sidebarExpanded ? "Menu" : "..."}
           </div>
 
-          <NavItem to="/" icon={Home} label="Dashboard" isOpen={isOpen} />
-          <NavItem to="/pt-coach" icon={Activity} label="PT Coach" isOpen={isOpen} />
-          <NavItem to="/exercises" icon={Library} label="Exercise Library" isOpen={isOpen} />
-          <NavItem to="/pft-prep" icon={Calculator} label="PFT/CFT Prep" isOpen={isOpen} />
-          <NavItem to="/body-comp" icon={Heart} label="Body Comp" isOpen={isOpen} />
+          <NavItem to="/" icon={Home} label="Dashboard" isOpen={sidebarExpanded} />
+          <NavItem to="/pt-coach" icon={Activity} label="PT Coach" isOpen={sidebarExpanded} />
+          <NavItem to="/exercises" icon={Library} label="Exercise Library" isOpen={sidebarExpanded} />
+          <NavItem to="/pft-prep" icon={Calculator} label="PFT/CFT Prep" isOpen={sidebarExpanded} />
+          <NavItem to="/body-comp" icon={Heart} label="Body Comp" isOpen={sidebarExpanded} />
 
           <div className="my-4 border-t border-gray-100 dark:border-gray-700" />
 
-          <div className={clsx("text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 px-3", !isOpen && "text-center")}>
-            {isOpen ? "Wellness" : "..."}
+          <div className={clsx("text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 px-3", !sidebarExpanded && "text-center")}>
+            {sidebarExpanded ? "Wellness" : "..."}
           </div>
 
-          <NavItem to="/nutrition" icon={Utensils} label="Nutrition" isOpen={isOpen} />
-          <NavItem to="/injury-prevention" icon={Shield} label="Injury Prev" isOpen={isOpen} />
-          <NavItem to="/sleep" icon={Moon} label="Sleep" isOpen={isOpen} />
+          <NavItem to="/nutrition" icon={Utensils} label="Nutrition" isOpen={sidebarExpanded} />
+          <NavItem to="/injury-prevention" icon={Shield} label="Injury Prev" isOpen={sidebarExpanded} />
+          <NavItem to="/sleep" icon={Moon} label="Sleep" isOpen={sidebarExpanded} />
         </div>
 
         {/* Theme Toggle & Collapse */}
@@ -121,31 +138,31 @@ const Navigation = () => {
             onClick={toggleTheme}
             className={twMerge(
               "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors",
-              !isOpen && "justify-center"
+              !sidebarExpanded && "justify-center"
             )}
             title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            {isOpen && <span className="text-sm">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>}
+            {sidebarExpanded && <span className="text-sm">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>}
           </button>
           <button
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setSidebarExpanded(!sidebarExpanded)}
             className="w-full flex items-center justify-center p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors"
           >
-            {isOpen ? <div className="flex items-center gap-2 text-sm">Collapse <ChevronRight className="rotate-180" size={16}/></div> : <ChevronRight size={20} />}
+            {sidebarExpanded ? <div className="flex items-center gap-2 text-sm">Collapse <ChevronRight className="rotate-180" size={16}/></div> : <ChevronRight size={20} />}
           </button>
         </div>
       </motion.aside>
 
       {/* Mobile Drawer */}
       <AnimatePresence>
-        {isOpen && (
+        {mobileDrawerOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="md:hidden fixed inset-0 bg-black/50 z-40 mt-16"
-            onClick={() => setIsOpen(false)}
+            onClick={() => setMobileDrawerOpen(false)}
           >
             <motion.div
               initial={{ x: "-100%" }}
@@ -155,14 +172,14 @@ const Navigation = () => {
               onClick={e => e.stopPropagation()}
             >
               <div className="space-y-2">
-                 <NavItem to="/" icon={Home} label="Dashboard" isOpen={true} />
-                 <NavItem to="/pt-coach" icon={Activity} label="PT Coach" isOpen={true} />
-                 <NavItem to="/exercises" icon={Library} label="Exercise Library" isOpen={true} />
-                 <NavItem to="/pft-prep" icon={Calculator} label="PFT/CFT Prep" isOpen={true} />
-                 <NavItem to="/body-comp" icon={Heart} label="Body Comp" isOpen={true} />
-                 <NavItem to="/nutrition" icon={Utensils} label="Nutrition" isOpen={true} />
-                 <NavItem to="/injury-prevention" icon={Shield} label="Injury Prev" isOpen={true} />
-                 <NavItem to="/sleep" icon={Moon} label="Sleep" isOpen={true} />
+                 <NavItem to="/" icon={Home} label="Dashboard" isOpen={true} onClick={handleMobileNavClick} />
+                 <NavItem to="/pt-coach" icon={Activity} label="PT Coach" isOpen={true} onClick={handleMobileNavClick} />
+                 <NavItem to="/exercises" icon={Library} label="Exercise Library" isOpen={true} onClick={handleMobileNavClick} />
+                 <NavItem to="/pft-prep" icon={Calculator} label="PFT/CFT Prep" isOpen={true} onClick={handleMobileNavClick} />
+                 <NavItem to="/body-comp" icon={Heart} label="Body Comp" isOpen={true} onClick={handleMobileNavClick} />
+                 <NavItem to="/nutrition" icon={Utensils} label="Nutrition" isOpen={true} onClick={handleMobileNavClick} />
+                 <NavItem to="/injury-prevention" icon={Shield} label="Injury Prev" isOpen={true} onClick={handleMobileNavClick} />
+                 <NavItem to="/sleep" icon={Moon} label="Sleep" isOpen={true} onClick={handleMobileNavClick} />
               </div>
             </motion.div>
           </motion.div>
