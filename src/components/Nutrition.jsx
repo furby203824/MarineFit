@@ -9,6 +9,8 @@ import {
     MapPin, Users, Mountain, Image as ImageIcon, X, Maximize2, Download
 } from 'lucide-react';
 
+const BASE_URL = import.meta.env.BASE_URL;
+
 const Nutrition = () => {
     const [activeSection, setActiveSection] = useState(null);
     const [selectedResource, setSelectedResource] = useState(null);
@@ -359,37 +361,37 @@ const Nutrition = () => {
     const visualResources = [
         {
             title: "Performance Plate",
-            filename: "Power Plate 20230103.png",
+            filename: "Power-Plate-20230103.png",
             description: "Visual guide for building a high-performance meal plate with proper portioning."
         },
         {
             title: "3 Keys to Nutrition",
-            filename: "3 keys 20230103.png",
+            filename: "3-keys-20230103.png",
             description: "Core principles for nutritional success: Quality, Quantity, and Timing."
         },
         {
             title: "Fueled for Fitness - Brochure",
-            filename: "Fueled for Fitness brochure web.Final__page-0001.jpg",
+            filename: "Fueled-for-Fitness-brochure-web.Final__page-0001.jpg",
             description: "Comprehensive guide to fueling for fitness - Part 1."
         },
         {
             title: "Fueled for Fitness - Guide",
-            filename: "Fueled for Fitness brochure web.Final__page-0002.jpg",
+            filename: "Fueled-for-Fitness-brochure-web.Final__page-0002.jpg",
             description: "Comprehensive guide to fueling for fitness - Part 2."
         },
         {
             title: "Operation Supplement Safety",
-            filename: "OPSS 220418.png",
+            filename: "OPSS-220418.png",
             description: "Official guidance on supplement safety and verification."
         },
         {
             title: "Supplement Safety Guide",
-            filename: "Supplement safety 20230103.png",
+            filename: "Supplement-safety-20230103.png",
             description: "Key questions and warnings for supplement use."
         },
         {
             title: "Supplement Safety - Additional",
-            filename: "Supplement safety 20230103 (1).png",
+            filename: "Supplement-safety-20230103-(1).png",
             description: "Additional safety information and checklists."
         }
     ];
@@ -421,7 +423,7 @@ const Nutrition = () => {
                             >
                                 <div className="aspect-video w-full bg-gray-100 dark:bg-gray-700 relative overflow-hidden">
                                     <img 
-                                        src={`/nutrition/${resource.filename}`} 
+                                        src={`${BASE_URL}nutrition/${resource.filename}`} 
                                         alt={resource.title}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                         onError={(e) => {
@@ -1295,7 +1297,7 @@ const Nutrition = () => {
                             </button>
                             
                             <img
-                                src={`/nutrition/${selectedResource.filename}`}
+                                src={`${BASE_URL}nutrition/${selectedResource.filename}`}
                                 alt={selectedResource.title}
                                 className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl bg-white"
                             />
@@ -1306,7 +1308,7 @@ const Nutrition = () => {
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        const src = `/nutrition/${selectedResource.filename}`;
+                                        const src = `${BASE_URL}nutrition/${selectedResource.filename}`;
                                         fetch(src)
                                             .then(r => r.blob())
                                             .then(blob => {
