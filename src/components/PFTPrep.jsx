@@ -864,6 +864,34 @@ const PFTPrep = () => {
     // Add state for CFT page navigation
     const [cftPageInput, setCftPageInput] = useState('');
 
+    // CFT Schedule State
+    const [cftWeek, setCftWeek] = useState(1);
+    const [cftViewCard, setCftViewCard] = useState(null); // card index to view, or null
+
+    // CFT schedule mapping: workout type → card index offset
+    const cftSchedule = {
+        days: [
+            { day: 'Mon', type: 'WARRIOR', color: 'bg-red-600', textColor: 'text-white', offset: 0 },
+            { day: 'Tue', type: 'ATHLETE', color: 'bg-blue-600', textColor: 'text-white', offset: 100 },
+            { day: 'Wed', type: 'RELOAD', color: 'bg-green-600', textColor: 'text-white', offset: 25 },
+            { day: 'Thu', type: 'COMBAT', color: 'bg-yellow-500', textColor: 'text-black', offset: 75 },
+            { day: 'Fri', type: 'COMPANY', color: 'bg-purple-600', textColor: 'text-white', offset: 50 },
+            { day: 'Sat', type: 'RELOAD', color: 'bg-green-600', textColor: 'text-white', offset: 25 },
+            { day: 'Sun', type: 'REST', color: 'bg-gray-400', textColor: 'text-white', offset: null },
+        ]
+    };
+
+    const getCftCardIndex = (weekNum, dayOffset) => {
+        if (dayOffset === null) return null;
+        return dayOffset + (weekNum - 1);
+    };
+
+    const getCftImageSrc = (cardIndex) => {
+        if (cardIndex === null) return null;
+        const pageNum = padPage(cardIndex + 1 + (visualPlans.cft.fileOffset || 0));
+        return `${visualPlans.cft.path}CFT-PREP-GUIDANCE_page-${pageNum}.jpg`;
+    };
+
     // Helper to get the actual image filename/index
     const getPage = (index, type) => {
         if (type === 'cft') {
@@ -1413,54 +1441,31 @@ const PFTPrep = () => {
                 </div>
                 )}
 
-                {activeTab === 'cards' && (
+                {activeTab === 'cards' && testType === 'pft' && (
                     <div className="space-y-6">
                         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
                             <div className="flex justify-between items-start mb-4">
                                 <div>
                                     <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                                         <FileText size={20} className="text-marine-red" />
-                                        {visualPlans[testType].title}
+                                        {visualPlans.pft.title}
                                     </h3>
                                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                        {visualPlans[testType].description}
+                                        {visualPlans.pft.description}
                                     </p>
                                 </div>
                                 <div className="text-right">
                                     <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
-                                        Card {currentCardIndex + 1} of {visualPlans[testType].count}
+                                        Card {currentCardIndex + 1} of {visualPlans.pft.count}
                                     </span>
                                 </div>
                             </div>
-
-                            {/* Viewer Controls - Top (for CFT) */}
-                            {testType === 'cft' && (
-                                <div className="flex items-center gap-2 mb-4 bg-gray-50 dark:bg-gray-700 p-2 rounded-lg">
-                                    <form onSubmit={handleJumpToPage} className="flex gap-2 w-full">
-                                        <input
-                                            type="number"
-                                            min="1"
-                                            max={visualPlans[testType].count}
-                                            placeholder="Go to page..."
-                                            value={cftPageInput}
-                                            onChange={(e) => setCftPageInput(e.target.value)}
-                                            className="w-full text-sm rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800"
-                                        />
-                                        <button 
-                                            type="submit"
-                                            className="bg-marine-red text-white px-3 py-1 rounded text-sm font-medium whitespace-nowrap"
-                                        >
-                                            Go
-                                        </button>
-                                    </form>
-                                </div>
-                            )}
 
                             {/* Card Viewer */}
                             <div className="relative aspect-[3/4] md:aspect-[4/3] bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 flex items-center justify-center group">
                                 <img
                                     src={getImageSource()}
-                                    alt={`${testType.toUpperCase()} Card ${currentCardIndex + 1}`}
+                                    alt={`PFT Card ${currentCardIndex + 1}`}
                                     className="max-w-full max-h-full object-contain"
                                     onError={(e) => {
                                         e.target.onerror = null;
@@ -1469,17 +1474,17 @@ const PFTPrep = () => {
                                 />
 
                                 {/* Navigation Overlay */}
-                            <div className="absolute inset-0 flex items-center justify-between p-4">
-                                <button
-                                    onClick={() => setCurrentCardIndex(prev => Math.max(0, prev - 1))}
+                                <div className="absolute inset-0 flex items-center justify-between p-4">
+                                    <button
+                                        onClick={() => setCurrentCardIndex(prev => Math.max(0, prev - 1))}
                                         disabled={currentCardIndex === 0}
                                         className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                                     >
                                         <ChevronLeft size={24} />
                                     </button>
                                     <button
-                                        onClick={() => setCurrentCardIndex(prev => Math.min(visualPlans[testType].count - 1, prev + 1))}
-                                        disabled={currentCardIndex === visualPlans[testType].count - 1}
+                                        onClick={() => setCurrentCardIndex(prev => Math.min(visualPlans.pft.count - 1, prev + 1))}
+                                        disabled={currentCardIndex === visualPlans.pft.count - 1}
                                         className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                                     >
                                         <ChevronRight size={24} />
@@ -1489,22 +1494,135 @@ const PFTPrep = () => {
 
                             {/* Thumbnails / Progress */}
                             <div className="mt-4 flex justify-center gap-1 flex-wrap">
-                                {Array.from({ length: Math.min(visualPlans[testType].count, 14) }).map((_, i) => (
+                                {Array.from({ length: visualPlans.pft.count }).map((_, i) => (
                                     <button
                                         key={i}
                                         onClick={() => setCurrentCardIndex(i)}
                                         className={`w-2 h-2 rounded-full transition-all ${
-                                            i === currentCardIndex 
-                                                ? 'bg-marine-red w-4' 
+                                            i === currentCardIndex
+                                                ? 'bg-marine-red w-4'
                                                 : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400'
                                         }`}
                                     />
                                 ))}
-                                {visualPlans[testType].count > 14 && (
-                                    <span className="text-xs text-gray-400 flex items-center">...</span>
-                                )}
                             </div>
                         </div>
+                    </div>
+                )}
+
+                {activeTab === 'cards' && testType === 'cft' && (
+                    <div className="space-y-6">
+                        <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                            <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-1">
+                                <Calendar size={20} className="text-marine-red" />
+                                HITT Training Schedule
+                            </h3>
+                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">25-week CFT preparation program — tap a day to view the workout card</p>
+
+                            {/* Week Selector */}
+                            <div className="flex items-center justify-between mb-4 bg-gray-50 dark:bg-gray-700 p-2 rounded-lg">
+                                <button
+                                    onClick={() => setCftWeek(w => Math.max(1, w - 1))}
+                                    disabled={cftWeek === 1}
+                                    className="p-1.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                                >
+                                    <ChevronLeft size={20} />
+                                </button>
+                                <span className="font-bold text-gray-900 dark:text-white text-sm">
+                                    Week {cftWeek} of 25
+                                </span>
+                                <button
+                                    onClick={() => setCftWeek(w => Math.min(25, w + 1))}
+                                    disabled={cftWeek === 25}
+                                    className="p-1.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                                >
+                                    <ChevronRight size={20} />
+                                </button>
+                            </div>
+
+                            {/* Week Schedule Grid */}
+                            <div className="grid grid-cols-1 gap-2">
+                                {cftSchedule.days.map((dayInfo) => {
+                                    const cardIdx = getCftCardIndex(cftWeek, dayInfo.offset);
+                                    const num = dayInfo.type === 'REST' ? '' : ` ${cftWeek}`;
+                                    return (
+                                        <button
+                                            key={dayInfo.day}
+                                            onClick={() => {
+                                                if (cardIdx !== null) setCftViewCard(cardIdx);
+                                            }}
+                                            disabled={cardIdx === null}
+                                            className={`flex items-center gap-3 p-3 rounded-lg border transition-all text-left ${
+                                                cardIdx !== null
+                                                    ? 'border-gray-200 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-400 hover:shadow-sm cursor-pointer'
+                                                    : 'border-gray-100 dark:border-gray-700 opacity-60 cursor-default'
+                                            }`}
+                                        >
+                                            <span className="text-xs font-bold text-gray-400 dark:text-gray-500 w-8 flex-shrink-0">{dayInfo.day}</span>
+                                            <span className={`${dayInfo.color} ${dayInfo.textColor} text-xs font-bold px-2 py-1 rounded flex-shrink-0`}>
+                                                {dayInfo.type}{num}
+                                            </span>
+                                            {cardIdx !== null && (
+                                                <ChevronRight size={16} className="ml-auto text-gray-400" />
+                                            )}
+                                            {cardIdx === null && (
+                                                <span className="ml-auto text-xs text-gray-400 italic">Rest Day</span>
+                                            )}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Quick Week Jump */}
+                            <div className="mt-4 flex flex-wrap gap-1 justify-center">
+                                {Array.from({ length: 25 }, (_, i) => i + 1).map(w => (
+                                    <button
+                                        key={w}
+                                        onClick={() => setCftWeek(w)}
+                                        className={`w-7 h-7 text-xs rounded font-medium transition-colors ${
+                                            w === cftWeek
+                                                ? 'bg-marine-red text-white'
+                                                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                        }`}
+                                    >
+                                        {w}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Card Viewer Modal */}
+                        {cftViewCard !== null && (
+                            <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4" onClick={() => setCftViewCard(null)}>
+                                <div className="bg-white dark:bg-gray-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
+                                    <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700">
+                                        <span className="font-bold text-sm text-gray-900 dark:text-white">
+                                            {(() => {
+                                                const dayInfo = cftSchedule.days.find(d => d.offset !== null && getCftCardIndex(cftWeek, d.offset) === cftViewCard);
+                                                return dayInfo ? `${dayInfo.type} HITT ${cftWeek}` : `Card ${cftViewCard + 1}`;
+                                            })()}
+                                        </span>
+                                        <button
+                                            onClick={() => setCftViewCard(null)}
+                                            className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                        >
+                                            <X size={20} />
+                                        </button>
+                                    </div>
+                                    <div className="overflow-auto flex-1 p-2 bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
+                                        <img
+                                            src={getCftImageSrc(cftViewCard)}
+                                            alt={`CFT Card ${cftViewCard + 1}`}
+                                            className="max-w-full h-auto object-contain"
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = 'https://via.placeholder.com/800x600?text=Image+Not+Found';
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
 
