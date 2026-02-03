@@ -659,74 +659,97 @@ const formatTime = (seconds) => {
     return `${m}:${s.toString().padStart(2, '0')}`;
 };
 
-const PerformanceStandards = ({ testType, gender }) => {
+const PerformanceStandardsModal = ({ isOpen, onClose, testType, gender }) => {
     const g = gender.toLowerCase();
-    
+
+    // Format time helper
+    const formatTime = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    };
+
+    if (!isOpen) return null;
+
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden mt-8">
-            <div className="bg-gradient-to-r from-gray-800 to-gray-900 p-4 border-b border-gray-700">
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                    <FileText size={20} className="text-yellow-400" />
-                    {testType.toUpperCase()} Performance Standards ({gender === 'male' ? 'Male' : 'Female'})
-                </h3>
-            </div>
-            <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left">
-                    <thead className="bg-gray-50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 uppercase text-xs">
-                        <tr>
-                            <th className="px-4 py-3 font-bold">Age Group</th>
-                            {testType === 'pft' ? (
-                                <>
-                                    <th className="px-4 py-3 text-center">Pull-ups (Max/Min)</th>
-                                    <th className="px-4 py-3 text-center">Push-ups (Max/Min)</th>
-                                    <th className="px-4 py-3 text-center">Plank (Max/Min)</th>
-                                    <th className="px-4 py-3 text-center">3-Mile Run (Max/Min)</th>
-                                </>
-                            ) : (
-                                <>
-                                    <th className="px-4 py-3 text-center">MTC (Max/Min)</th>
-                                    <th className="px-4 py-3 text-center">Ammo Lifts (Max/Min)</th>
-                                    <th className="px-4 py-3 text-center">MANUF (Max/Min)</th>
-                                </>
-                            )}
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                        {ageGroups.map((age) => (
-                            <tr key={age} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
-                                <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{age}</td>
+        <div
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+            onClick={onClose}
+        >
+            <div
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+                onClick={e => e.stopPropagation()}
+            >
+                <div className="bg-gradient-to-r from-gray-800 to-gray-900 p-4 border-b border-gray-700 flex items-center justify-between">
+                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                        <FileText size={20} className="text-yellow-400" />
+                        {testType.toUpperCase()} Performance Standards ({gender === 'male' ? 'Male' : 'Female'})
+                    </h3>
+                    <button
+                        onClick={onClose}
+                        className="text-gray-400 hover:text-white transition-colors p-1"
+                    >
+                        <X size={24} />
+                    </button>
+                </div>
+                <div className="overflow-auto flex-1">
+                    <table className="w-full text-sm text-left">
+                        <thead className="bg-gray-50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 uppercase text-xs sticky top-0">
+                            <tr>
+                                <th className="px-4 py-3 font-bold">Age Group</th>
                                 {testType === 'pft' ? (
                                     <>
-                                        <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
-                                            {pullupMax[g][age]} / {pullupMin[g][age]}
-                                        </td>
-                                        <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
-                                            {pushupMax[g][age]} / {pushupMin[g][age]}
-                                        </td>
-                                        <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
-                                            3:45 / 0:40
-                                        </td>
-                                        <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
-                                            {formatTime(runMax[g][age])} / {formatTime(runMin[g][age])}
-                                        </td>
+                                        <th className="px-4 py-3 text-center">Pull-ups<br/><span className="text-[10px] normal-case">(Max/Min)</span></th>
+                                        <th className="px-4 py-3 text-center">Push-ups<br/><span className="text-[10px] normal-case">(Max/Min)</span></th>
+                                        <th className="px-4 py-3 text-center">Plank<br/><span className="text-[10px] normal-case">(Max/Min)</span></th>
+                                        <th className="px-4 py-3 text-center">3-Mile Run<br/><span className="text-[10px] normal-case">(Max/Min)</span></th>
                                     </>
                                 ) : (
                                     <>
-                                        <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
-                                            {formatTime(mtcMax[g][age])} / {formatTime(mtcMin[g][age])}
-                                        </td>
-                                        <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
-                                            {ammoMax[g][age]} / {ammoMin[g][age]}
-                                        </td>
-                                        <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
-                                            {formatTime(manufMax[g][age])} / {formatTime(manufMin[g][age])}
-                                        </td>
+                                        <th className="px-4 py-3 text-center">MTC<br/><span className="text-[10px] normal-case">(Max/Min)</span></th>
+                                        <th className="px-4 py-3 text-center">Ammo Lifts<br/><span className="text-[10px] normal-case">(Max/Min)</span></th>
+                                        <th className="px-4 py-3 text-center">MANUF<br/><span className="text-[10px] normal-case">(Max/Min)</span></th>
                                     </>
                                 )}
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                            {ageGroups.map((age) => (
+                                <tr key={age} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+                                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">{age}</td>
+                                    {testType === 'pft' ? (
+                                        <>
+                                            <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
+                                                {pullupMax[g][age]} / {pullupMin[g][age]}
+                                            </td>
+                                            <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
+                                                {pushupMax[g][age]} / {pushupMin[g][age]}
+                                            </td>
+                                            <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
+                                                3:45 / 0:40
+                                            </td>
+                                            <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
+                                                {formatTime(runMax[g][age])} / {formatTime(runMin[g][age])}
+                                            </td>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
+                                                {formatTime(mtcMax[g][age])} / {formatTime(mtcMin[g][age])}
+                                            </td>
+                                            <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
+                                                {ammoMax[g][age]} / {ammoMin[g][age]}
+                                            </td>
+                                            <td className="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
+                                                {formatTime(manufMax[g][age])} / {formatTime(manufMin[g][age])}
+                                            </td>
+                                        </>
+                                    )}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
@@ -859,6 +882,9 @@ const PFTPrep = () => {
 
     // State for Event Standards Modal
     const [activeModalEvent, setActiveModalEvent] = useState(null);
+
+    // State for Performance Standards Modal
+    const [showStandardsModal, setShowStandardsModal] = useState(false);
 
     // Format time (seconds to MM:SS)
     const formatTime = (seconds) => {
@@ -1313,7 +1339,14 @@ const PFTPrep = () => {
                         </div>
                     </div>
 
-                    <PerformanceStandards testType={testType} gender={gender} />
+                    {/* Performance Standards Button */}
+                    <button
+                        onClick={() => setShowStandardsModal(true)}
+                        className="w-full mt-6 py-3 px-4 bg-gray-800 hover:bg-gray-700 text-white rounded-xl font-medium flex items-center justify-center gap-2 transition-colors"
+                    >
+                        <FileText size={18} />
+                        View {testType.toUpperCase()} Performance Standards
+                    </button>
                 </div>
                 )}
 
@@ -1427,14 +1460,22 @@ const PFTPrep = () => {
 
             <AnimatePresence>
                 {activeModalEvent && (
-                    <EventStandardsModal 
-                        isOpen={!!activeModalEvent} 
-                        onClose={() => setActiveModalEvent(null)} 
+                    <EventStandardsModal
+                        isOpen={!!activeModalEvent}
+                        onClose={() => setActiveModalEvent(null)}
                         eventType={activeModalEvent}
                         gender={gender}
                     />
                 )}
             </AnimatePresence>
+
+            {/* Performance Standards Modal */}
+            <PerformanceStandardsModal
+                isOpen={showStandardsModal}
+                onClose={() => setShowStandardsModal(false)}
+                testType={testType}
+                gender={gender}
+            />
         </div>
     );
 };
