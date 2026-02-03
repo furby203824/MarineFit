@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Utensils, Droplets, Apple, ChevronRight, ChevronLeft, Smartphone, ThumbsUp,
@@ -14,6 +15,7 @@ const BASE_URL = import.meta.env.BASE_URL;
 const Nutrition = () => {
     const [activeSection, setActiveSection] = useState(null);
     const [selectedResource, setSelectedResource] = useState(null);
+    const imageModalTrapRef = useFocusTrap(!!selectedResource, () => setSelectedResource(null));
 
     const container = {
         hidden: { opacity: 0 },
@@ -1283,6 +1285,7 @@ const Nutrition = () => {
                         onClick={() => setSelectedResource(null)}
                     >
                         <motion.div
+                            ref={imageModalTrapRef}
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}

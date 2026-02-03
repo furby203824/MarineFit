@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import { Heart, Info, CheckCircle, AlertTriangle, AlertOctagon, Dumbbell, PlayCircle, TrendingUp, CheckCircle2, AlertCircle, Table as TableIcon, X, Activity } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ageGroups } from '../utils/pftScoring';
@@ -6,11 +7,14 @@ import { hittExercises } from '../data/hittData';
 
 // Body Composition Standards Modal
 const BodyCompStandardsModal = ({ isOpen, onClose }) => {
+    const trapRef = useFocusTrap(isOpen, onClose);
+
     if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-            <motion.div 
+            <motion.div
+                ref={trapRef}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
