@@ -1078,73 +1078,73 @@ const PFTPrep = () => {
             </div>
 
             {/* Main Tabs */}
-            <div className="flex border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
+            <div className="flex flex-wrap border-b border-gray-200 dark:border-gray-700">
                 <button
                     onClick={() => setActiveTab('calculator')}
-                    className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                    className={`px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
                         activeTab === 'calculator'
                             ? 'border-marine-red text-marine-red'
                             : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
                     }`}
                 >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 sm:gap-2">
                         <Calculator size={16} />
                         Calculator
                     </div>
                 </button>
                 <button
                     onClick={() => setActiveTab('cards')}
-                    className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                    className={`px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
                         activeTab === 'cards'
                             ? 'border-marine-red text-marine-red'
                             : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
                     }`}
                 >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 sm:gap-2">
                         <FileText size={16} />
-                        Workout Cards
+                        Cards
                     </div>
                 </button>
                 {testType === 'pft' && (
                     <button
                         onClick={() => setActiveTab('pullup')}
-                        className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                        className={`px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
                             activeTab === 'pullup'
                                 ? 'border-marine-red text-marine-red'
                                 : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
                         }`}
                     >
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 sm:gap-2">
                             <Dumbbell size={16} />
-                            Pull-up Program
+                            Pull-ups
                         </div>
                     </button>
                 )}
                 {testType === 'pft' && (
                     <button
                         onClick={() => setActiveTab('plank')}
-                        className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                        className={`px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
                             activeTab === 'plank'
                                 ? 'border-marine-red text-marine-red'
                                 : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
                         }`}
                     >
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 sm:gap-2">
                             <Shield size={16} />
-                            Plank Program
+                            Plank
                         </div>
                     </button>
                 )}
                 {testType === 'pft' && (
                     <button
                         onClick={() => setActiveTab('walk_run')}
-                        className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                        className={`px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
                             activeTab === 'walk_run'
                                 ? 'border-marine-red text-marine-red'
                                 : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
                         }`}
                     >
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 sm:gap-2">
                             <Footprints size={16} />
                             Walk to Run
                         </div>
