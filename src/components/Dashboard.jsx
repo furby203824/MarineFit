@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Activity, Calculator, Heart, Shield, Moon, Utensils, ArrowRight } from 'lucide-react';
+import { Activity, Calculator, Heart, Shield, Moon, Utensils, ArrowRight, Library } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const container = {
@@ -78,17 +78,24 @@ const Dashboard = () => {
         animate="show"
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
       >
-        <DashboardCard 
-          to="/pt-coach" 
-          icon={Activity} 
-          title="PT Coach" 
+        <DashboardCard
+          to="/pt-coach"
+          icon={Activity}
+          title="PT Coach"
           desc="AI-powered HITT workout generation based on your goals and available equipment."
           color="bg-blue-500"
         />
-        <DashboardCard 
-          to="/pft-prep" 
-          icon={Calculator} 
-          title="PFT/CFT Prep" 
+        <DashboardCard
+          to="/exercises"
+          icon={Library}
+          title="Exercise Library"
+          desc="Browse 382 official USMC exercises with video demonstrations from Marine Corps Fitness."
+          color="bg-teal-500"
+        />
+        <DashboardCard
+          to="/pft-prep"
+          icon={Calculator}
+          title="PFT/CFT Prep"
           desc="Calculate scores, track progress, and plan your path to a First Class score."
           color="bg-green-500"
         />

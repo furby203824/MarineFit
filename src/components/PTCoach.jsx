@@ -364,7 +364,7 @@ const PTCoach = () => {
             <Activity className="w-8 h-8 text-marine-red" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 m-0">PT Coach & HITT</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white m-0">PT Coach & HITT</h1>
             <p className="text-gray-500 mt-1">High Intensity Tactical Training Program</p>
           </div>
         </div>
@@ -405,7 +405,7 @@ const PTCoach = () => {
           {activeTab === 'generator' ? (
             <div className="card border-t-4 border-t-marine-gold">
               <div className="mb-6">
-                <h2 className="text-xl font-bold text-gray-900 m-0 flex items-center gap-2 mb-4">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white m-0 flex items-center gap-2 mb-4">
                   <Dumbbell className="text-marine-red" /> Dynamic Workout Generator
                 </h2>
                 
@@ -486,7 +486,7 @@ const PTCoach = () => {
                     className="space-y-6"
                   >
                     <div className="flex justify-between items-center border-b border-gray-100 dark:border-gray-600 pb-2">
-                      <h3 className="text-lg font-bold text-gray-800">
+                      <h3 className="text-lg font-bold text-gray-800 dark:text-white">
                         {workout.title}
                       </h3>
                       <div className="flex gap-2 items-center">
@@ -548,7 +548,7 @@ const PTCoach = () => {
                               <div className="flex items-center justify-between">
                                 <div className="flex-1">
                                   <div className="flex items-center gap-2 flex-wrap">
-                                    <span className="font-semibold text-gray-900">{ex.name}</span>
+                                    <span className="font-semibold text-gray-900 dark:text-white">{ex.name}</span>
                                     <span className="text-xs bg-white dark:bg-gray-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-500 text-gray-500">
                                       {ex.equipment}
                                     </span>
@@ -623,7 +623,7 @@ const PTCoach = () => {
                           animate={{ opacity: 1 }}
                           className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center"
                         >
-                          <p className="font-semibold text-gray-900 mb-3">How was the mission?</p>
+                          <p className="font-semibold text-gray-900 dark:text-white mb-3">How was the mission?</p>
                           <div className="flex justify-center gap-4">
                             <button
                               onClick={() => handleFeedback('good')}
@@ -656,7 +656,7 @@ const PTCoach = () => {
             <div className="space-y-4">
               <div className="card">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-bold text-gray-900 m-0 flex items-center gap-2">
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white m-0 flex items-center gap-2">
                     <BookOpen className="text-marine-red" /> Exercise Library
                   </h2>
                   <span className="text-sm text-gray-500">
@@ -754,7 +754,7 @@ const PTCoach = () => {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 flex-wrap mb-2">
-                            <span className="font-semibold text-gray-900">{ex.name}</span>
+                            <span className="font-semibold text-gray-900 dark:text-white">{ex.name}</span>
                             <span className="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-600">
                               {ex.equipment}
                             </span>
@@ -798,7 +798,7 @@ const PTCoach = () => {
             <div className="space-y-4">
               <div className="card border-t-4 border-t-marine-gold">
                 <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-                  <h2 className="text-xl font-bold text-gray-900 m-0 flex items-center gap-2">
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white m-0 flex items-center gap-2">
                     <PlusCircle className="text-marine-red" /> Custom Workout Builder
                   </h2>
                   <div className="flex gap-2 items-center">
@@ -938,7 +938,7 @@ const PTCoach = () => {
                                     </div>
                                     <div>
                                       <div className="flex items-center gap-2 flex-wrap">
-                                        <span className="font-semibold text-gray-900">{ex.name}</span>
+                                        <span className="font-semibold text-gray-900 dark:text-white">{ex.name}</span>
                                         <span className="text-xs bg-white dark:bg-gray-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-500 text-gray-500">
                                           {ex.equipment}
                                         </span>
@@ -1117,7 +1117,7 @@ const PTCoach = () => {
                 savedWorkouts.map((w) => (
                   <div key={w.id} className="card flex items-center justify-between hover:shadow-md transition-all">
                     <div>
-                      <h3 className="font-bold text-gray-900">{w.title}</h3>
+                      <h3 className="font-bold text-gray-900 dark:text-white">{w.title}</h3>
                       <p className="text-sm text-gray-500">
                         {new Date(w.date).toLocaleDateString()} at {new Date(w.date).toLocaleTimeString()}
                       </p>
@@ -1171,30 +1171,30 @@ const PTCoach = () => {
           </div>
 
           <div className="card">
-            <h3 className="flex items-center gap-2 font-bold text-gray-900 mb-4">
-              <ExternalLink size={20} className="text-marine-red" /> 
+            <h3 className="flex items-center gap-2 font-bold text-gray-900 dark:text-white mb-4">
+              <ExternalLink size={20} className="text-marine-red" />
               Resources
             </h3>
             <ul className="space-y-3">
               <li>
-                <a href="https://www.usmc-mccs.org/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-gray-600 hover:text-marine-red transition-colors p-2 hover:bg-gray-50 rounded-lg">
-                  <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500">
+                <a href="https://www.usmc-mccs.org/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-gray-600 dark:text-gray-300 hover:text-marine-red transition-colors p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg">
+                  <div className="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-500 dark:text-gray-400">
                     <ExternalLink size={14} />
                   </div>
                   <span className="font-medium">Local MCCS Website</span>
                 </a>
               </li>
               <li>
-                <div className="flex items-center gap-3 text-gray-600 p-2">
-                  <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500">
+                <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300 p-2">
+                  <div className="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-500 dark:text-gray-400">
                     <Phone size={14} />
                   </div>
                   <span className="font-medium">703-432-0732</span>
                 </div>
               </li>
               <li>
-                <a href="mailto:Lynda.Rummel@usmc-mccs.org" className="flex items-center gap-3 text-gray-600 hover:text-marine-red transition-colors p-2 hover:bg-gray-50 rounded-lg">
-                  <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500">
+                <a href="mailto:Lynda.Rummel@usmc-mccs.org" className="flex items-center gap-3 text-gray-600 dark:text-gray-300 hover:text-marine-red transition-colors p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg">
+                  <div className="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-500 dark:text-gray-400">
                     <Mail size={14} />
                   </div>
                   <span className="font-medium text-sm truncate">Lynda.Rummel@usmc-mccs.org</span>
