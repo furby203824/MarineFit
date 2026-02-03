@@ -11,9 +11,8 @@ import {
     getRequiredAmmoLifts,
     getRequiredMANUF
 } from '../utils/pftScoring';
-import { returnToRunData } from '../data/rehabData';
 import { hittExercises } from '../data/hittData';
-import { Calculator, Activity, Trophy, AlertCircle, Target, Calendar, ChevronDown, ChevronUp, CheckCircle2, Dumbbell, PlayCircle, TrendingUp, FileText, ChevronLeft, ChevronRight, Shield, Thermometer, HeartPulse, Footprints, AlertTriangle } from 'lucide-react';
+import { Calculator, Activity, Trophy, AlertCircle, Target, Calendar, ChevronDown, ChevronUp, CheckCircle2, Dumbbell, PlayCircle, TrendingUp, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Exercise recommendations based on weak PFT/CFT events
@@ -130,36 +129,36 @@ const ImprovementRecommendations = ({ result, testType, upperBodyType }) => {
     // Identify all weak events (score < 80)
     const getWeakEvents = () => {
         const threshold = 80;
-        let scores = [];
+        let eventScores = [];
         
         if (testType === 'pft') {
-            scores = [
-                { event: 'upper', score: result.upperBodyScore, label: 'Upper Body' },
-                { event: 'plank', score: result.plankScore, label: 'Plank' },
-                { event: 'run', score: result.runScore, label: '3-Mile Run' }
+            eventScores = [
+                { event: 'upper', score: result.upperBodyScore || 0, label: 'Upper Body' },
+                { event: 'plank', score: result.plankScore || 0, label: 'Plank' },
+                { event: 'run', score: result.runScore || 0, label: '3-Mile Run' }
             ];
         } else {
-            scores = [
-                { event: 'mtc', score: result.mtcScore, label: 'Movement to Contact' },
-                { event: 'al', score: result.alScore, label: 'Ammo Can Lifts' },
-                { event: 'manuf', score: result.manufScore, label: 'Maneuver Under Fire' }
+            eventScores = [
+                { event: 'mtc', score: result.mtcScore || 0, label: 'Movement to Contact' },
+                { event: 'al', score: result.alScore || 0, label: 'Ammo Can Lifts' },
+                { event: 'manuf', score: result.manufScore || 0, label: 'Maneuver Under Fire' }
             ];
         }
 
         // Filter for scores below threshold, or if none, take the absolute lowest
-        const weakEvents = scores.filter(s => s.score < threshold);
+        const weakEvents = eventScores.filter(s => s.score < threshold);
         
         if (weakEvents.length === 0) {
             // If all are above 80 but still not 1st class (unlikely but possible if < 235 total)
             // Or if user just wants to improve the lowest one
-            return [scores.reduce((min, curr) => curr.score < min.score ? curr : min)];
+            return [eventScores.reduce((min, curr) => curr.score < min.score ? curr : min)];
         }
         
         return weakEvents;
     };
 
     const weakEvents = getWeakEvents();
-    const pointsToFirstClass = Math.max(0, 235 - result.totalScore);
+    const pointsToFirstClass = Math.max(0, 235 - (result.totalScore || 0));
 
     return (
         <div className="space-y-6">
@@ -168,7 +167,7 @@ const ImprovementRecommendations = ({ result, testType, upperBodyType }) => {
                 <h4 className="font-bold text-lg text-gray-900 dark:text-white">
                     Performance Coaching
                 </h4>
-                {result.totalScore < 235 && (
+                {(result.totalScore || 0) < 235 && (
                     <span className="text-xs bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 px-2 py-0.5 rounded-full font-medium">
                         {pointsToFirstClass} pts to 1st Class
                     </span>
@@ -355,19 +354,17 @@ const trainingPlans = {
 
 const visualPlans = {
     pft: {
-        title: "PFT Visual Training Cards",
+        title: "PFT Workout Cards",
         path: "/pft/",
-        count: 14, // Assuming there are 14 cards based on typical sets
+        count: 16,
         description: "Official visual training guides for PFT events"
     },
     cft: {
-        title: "CFT Visual Training Cards",
+        title: "CFT Workout Cards",
         path: "/cft/",
-        count: 125, // Updated to 125 pages
+        count: 125,
         description: "Comprehensive CFT preparation guide and daily schedule",
-        // Map specific days/phases to page numbers if needed
-        // For linear documents, we can just let them browse
-        fileOffset: 2 // Start from file 3 since 1 and 2 were deleted
+        fileOffset: 2
     }
 };
 
@@ -376,9 +373,7 @@ const PFTPrep = () => {
     const [gender, setGender] = useState('male');
     const [age, setAge] = useState(25);
     const [altitude, setAltitude] = useState(false);
-    const [expandedWeek, setExpandedWeek] = useState(null);
-    const [activeTab, setActiveTab] = useState('calculator'); // 'calculator', 'training', 'visual'
-    const [trainingSubTab, setTrainingSubTab] = useState('general'); // 'general', 'pullup'
+    const [activeTab, setActiveTab] = useState('calculator'); // 'calculator', 'cards', 'pullup'
 
     // PFT State
     const [pullups, setPullups] = useState(15);
@@ -401,18 +396,6 @@ const PFTPrep = () => {
     // Add state for CFT page navigation
     const [cftPageInput, setCftPageInput] = useState('');
 
-    // Mapping for Reload and Rest days to specific pages
-    const pageMapping = useMemo(() => {
-        const mapping = {};
-        // Map Reload days (every 7th day roughly, or specific schedule)
-        // This is an estimation, you might need to adjust based on the actual PDF content
-        const reloadPages = [9, 16, 23, 30, 37, 44, 51, 58, 65, 72, 79, 86, 93, 100, 107, 114, 121];
-        reloadPages.forEach(page => {
-            mapping[`Reload`] = page; // This might need to be specific to the week if they differ
-        });
-        return mapping;
-    }, []);
-
     // Helper to get the actual image filename/index
     const getPage = (index, type) => {
         if (type === 'cft') {
@@ -421,6 +404,24 @@ const PFTPrep = () => {
             return index + 1 + offset; 
         }
         return index + 1;
+    };
+
+    const padPage = (num) => num.toString().padStart(4, '0');
+
+    const [imageError, setImageError] = useState(false);
+
+    // Reset error when card changes
+    useEffect(() => {
+        setImageError(false);
+    }, [currentCardIndex, testType]);
+
+    const getImageSource = () => {
+        const pageNum = padPage(getPage(currentCardIndex, testType));
+        if (testType === 'pft') {
+            // Encode spaces to %20 to ensure valid URL
+            return `${visualPlans.pft.path}PFT%20Prep%20Program_page-${pageNum}.jpg`;
+        }
+        return `${visualPlans.cft.path}CFT%20PREP%20GUIDANCE_page-${pageNum}.jpg`;
     };
 
     const handleJumpToPage = (e) => {
@@ -483,6 +484,75 @@ const PFTPrep = () => {
         return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
 
+    const TimeInput = ({ label, totalSeconds, onChange }) => {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+
+        const handleMinChange = (e) => {
+            const val = parseInt(e.target.value);
+            const newMin = isNaN(val) ? 0 : Math.max(0, val);
+            onChange(newMin * 60 + seconds);
+        };
+
+        const handleSecChange = (e) => {
+            const val = parseInt(e.target.value);
+            const newSec = isNaN(val) ? 0 : Math.min(59, Math.max(0, val));
+            onChange(minutes * 60 + newSec);
+        };
+
+        return (
+            <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{label}</label>
+                <div className="flex items-center gap-3">
+                    <div className="relative flex-1">
+                        <input
+                            type="number"
+                            value={minutes}
+                            onChange={handleMinChange}
+                            className="w-full text-center text-lg font-bold rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-marine-red focus:border-marine-red py-3"
+                            min={0}
+                        />
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-medium uppercase">Min</span>
+                    </div>
+                    <span className="text-2xl font-bold text-gray-300 dark:text-gray-600">:</span>
+                    <div className="relative flex-1">
+                        <input
+                            type="number"
+                            value={seconds}
+                            onChange={handleSecChange}
+                            className="w-full text-center text-lg font-bold rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-marine-red focus:border-marine-red py-3"
+                            min={0}
+                            max={59}
+                        />
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-medium uppercase">Sec</span>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    const NumberInput = ({ label, value, onChange, max }) => (
+        <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
+            <div className="flex justify-between mb-3">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
+                <span className="text-xs text-gray-500 dark:text-gray-400">Max: {max}</span>
+            </div>
+            <div className="relative">
+                <input
+                    type="number"
+                    value={value}
+                    onChange={(e) => {
+                        const val = parseInt(e.target.value);
+                        onChange(isNaN(val) ? 0 : Math.max(0, val));
+                    }}
+                    className="w-full text-center text-lg font-bold rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-marine-red focus:border-marine-red py-3"
+                    min={0}
+                />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-medium uppercase">Reps</span>
+            </div>
+        </div>
+    );
+
     return (
         <div className="max-w-4xl mx-auto space-y-6 pb-20">
             {/* Header Section */}
@@ -519,10 +589,10 @@ const PFTPrep = () => {
             </div>
 
             {/* Main Tabs */}
-            <div className="flex border-b border-gray-200 dark:border-gray-700">
+            <div className="flex border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
                 <button
                     onClick={() => setActiveTab('calculator')}
-                    className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+                    className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
                         activeTab === 'calculator'
                             ? 'border-marine-red text-marine-red'
                             : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
@@ -534,31 +604,33 @@ const PFTPrep = () => {
                     </div>
                 </button>
                 <button
-                    onClick={() => setActiveTab('training')}
-                    className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
-                        activeTab === 'training'
-                            ? 'border-marine-red text-marine-red'
-                            : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
-                    }`}
-                >
-                    <div className="flex items-center gap-2">
-                        <Calendar size={16} />
-                        Training Plan
-                    </div>
-                </button>
-                <button
-                    onClick={() => setActiveTab('visual')}
-                    className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
-                        activeTab === 'visual'
+                    onClick={() => setActiveTab('cards')}
+                    className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                        activeTab === 'cards'
                             ? 'border-marine-red text-marine-red'
                             : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
                     }`}
                 >
                     <div className="flex items-center gap-2">
                         <FileText size={16} />
-                        Visual Cards
+                        Workout Cards
                     </div>
                 </button>
+                {testType === 'pft' && (
+                    <button
+                        onClick={() => setActiveTab('pullup')}
+                        className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                            activeTab === 'pullup'
+                                ? 'border-marine-red text-marine-red'
+                                : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                        }`}
+                    >
+                        <div className="flex items-center gap-2">
+                            <Dumbbell size={16} />
+                            Pull-up Program
+                        </div>
+                    </button>
+                )}
             </div>
 
             {/* Content Area */}
@@ -820,85 +892,7 @@ const PFTPrep = () => {
                     </div>
                 )}
 
-                {activeTab === 'training' && (
-                    <div className="space-y-6">
-                        {/* Sub-tab Navigation for PFT */}
-                        {testType === 'pft' && (
-                            <div className="flex gap-2 p-1 bg-gray-100 dark:bg-gray-800/50 rounded-lg w-fit mb-4">
-                                <button
-                                    onClick={() => setTrainingSubTab('general')}
-                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                                        trainingSubTab === 'general'
-                                            ? 'bg-white dark:bg-gray-700 shadow-sm text-marine-red'
-                                            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'
-                                    }`}
-                                >
-                                    General Plan
-                                </button>
-                                <button
-                                    onClick={() => setTrainingSubTab('pullup')}
-                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                                        trainingSubTab === 'pullup'
-                                            ? 'bg-white dark:bg-gray-700 shadow-sm text-marine-red'
-                                            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'
-                                    }`}
-                                >
-                                    Pull-up Progression
-                                </button>
-                            </div>
-                        )}
-
-                        {(trainingSubTab === 'general' || testType === 'cft') ? (
-                            <>
-                                {/* Plan Header */}
-                                <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{trainingPlans[testType].title}</h3>
-                                    <p className="text-gray-600 dark:text-gray-400">{trainingPlans[testType].description}</p>
-                                </div>
-
-                                {/* Weeks Accordion */}
-                                <div className="space-y-4">
-                                    {trainingPlans[testType].weeks.map((weekData) => (
-                                        <div key={weekData.week} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-                                            <button
-                                                onClick={() => setExpandedWeek(expandedWeek === weekData.week ? null : weekData.week)}
-                                                className="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-                                            >
-                                                <div className="flex items-center gap-4">
-                                                    <div className="bg-marine-red text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">
-                                                        {weekData.week}
-                                                    </div>
-                                                    <div className="text-left">
-                                                        <h4 className="font-semibold text-gray-900 dark:text-white">Week {weekData.week}</h4>
-                                                        <p className="text-xs text-gray-500 dark:text-gray-400">{weekData.focus}</p>
-                                                    </div>
-                                                </div>
-                                                {expandedWeek === weekData.week ? <ChevronUp size={20} className="text-gray-400" /> : <ChevronDown size={20} className="text-gray-400" />}
-                                            </button>
-
-                                            {expandedWeek === weekData.week && (
-                                                <div className="border-t border-gray-100 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800/50">
-                                                    <div className="space-y-3">
-                                                        {weekData.days.map((day, idx) => (
-                                                            <div key={idx} className="flex gap-4 p-2 rounded hover:bg-white dark:hover:bg-gray-700 transition-colors">
-                                                                <span className="w-12 font-medium text-gray-500 dark:text-gray-400 text-sm">{day.day}</span>
-                                                                <span className="text-sm text-gray-900 dark:text-gray-300">{day.workout}</span>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-                            </>
-                        ) : (
-                            <PullupProgram />
-                        )}
-                    </div>
-                )}
-
-                {activeTab === 'visual' && (
+                {activeTab === 'cards' && (
                     <div className="space-y-6">
                         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
                             <div className="flex justify-between items-start mb-4">
@@ -944,7 +938,7 @@ const PFTPrep = () => {
                             {/* Card Viewer */}
                             <div className="relative aspect-[3/4] md:aspect-[4/3] bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 flex items-center justify-center group">
                                 <img
-                                    src={`${visualPlans[testType].path}Slide${getPage(currentCardIndex, testType)}.JPG`}
+                                    src={getImageSource()}
                                     alt={`${testType.toUpperCase()} Card ${currentCardIndex + 1}`}
                                     className="max-w-full max-h-full object-contain"
                                     onError={(e) => {
@@ -991,6 +985,10 @@ const PFTPrep = () => {
                             </div>
                         </div>
                     </div>
+                )}
+
+                {activeTab === 'pullup' && (
+                    <PullupProgram />
                 )}
             </div>
         </div>
