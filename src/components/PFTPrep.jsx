@@ -1374,18 +1374,18 @@ const PFTPrep = () => {
 
                                 <div className="mt-6 border-t border-gray-100 dark:border-gray-700 pt-4">
                                     <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Performance Standards</h4>
-                                    <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                                        <div className="bg-green-50 dark:bg-green-900/20 p-2 rounded">
-                                            <div className="font-bold text-green-700 dark:text-green-300">1st Class</div>
-                                            <div className="text-green-600 dark:text-green-400">235 - 300</div>
+                                    <div className="flex flex-col sm:flex-row gap-2 text-center text-xs">
+                                        <div className="flex-1 bg-green-50 dark:bg-green-900/20 p-2 rounded flex sm:flex-col items-center justify-between sm:justify-center gap-1">
+                                            <span className="font-bold text-green-700 dark:text-green-300">1st Class</span>
+                                            <span className="text-green-600 dark:text-green-400">235 - 300</span>
                                         </div>
-                                        <div className="bg-yellow-50 dark:bg-yellow-900/20 p-2 rounded">
-                                            <div className="font-bold text-yellow-700 dark:text-yellow-300">2nd Class</div>
-                                            <div className="text-yellow-600 dark:text-yellow-400">200 - 234</div>
+                                        <div className="flex-1 bg-yellow-50 dark:bg-yellow-900/20 p-2 rounded flex sm:flex-col items-center justify-between sm:justify-center gap-1">
+                                            <span className="font-bold text-yellow-700 dark:text-yellow-300">2nd Class</span>
+                                            <span className="text-yellow-600 dark:text-yellow-400">200 - 234</span>
                                         </div>
-                                        <div className="bg-orange-50 dark:bg-orange-900/20 p-2 rounded">
-                                            <div className="font-bold text-orange-700 dark:text-orange-300">3rd Class</div>
-                                            <div className="text-orange-600 dark:text-orange-400">120 - 199</div>
+                                        <div className="flex-1 bg-orange-50 dark:bg-orange-900/20 p-2 rounded flex sm:flex-col items-center justify-between sm:justify-center gap-1">
+                                            <span className="font-bold text-orange-700 dark:text-orange-300">3rd Class</span>
+                                            <span className="text-orange-600 dark:text-orange-400">120 - 199</span>
                                         </div>
                                     </div>
                                 </div>
