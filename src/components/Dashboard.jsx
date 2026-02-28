@@ -110,7 +110,7 @@ const Dashboard = () => {
           to="/body-comp"
           icon={Heart}
           title="Body Composition"
-          desc="DoD compliant Waist-to-Height Ratio (WHtR) calculator and compliance check."
+          desc="USMC WHtR body composition evaluation per MARADMIN 066/26 with body fat and performance considerations."
           color="bg-purple-500"
         />
         <DashboardCard
