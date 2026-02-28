@@ -406,51 +406,7 @@ const BodyComp = () => {
           </div>
 
           <div className="space-y-4">
-            {/* Personal Details */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Gender</label>
-                <div className="flex gap-2 bg-gray-100 dark:bg-gray-700/50 p-1 rounded-lg w-full">
-                  <button
-                    onClick={() => setGender('male')}
-                    className={`flex-1 py-2 rounded-md text-sm font-semibold transition-all ${
-                      gender === 'male'
-                        ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'
-                    }`}
-                  >
-                    Male
-                  </button>
-                  <button
-                    onClick={() => setGender('female')}
-                    className={`flex-1 py-2 rounded-md text-sm font-semibold transition-all ${
-                      gender === 'female'
-                        ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'
-                    }`}
-                  >
-                    Female
-                  </button>
-                </div>
-              </div>
-
-              <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Age Group</label>
-                <select
-                  value={ageGroup}
-                  onChange={(e) => setAgeGroup(e.target.value)}
-                  className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-marine-red focus:border-marine-red py-2.5"
-                >
-                  {ageGroups.map((group) => (
-                    <option key={group} value={group}>
-                      {group}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="pt-2 space-y-4">
+            <div className="space-y-4">
               <NumberInput
                 label="Height"
                 value={height}
@@ -495,6 +451,47 @@ const BodyComp = () => {
                 </p>
 
                 <div className="grid grid-cols-2 gap-4">
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Gender</label>
+                    <div className="flex gap-2 bg-gray-100 dark:bg-gray-700/50 p-1 rounded-lg w-full">
+                      <button
+                        onClick={() => setGender('male')}
+                        className={`flex-1 py-2 rounded-md text-sm font-semibold transition-all ${
+                          gender === 'male'
+                            ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm'
+                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'
+                        }`}
+                      >
+                        Male
+                      </button>
+                      <button
+                        onClick={() => setGender('female')}
+                        className={`flex-1 py-2 rounded-md text-sm font-semibold transition-all ${
+                          gender === 'female'
+                            ? 'bg-white dark:bg-gray-600 text-marine-red shadow-sm'
+                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'
+                        }`}
+                      >
+                        Female
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Age Group</label>
+                    <select
+                      value={ageGroup}
+                      onChange={(e) => setAgeGroup(e.target.value)}
+                      className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-marine-red focus:border-marine-red py-2.5"
+                    >
+                      {ageGroups.map((group) => (
+                        <option key={group} value={group}>
+                          {group}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
                   <div className="col-span-2">
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Measurement Method
