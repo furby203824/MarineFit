@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import {
   Heart,
@@ -16,6 +16,7 @@ import {
   Activity,
   ChevronDown,
   ChevronUp,
+  Printer,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ageGroups } from '../utils/pftScoring';
@@ -273,6 +274,268 @@ const ImprovementRecommendations = ({ result }) => {
   );
 };
 
+// Printable Body Composition Report
+const PrintableReport = React.forwardRef(
+  ({ result, marineName, rank, edipi, height, waist, gender, ageGroup, pftScore, cftScore }, ref) => {
+    if (!result) return null;
+
+    const inchesToFeetAndInches = (totalInches) => {
+      const feet = Math.floor(totalInches / 12);
+      const inches = totalInches % 12;
+      if (inches === 0) return `${feet} ft`;
+      return `${feet} ft ${inches} in`;
+    };
+
+    const today = new Date();
+    const dateStr = today
+      .toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })
+      .toUpperCase();
+
+    return (
+      <div ref={ref} className="print-report hidden print:block">
+        <div style={{ fontFamily: 'Arial, Helvetica, sans-serif', maxWidth: '7.5in', margin: '0 auto', color: '#000' }}>
+          {/* Header */}
+          <div
+            style={{
+              textAlign: 'center',
+              borderBottom: '3px solid #8b0000',
+              paddingBottom: '12px',
+              marginBottom: '20px',
+            }}
+          >
+            <h1 style={{ fontSize: '16pt', fontWeight: 'bold', margin: '0 0 4px 0', letterSpacing: '1px' }}>
+              UNITED STATES MARINE CORPS
+            </h1>
+            <h2 style={{ fontSize: '13pt', fontWeight: 'bold', margin: '0 0 4px 0' }}>
+              Body Composition Assessment Report
+            </h2>
+            <p style={{ fontSize: '9pt', margin: 0, color: '#555' }}>
+              Per MARADMIN 066/26 (as modified by MARADMIN 073/26)
+            </p>
+          </div>
+
+          {/* Marine Information */}
+          <div style={{ border: '1px solid #ccc', borderRadius: '4px', padding: '12px 16px', marginBottom: '16px' }}>
+            <h3
+              style={{
+                fontSize: '10pt',
+                fontWeight: 'bold',
+                margin: '0 0 8px 0',
+                textTransform: 'uppercase',
+                color: '#8b0000',
+              }}
+            >
+              Marine Information
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 24px', fontSize: '10pt' }}>
+              <div>
+                <strong>Name:</strong> {marineName || '______________________________'}
+              </div>
+              <div>
+                <strong>Rank:</strong> {rank || '______________'}
+              </div>
+              <div>
+                <strong>EDIPI:</strong> {edipi || '______________________________'}
+              </div>
+              <div>
+                <strong>Date:</strong> {dateStr}
+              </div>
+            </div>
+          </div>
+
+          {/* WHtR Assessment */}
+          <div style={{ border: '1px solid #ccc', borderRadius: '4px', padding: '12px 16px', marginBottom: '16px' }}>
+            <h3
+              style={{
+                fontSize: '10pt',
+                fontWeight: 'bold',
+                margin: '0 0 8px 0',
+                textTransform: 'uppercase',
+                color: '#8b0000',
+              }}
+            >
+              WHtR Assessment
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 24px', fontSize: '10pt' }}>
+              <div>
+                <strong>Height:</strong> {result.roundedHeight}" ({inchesToFeetAndInches(result.roundedHeight)})
+              </div>
+              <div>
+                <strong>Max Waist Allowed:</strong> {result.maxWaist ? `${result.maxWaist}"` : 'N/A'}
+              </div>
+              <div>
+                <strong>Waist (measured):</strong> {waist}"
+              </div>
+              <div>
+                <strong>Waist (rounded):</strong> {result.roundedWaist}" (rounded down to &frac12;")
+              </div>
+            </div>
+            <div style={{ margin: '12px 0 8px 0', fontSize: '10pt' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 24px' }}>
+                <div>
+                  <strong>WHtR:</strong>{' '}
+                  <span style={{ fontSize: '14pt', fontWeight: 'bold' }}>{result.whtr.toFixed(2)}</span>
+                </div>
+                <div>
+                  <strong>Standard:</strong> &le; {WHTR_STANDARD}
+                </div>
+              </div>
+            </div>
+
+            {/* WHtR Status */}
+            <div
+              style={{
+                marginTop: '10px',
+                padding: '8px 12px',
+                border: `2px solid ${result.whtr <= WHTR_STANDARD ? '#16a34a' : '#dc2626'}`,
+                borderRadius: '4px',
+                textAlign: 'center',
+                fontWeight: 'bold',
+                fontSize: '11pt',
+                color: result.whtr <= WHTR_STANDARD ? '#16a34a' : '#dc2626',
+              }}
+            >
+              {result.whtr <= WHTR_STANDARD
+                ? '\u2713 PASS \u2014 Within WHtR Standard'
+                : '\u2717 EXCEEDS WHtR Standard'}
+            </div>
+          </div>
+
+          {/* Body Fat Evaluation — only if WHtR exceeded and BF data present */}
+          {result.step === 'bodyFat' && (
+            <div style={{ border: '1px solid #ccc', borderRadius: '4px', padding: '12px 16px', marginBottom: '16px' }}>
+              <h3
+                style={{
+                  fontSize: '10pt',
+                  fontWeight: 'bold',
+                  margin: '0 0 8px 0',
+                  textTransform: 'uppercase',
+                  color: '#8b0000',
+                }}
+              >
+                Body Fat Evaluation
+              </h3>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 24px', fontSize: '10pt' }}>
+                <div>
+                  <strong>Gender:</strong> {gender.charAt(0).toUpperCase() + gender.slice(1)}
+                </div>
+                <div>
+                  <strong>Age Group:</strong> {ageGroup}
+                </div>
+                <div>
+                  <strong>Method:</strong> {result.bodyFatMethod === 'bia' ? 'BIA' : 'Tape Test'}
+                </div>
+                <div>&nbsp;</div>
+                <div>
+                  <strong>Body Fat %:</strong> {result.bodyFatPercent}%
+                </div>
+                <div>
+                  <strong>Max Allowed:</strong> {result.bodyFatLimit}%
+                </div>
+              </div>
+
+              {result.usedPerformanceConsideration && (
+                <div
+                  style={{
+                    marginTop: '10px',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                    padding: '8px 12px',
+                    fontSize: '10pt',
+                  }}
+                >
+                  <h4
+                    style={{
+                      fontSize: '9pt',
+                      fontWeight: 'bold',
+                      margin: '0 0 4px 0',
+                      textTransform: 'uppercase',
+                      color: '#555',
+                    }}
+                  >
+                    Physical Performance Consideration Applied
+                  </h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 24px' }}>
+                    {pftScore && (
+                      <div>
+                        <strong>PFT Score:</strong> {pftScore}
+                      </div>
+                    )}
+                    {cftScore && (
+                      <div>
+                        <strong>CFT Score:</strong> {cftScore}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Body Fat Status */}
+              <div
+                style={{
+                  marginTop: '10px',
+                  padding: '8px 12px',
+                  border: `2px solid ${result.statusLevel === 'pass' ? '#16a34a' : '#dc2626'}`,
+                  borderRadius: '4px',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  fontSize: '11pt',
+                  color: result.statusLevel === 'pass' ? '#16a34a' : '#dc2626',
+                }}
+              >
+                {result.statusLevel === 'pass'
+                  ? '\u2713 PASS \u2014 Within Body Fat Standard'
+                  : '\u2717 EXCEEDS Body Fat Standard'}
+              </div>
+            </div>
+          )}
+
+          {/* BCP Assignment */}
+          {result.bcp && (
+            <div
+              style={{
+                border: '2px solid #dc2626',
+                borderRadius: '4px',
+                padding: '12px 16px',
+                marginBottom: '16px',
+                textAlign: 'center',
+              }}
+            >
+              <p style={{ fontSize: '11pt', fontWeight: 'bold', color: '#dc2626', margin: '0 0 4px 0' }}>
+                BCP ASSIGNMENT
+              </p>
+              <p style={{ fontSize: '9pt', color: '#555', margin: 0 }}>
+                Exceeds WHtR and body fat standards. Marine shall be processed for the Body Composition Program (BCP)
+                per MCO 6110.3A.
+              </p>
+            </div>
+          )}
+
+          {/* Footer */}
+          <div
+            style={{
+              borderTop: '1px solid #ccc',
+              paddingTop: '10px',
+              marginTop: '20px',
+              fontSize: '8pt',
+              color: '#777',
+              textAlign: 'center',
+            }}
+          >
+            <p style={{ margin: '0 0 2px 0' }}>
+              This report is generated for informational purposes only. Official results are determined by unit
+              S-3/CPTR.
+            </p>
+            <p style={{ margin: 0 }}>Generated by MarineFit | {dateStr}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+);
+
+PrintableReport.displayName = 'PrintableReport';
+
 const NumberInput = ({ label, value, onChange, min, max, step = 1, placeholder, onShowTable, hint }) => (
   <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
     <div className="flex justify-between mb-3">
@@ -322,8 +585,13 @@ const BodyComp = () => {
   const [bodyFatMethod, setBodyFatMethod] = useState('tape');
   const [pftScore, setPftScore] = useState('');
   const [cftScore, setCftScore] = useState('');
+  const [marineName, setMarineName] = useState('');
+  const [rank, setRank] = useState('');
+  const [edipi, setEdipi] = useState('');
   const [result, setResult] = useState(null);
   const [showStandards, setShowStandards] = useState(false);
+  const [showPrintFields, setShowPrintFields] = useState(false);
+  const printRef = useRef(null);
 
   // Convert inches to feet and inches display
   const inchesToFeetAndInches = (totalInches) => {
@@ -355,6 +623,24 @@ const BodyComp = () => {
 
     setResult(evalResult);
   };
+
+  const handlePrint = useCallback(() => {
+    if (!printRef.current) return;
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+    printWindow.document.write(`<!DOCTYPE html>
+<html><head><title>Body Composition Assessment Report</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; padding: 0.5in; color: #000; }
+  @page { margin: 0.5in; size: letter portrait; }
+</style>
+</head><body>${printRef.current.innerHTML}</body></html>`);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.close();
+  }, []);
 
   const getStatusColor = (level) => {
     switch (level) {
@@ -685,9 +971,100 @@ const BodyComp = () => {
               )}
 
               {result.statusLevel === 'fail' && <ImprovementRecommendations result={result} />}
+
+              {/* Print Section */}
+              {!result.requiresBodyFat && (
+                <div className="w-full mt-6 border-t border-gray-200 dark:border-gray-700 pt-6">
+                  <button
+                    onClick={() => setShowPrintFields(!showPrintFields)}
+                    className="flex items-center gap-2 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-marine-red transition-colors mx-auto"
+                  >
+                    <Printer size={16} />
+                    {showPrintFields ? 'Hide Print Options' : 'Print Report'}
+                  </button>
+
+                  <AnimatePresence>
+                    {showPrintFields && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="mt-4 space-y-3 text-left"
+                      >
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          Optional: Add your information to the printed report.
+                        </p>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="col-span-2">
+                            <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                              Name
+                            </label>
+                            <input
+                              type="text"
+                              value={marineName}
+                              onChange={(e) => setMarineName(e.target.value)}
+                              className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm py-2 px-3"
+                              placeholder="Last, First MI"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                              Rank
+                            </label>
+                            <input
+                              type="text"
+                              value={rank}
+                              onChange={(e) => setRank(e.target.value)}
+                              className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm py-2 px-3"
+                              placeholder="e.g. Cpl"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                              EDIPI
+                            </label>
+                            <input
+                              type="text"
+                              value={edipi}
+                              onChange={(e) => setEdipi(e.target.value)}
+                              className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm py-2 px-3"
+                              placeholder="10-digit DoD ID"
+                              maxLength={10}
+                            />
+                          </div>
+                        </div>
+                        <button
+                          onClick={handlePrint}
+                          className="w-full btn py-2.5 flex items-center justify-center gap-2 text-sm"
+                        >
+                          <Printer size={16} />
+                          Print Report
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
+      </div>
+
+      {/* Hidden printable report */}
+      <div className="hidden">
+        <PrintableReport
+          ref={printRef}
+          result={result}
+          marineName={marineName}
+          rank={rank}
+          edipi={edipi}
+          height={height}
+          waist={waist}
+          gender={gender}
+          ageGroup={ageGroup}
+          pftScore={pftScore}
+          cftScore={cftScore}
+        />
       </div>
 
       <BodyCompStandardsModal isOpen={showStandards} onClose={() => setShowStandards(false)} />
