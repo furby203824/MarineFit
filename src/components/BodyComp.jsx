@@ -276,7 +276,7 @@ const ImprovementRecommendations = ({ result }) => {
 
 // Printable Body Composition Report
 const PrintableReport = React.forwardRef(
-  ({ result, marineName, rank, edipi, height, waist, gender, ageGroup, pftScore, cftScore }, ref) => {
+  ({ result, marineName, rank, edipi, height, waist, weight, gender, ageGroup, pftScore, cftScore }, ref) => {
     if (!result) return null;
 
     const inchesToFeetAndInches = (totalInches) => {
@@ -369,6 +369,10 @@ const PrintableReport = React.forwardRef(
               <div>
                 <strong>Waist (rounded):</strong> {result.roundedWaist}" (rounded down to &frac12;")
               </div>
+              <div>
+                <strong>Weight:</strong> {weight ? `${weight} lbs` : '__________ lbs'}
+              </div>
+              <div>&nbsp;</div>
             </div>
             <div style={{ margin: '12px 0 8px 0', fontSize: '10pt' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 24px' }}>
@@ -585,6 +589,7 @@ const BodyComp = () => {
   const [bodyFatMethod, setBodyFatMethod] = useState('tape');
   const [pftScore, setPftScore] = useState('');
   const [cftScore, setCftScore] = useState('');
+  const [weight, setWeight] = useState('');
   const [marineName, setMarineName] = useState('');
   const [rank, setRank] = useState('');
   const [edipi, setEdipi] = useState('');
@@ -719,6 +724,28 @@ const BodyComp = () => {
                 <Info size={12} /> Measure at the navel, parallel to the deck, using a self-tensioning device. Lower of
                 two measurements, rounded down to nearest &frac12; inch.
               </p>
+
+              <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
+                <div className="flex justify-between mb-3">
+                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Weight</label>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">Recorded per MARADMIN 066/26</span>
+                </div>
+                <div className="relative">
+                  <input
+                    type="number"
+                    value={weight}
+                    onChange={(e) => setWeight(e.target.value)}
+                    className="w-full text-center text-lg font-bold rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-marine-red focus:border-marine-red py-3"
+                    min={80}
+                    max={400}
+                    step={0.5}
+                    placeholder="e.g. 185"
+                  />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-medium uppercase">
+                    Lbs
+                  </span>
+                </div>
+              </div>
             </div>
 
             {/* Body Fat Section — shown when WHtR is exceeded */}
@@ -902,7 +929,7 @@ const BodyComp = () => {
               {result.maxWaist && (
                 <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
                   {result.roundedHeight}" height &rarr; max waist: {result.maxWaist}" | your waist:{' '}
-                  {result.roundedWaist}"
+                  {result.roundedWaist}"{weight && ` | weight: ${weight} lbs`}
                 </p>
               )}
 
@@ -912,7 +939,74 @@ const BodyComp = () => {
                 {result.status}
               </div>
 
-              <p className="text-gray-600 dark:text-gray-300 max-w-sm mx-auto mb-6">{result.message}</p>
+              <p className="text-gray-600 dark:text-gray-300 max-w-sm mx-auto mb-4">{result.message}</p>
+
+              {/* Print Report Button — always visible when evaluation is complete */}
+              {!result.requiresBodyFat && (
+                <button
+                  onClick={() => setShowPrintFields(!showPrintFields)}
+                  className="no-print flex items-center gap-2 text-sm font-semibold text-marine-red hover:text-red-700 border border-marine-red/30 hover:border-marine-red/60 rounded-lg px-4 py-2 mb-6 transition-colors"
+                >
+                  <Printer size={16} />
+                  {showPrintFields ? 'Hide Print Options' : 'Print Report'}
+                </button>
+              )}
+
+              {/* Print Options Panel */}
+              <AnimatePresence>
+                {showPrintFields && !result.requiresBodyFat && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="no-print w-full mb-6 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-700 text-left space-y-3"
+                  >
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Optional: Add your information to the printed report.
+                    </p>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="col-span-2">
+                        <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Name</label>
+                        <input
+                          type="text"
+                          value={marineName}
+                          onChange={(e) => setMarineName(e.target.value)}
+                          className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm py-2 px-3"
+                          placeholder="Last, First MI"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Rank</label>
+                        <input
+                          type="text"
+                          value={rank}
+                          onChange={(e) => setRank(e.target.value)}
+                          className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm py-2 px-3"
+                          placeholder="e.g. Cpl"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">EDIPI</label>
+                        <input
+                          type="text"
+                          value={edipi}
+                          onChange={(e) => setEdipi(e.target.value)}
+                          className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm py-2 px-3"
+                          placeholder="10-digit DoD ID"
+                          maxLength={10}
+                        />
+                      </div>
+                    </div>
+                    <button
+                      onClick={handlePrint}
+                      className="w-full btn py-2.5 flex items-center justify-center gap-2 text-sm print-include"
+                    >
+                      <Printer size={16} />
+                      Print Report
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               {/* Body fat details when evaluated */}
               {result.step === 'bodyFat' && (
@@ -971,80 +1065,6 @@ const BodyComp = () => {
               )}
 
               {result.statusLevel === 'fail' && <ImprovementRecommendations result={result} />}
-
-              {/* Print Section */}
-              {!result.requiresBodyFat && (
-                <div className="w-full mt-6 border-t border-gray-200 dark:border-gray-700 pt-6">
-                  <button
-                    onClick={() => setShowPrintFields(!showPrintFields)}
-                    className="flex items-center gap-2 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-marine-red transition-colors mx-auto"
-                  >
-                    <Printer size={16} />
-                    {showPrintFields ? 'Hide Print Options' : 'Print Report'}
-                  </button>
-
-                  <AnimatePresence>
-                    {showPrintFields && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="mt-4 space-y-3 text-left"
-                      >
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          Optional: Add your information to the printed report.
-                        </p>
-                        <div className="grid grid-cols-2 gap-3">
-                          <div className="col-span-2">
-                            <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                              Name
-                            </label>
-                            <input
-                              type="text"
-                              value={marineName}
-                              onChange={(e) => setMarineName(e.target.value)}
-                              className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm py-2 px-3"
-                              placeholder="Last, First MI"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                              Rank
-                            </label>
-                            <input
-                              type="text"
-                              value={rank}
-                              onChange={(e) => setRank(e.target.value)}
-                              className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm py-2 px-3"
-                              placeholder="e.g. Cpl"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                              EDIPI
-                            </label>
-                            <input
-                              type="text"
-                              value={edipi}
-                              onChange={(e) => setEdipi(e.target.value)}
-                              className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm py-2 px-3"
-                              placeholder="10-digit DoD ID"
-                              maxLength={10}
-                            />
-                          </div>
-                        </div>
-                        <button
-                          onClick={handlePrint}
-                          className="w-full btn py-2.5 flex items-center justify-center gap-2 text-sm"
-                        >
-                          <Printer size={16} />
-                          Print Report
-                        </button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )}
             </motion.div>
           )}
         </AnimatePresence>
@@ -1060,6 +1080,7 @@ const BodyComp = () => {
           edipi={edipi}
           height={height}
           waist={waist}
+          weight={weight}
           gender={gender}
           ageGroup={ageGroup}
           pftScore={pftScore}
