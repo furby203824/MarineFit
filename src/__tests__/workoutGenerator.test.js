@@ -96,7 +96,7 @@ describe('generateWorkout', () => {
         goal: goals.STANDARD,
         equipment: ['Barbell', 'Dumbbell'],
       });
-      const exerciseNames = workout.blocks.flatMap(b => b.exercises.map(e => e.name)).join(',');
+      const exerciseNames = workout.blocks.flatMap((b) => b.exercises.map((e) => e.name)).join(',');
       exerciseSets.add(exerciseNames);
     }
     // With randomization, we should get multiple distinct workouts

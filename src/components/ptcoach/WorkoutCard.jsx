@@ -1,5 +1,17 @@
 import React from 'react';
-import { Save, Printer, Download, FileText, FileSpreadsheet, File, PlayCircle, RefreshCw, CheckCircle, ThumbsUp, ThumbsDown } from 'lucide-react';
+import {
+  Save,
+  Printer,
+  Download,
+  FileText,
+  FileSpreadsheet,
+  File,
+  PlayCircle,
+  RefreshCw,
+  CheckCircle,
+  ThumbsUp,
+  ThumbsDown,
+} from 'lucide-react';
 import { exportToPDF, exportToExcel, exportToWord } from '../../utils/workoutExport';
 import { motion } from 'framer-motion';
 
@@ -22,14 +34,20 @@ const WorkoutCard = ({
       className="space-y-6"
     >
       <div className="flex justify-between items-center border-b border-gray-100 dark:border-gray-600 pb-2">
-        <h3 className="text-lg font-bold text-gray-800 dark:text-white">
-          {workout.title}
-        </h3>
+        <h3 className="text-lg font-bold text-gray-800 dark:text-white">{workout.title}</h3>
         <div className="flex gap-2 items-center">
-          <button onClick={onSave} className="p-2 text-gray-500 hover:text-marine-red transition-colors" title="Save Workout">
+          <button
+            onClick={onSave}
+            className="p-2 text-gray-500 hover:text-marine-red transition-colors"
+            title="Save Workout"
+          >
             <Save size={18} />
           </button>
-          <button onClick={() => window.print()} className="p-2 text-gray-500 hover:text-marine-red transition-colors" title="Print Card">
+          <button
+            onClick={() => window.print()}
+            className="p-2 text-gray-500 hover:text-marine-red transition-colors"
+            title="Print Card"
+          >
             <Printer size={18} />
           </button>
           {/* Export Dropdown */}
@@ -44,19 +62,43 @@ const WorkoutCard = ({
             {showExportMenu && (
               <div className="absolute right-0 top-full mt-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 py-1 z-50 min-w-[140px]">
                 <button
-                  onClick={async () => { try { await exportToPDF(workout); } catch (e) { console.error('PDF export failed:', e); alert('Export failed. Please try again.'); } setShowExportMenu(false); }}
+                  onClick={async () => {
+                    try {
+                      await exportToPDF(workout);
+                    } catch (e) {
+                      console.error('PDF export failed:', e);
+                      alert('Export failed. Please try again.');
+                    }
+                    setShowExportMenu(false);
+                  }}
                   className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
                 >
                   <FileText size={16} className="text-red-600" /> PDF
                 </button>
                 <button
-                  onClick={async () => { try { await exportToExcel(workout); } catch (e) { console.error('Excel export failed:', e); alert('Export failed. Please try again.'); } setShowExportMenu(false); }}
+                  onClick={async () => {
+                    try {
+                      await exportToExcel(workout);
+                    } catch (e) {
+                      console.error('Excel export failed:', e);
+                      alert('Export failed. Please try again.');
+                    }
+                    setShowExportMenu(false);
+                  }}
                   className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
                 >
                   <FileSpreadsheet size={16} className="text-green-600" /> Excel
                 </button>
                 <button
-                  onClick={async () => { try { await exportToWord(workout); } catch (e) { console.error('Word export failed:', e); alert('Export failed. Please try again.'); } setShowExportMenu(false); }}
+                  onClick={async () => {
+                    try {
+                      await exportToWord(workout);
+                    } catch (e) {
+                      console.error('Word export failed:', e);
+                      alert('Export failed. Please try again.');
+                    }
+                    setShowExportMenu(false);
+                  }}
                   className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
                 >
                   <File size={16} className="text-blue-600" /> Word
@@ -96,14 +138,10 @@ const WorkoutCard = ({
                           {ex.prescription.sets} x {ex.prescription.reps}
                         </span>
                         {ex.prescription.rest !== '0s' && (
-                          <span className="text-gray-500">
-                            Rest: {ex.prescription.rest}
-                          </span>
+                          <span className="text-gray-500">Rest: {ex.prescription.rest}</span>
                         )}
                         {ex.prescription.notes && (
-                          <span className="text-gray-400 italic text-xs hidden sm:inline">
-                            {ex.prescription.notes}
-                          </span>
+                          <span className="text-gray-400 italic text-xs hidden sm:inline">{ex.prescription.notes}</span>
                         )}
                       </div>
                     )}

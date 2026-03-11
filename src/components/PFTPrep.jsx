@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import PullupProgram from './PullupProgram';
 import PlankProgram from './PlankProgram';
 import WalkToRunProgram from './WalkToRunProgram';
@@ -13,8 +13,6 @@ import {
   AlertCircle,
   Target,
   Calendar,
-  ChevronDown,
-  ChevronUp,
   Dumbbell,
   FileText,
   ChevronLeft,
@@ -56,12 +54,9 @@ const PFTPrep = () => {
   // PFT State
   const [pullups, setPullups] = useState(15);
   const [pushups, setPushups] = useState(60);
-  const [crunches, setCrunches] = useState(100); // Deprecated but kept for legacy if needed
   const [plankTime, setPlankTime] = useState(240); // Seconds
   const [runTime, setRunTime] = useState(1260); // Seconds (21:00)
-  const [rowTime, setRowTime] = useState(300); // Seconds (5:00)
   const [upperBodyType, setUpperBodyType] = useState('pullups'); // 'pullups' or 'pushups'
-  const [cardioType, setCardioType] = useState('run'); // 'run' or 'row'
 
   // CFT State
   const [mtcTime, setMtcTime] = useState(180); // Seconds (3:00)
@@ -70,9 +65,6 @@ const PFTPrep = () => {
 
   // Visual Resource State
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-
-  // Add state for CFT page navigation
-  const [cftPageInput, setCftPageInput] = useState('');
 
   // CFT Schedule State
   const [cftWeek, setCftWeek] = useState(1);
@@ -243,13 +235,6 @@ const PFTPrep = () => {
 
   const padPage = (num) => num.toString().padStart(4, '0');
 
-  const [imageError, setImageError] = useState(false);
-
-  // Reset error when card changes
-  useEffect(() => {
-    setImageError(false);
-  }, [currentCardIndex, testType]);
-
   const getImageSource = () => {
     const pageNum = padPage(getPage(currentCardIndex, testType));
     if (testType === 'pft') {
@@ -257,15 +242,6 @@ const PFTPrep = () => {
       return `${visualPlans.pft.path}PFT-Prep-Program_page-${pageNum}.jpg`;
     }
     return `${visualPlans.cft.path}CFT-PREP-GUIDANCE_page-${pageNum}.jpg`;
-  };
-
-  const handleJumpToPage = (e) => {
-    e.preventDefault();
-    const pageNum = parseInt(cftPageInput);
-    if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= visualPlans.cft.count) {
-      setCurrentCardIndex(pageNum - 1);
-      setCftPageInput('');
-    }
   };
 
   // Download a single image as file
@@ -281,7 +257,7 @@ const PFTPrep = () => {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-    } catch (err) {
+    } catch {
       // Fallback: open in new tab
       window.open(src, '_blank');
     }

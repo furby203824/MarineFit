@@ -7,8 +7,8 @@ const HITTSidebar = () => {
       <div className="card bg-marine-red text-white">
         <h2 className="text-white text-xl font-bold mb-4">HITT Methodology</h2>
         <p className="text-red-100 mb-4 leading-relaxed">
-          Semper Fit's HITT is a comprehensive, combat-focused Strength and Conditioning program specifically for Marines.
-          Aiming to make Marines <strong>COMBAT FIT. COMBAT READY.</strong>
+          Semper Fit's HITT is a comprehensive, combat-focused Strength and Conditioning program specifically for
+          Marines. Aiming to make Marines <strong>COMBAT FIT. COMBAT READY.</strong>
         </p>
         <div className="space-y-3 mt-6">
           <div className="bg-white/10 p-3 rounded-lg backdrop-blur-sm">
@@ -29,7 +29,12 @@ const HITTSidebar = () => {
         </h3>
         <ul className="space-y-3">
           <li>
-            <a href="https://www.usmc-mccs.org/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-gray-600 dark:text-gray-300 hover:text-marine-red transition-colors p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg">
+            <a
+              href="https://www.usmc-mccs.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 text-gray-600 dark:text-gray-300 hover:text-marine-red transition-colors p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg"
+            >
               <div className="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-500 dark:text-gray-400">
                 <ExternalLink size={14} />
               </div>
@@ -45,7 +50,10 @@ const HITTSidebar = () => {
             </div>
           </li>
           <li>
-            <a href="mailto:Lynda.Rummel@usmc-mccs.org" className="flex items-center gap-3 text-gray-600 dark:text-gray-300 hover:text-marine-red transition-colors p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg">
+            <a
+              href="mailto:Lynda.Rummel@usmc-mccs.org"
+              className="flex items-center gap-3 text-gray-600 dark:text-gray-300 hover:text-marine-red transition-colors p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg"
+            >
               <div className="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-500 dark:text-gray-400">
                 <Mail size={14} />
               </div>

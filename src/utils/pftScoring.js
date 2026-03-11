@@ -247,14 +247,6 @@ const interpolateScore = (value, minVal, maxVal, isTimeBased = false) => {
   }
 };
 
-// Check if below minimum standard
-const isBelowMinimum = (value, minVal, isTimeBased = false) => {
-  if (isTimeBased) {
-    return value > minVal; // For time, higher is worse
-  }
-  return value < minVal; // For reps, lower is worse
-};
-
 // PFT Scoring
 export const calculatePFTScore = (gender, ageGroup, inputs) => {
   const { upperBodyType, upperBodyReps, plankMinutes, plankSeconds, runMinutes, runSeconds } = inputs;

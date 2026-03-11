@@ -28,27 +28,26 @@ const SwapExerciseModal = ({
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
         className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col"
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-lg font-bold text-gray-900 dark:text-white">Swap Exercise</h3>
-            <button
-              onClick={onClose}
-              className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-            >
+            <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
               <X size={20} />
             </button>
           </div>
           <p className="text-sm text-gray-500 mb-3">
-            Replacing: <span className="font-semibold text-gray-700 dark:text-gray-300">{swapTarget.currentExercise.name}</span>
+            Replacing:{' '}
+            <span className="font-semibold text-gray-700 dark:text-gray-300">{swapTarget.currentExercise.name}</span>
             <span className="ml-2 text-xs bg-marine-red/10 text-marine-red px-2 py-0.5 rounded">
               {swapTarget.currentExercise.category}
             </span>
           </p>
           {swapTarget.currentExercise.prescription && (
             <p className="text-xs text-gray-400 mb-3">
-              Prescription will be preserved: {swapTarget.currentExercise.prescription.sets} x {swapTarget.currentExercise.prescription.reps}, Rest: {swapTarget.currentExercise.prescription.rest}
+              Prescription will be preserved: {swapTarget.currentExercise.prescription.sets} x{' '}
+              {swapTarget.currentExercise.prescription.reps}, Rest: {swapTarget.currentExercise.prescription.rest}
             </p>
           )}
 
@@ -96,18 +95,20 @@ const SwapExerciseModal = ({
                         <span className="text-xs bg-gray-200 dark:bg-gray-600 px-1.5 py-0.5 rounded text-gray-600 dark:text-gray-300">
                           {ex.equipment}
                         </span>
-                        <span className={`text-xs px-1.5 py-0.5 rounded ${
-                          ex.difficulty === 1 ? 'bg-green-100 text-green-700' :
-                          ex.difficulty === 2 ? 'bg-yellow-100 text-yellow-700' :
-                          'bg-red-100 text-red-700'
-                        }`}>
+                        <span
+                          className={`text-xs px-1.5 py-0.5 rounded ${
+                            ex.difficulty === 1
+                              ? 'bg-green-100 text-green-700'
+                              : ex.difficulty === 2
+                                ? 'bg-yellow-100 text-yellow-700'
+                                : 'bg-red-100 text-red-700'
+                          }`}
+                        >
                           Lvl {ex.difficulty}
                         </span>
                       </div>
                     </div>
-                    {ex.id !== swapTarget.currentExercise.id && (
-                      <RefreshCw size={18} className="text-marine-red" />
-                    )}
+                    {ex.id !== swapTarget.currentExercise.id && <RefreshCw size={18} className="text-marine-red" />}
                   </div>
                 </button>
               ))}

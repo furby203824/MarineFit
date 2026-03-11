@@ -45,7 +45,7 @@ export const ThemeProvider = ({ children }) => {
   }, []);
 
   const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   const setSystemTheme = () => {
@@ -54,9 +54,5 @@ export const ThemeProvider = ({ children }) => {
     setTheme(prefersDark ? 'dark' : 'light');
   };
 
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setSystemTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={{ theme, toggleTheme, setSystemTheme }}>{children}</ThemeContext.Provider>;
 };

@@ -1,4 +1,4 @@
-import { hittExercises, categories, goals, prescriptionTemplates } from '../data/hittData';
+import { hittExercises, categories, goals } from '../data/hittData';
 
 // Fisher-Yates shuffle for uniform random ordering
 const shuffleArray = (array) => {
@@ -90,7 +90,7 @@ export const generateWorkout = (options) => {
     time = 30, // 30 or 60 minutes
     equipment = [], // Array of strings, e.g., ['Kettlebell', 'Ammo Can']
     goal = goals.STANDARD,
-    difficultyModifier = 0
+    difficultyModifier = 0,
   } = options;
 
   // 1. Determine Work Capacity (Volume)
@@ -101,7 +101,7 @@ export const generateWorkout = (options) => {
     [categories.MOVEMENT_PREP]: { count: 3, intensity: 'low' },
     [categories.STRENGTH_POWER]: { count: isLongWorkout ? 6 : 3, intensity: 'high' },
     [categories.SPEED_AGILITY]: { count: isLongWorkout ? 4 : 2, intensity: 'high' },
-    [categories.FLEXIBILITY]: { count: 3, intensity: 'low' }
+    [categories.FLEXIBILITY]: { count: 3, intensity: 'low' },
   };
 
   // 2. Adjust for Goals (Logic Rule #2)
@@ -119,7 +119,7 @@ export const generateWorkout = (options) => {
   }
 
   // 3. Filter Candidates
-  const availableExercises = hittExercises.filter(ex => {
+  const availableExercises = hittExercises.filter((ex) => {
     // Equipment Check: If exercise needs equipment, user must have it.
     // 'Bodyweight' is always allowed.
     if (ex.equipment !== 'Bodyweight' && !equipment.includes(ex.equipment)) {
@@ -135,13 +135,13 @@ export const generateWorkout = (options) => {
     title: `${goal} - ${time} Min`,
     goal: goal,
     duration: time,
-    blocks: []
+    blocks: [],
   };
 
   Object.entries(structure).forEach(([category, config]) => {
     if (config.count === 0) return;
 
-    let candidates = availableExercises.filter(ex => ex.category === category);
+    let candidates = availableExercises.filter((ex) => ex.category === category);
 
     // Logic Rule #3: Difficulty Balancing
     // We use the difficultyModifier to bias the selection.
@@ -157,8 +157,8 @@ export const generateWorkout = (options) => {
       // User wants it EASY -> Ascending Difficulty
       candidates = candidates.sort((a, b) => a.difficulty - b.difficulty);
     } else {
-       // Standard/Neutral -> Pure Shuffle
-       candidates = shuffleArray(candidates);
+      // Standard/Neutral -> Pure Shuffle
+      candidates = shuffleArray(candidates);
     }
 
     const selected = [];
@@ -179,7 +179,7 @@ export const generateWorkout = (options) => {
       const prescription = getPrescription(ex, category, goal);
       const exerciseWithPrescription = {
         ...ex,
-        prescription
+        prescription,
       };
 
       selected.push(exerciseWithPrescription);
@@ -189,7 +189,7 @@ export const generateWorkout = (options) => {
     if (selected.length > 0) {
       workout.blocks.push({
         name: category,
-        exercises: selected
+        exercises: selected,
       });
     }
   });

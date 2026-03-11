@@ -1914,12 +1914,7 @@
   ],
   "metadata": {
     "total_exercises": 382,
-    "categories": [
-      "Movement Prep",
-      "Strength & Power",
-      "Speed, Agility & Endurance",
-      "Flexibility & Mobility"
-    ],
+    "categories": ["Movement Prep", "Strength & Power", "Speed, Agility & Endurance", "Flexibility & Mobility"],
     "category_counts": {
       "Movement Prep": 70,
       "Strength & Power": 224,

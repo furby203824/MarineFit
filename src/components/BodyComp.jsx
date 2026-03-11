@@ -22,7 +22,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ageGroups } from '../utils/pftScoring';
 import { hittExercises } from '../data/hittData';
 import { heightWaistTable, bodyFatStandards, WHTR_STANDARD, performanceConsiderations } from '../data/bodyCompData';
-import { roundDownToHalf, getMaxWaist, evaluateBodyComp } from '../utils/bodyCompScoring';
+import { getMaxWaist, evaluateBodyComp } from '../utils/bodyCompScoring';
 
 // Body Composition Standards Modal
 const BodyCompStandardsModal = ({ isOpen, onClose }) => {
@@ -597,14 +597,6 @@ const BodyComp = () => {
   const [showStandards, setShowStandards] = useState(false);
   const [showPrintFields, setShowPrintFields] = useState(false);
   const printRef = useRef(null);
-
-  // Convert inches to feet and inches display
-  const inchesToFeetAndInches = (totalInches) => {
-    const feet = Math.floor(totalInches / 12);
-    const inches = totalInches % 12;
-    if (inches === 0) return `${feet} ft`;
-    return `${feet} ft ${inches} in`;
-  };
 
   // Compute max waist for current height
   const maxWaistForHeight = useMemo(() => {

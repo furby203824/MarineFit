@@ -56,7 +56,7 @@ describe('getAgeGroup', () => {
 
   it('handles edge cases gracefully', () => {
     expect(getAgeGroup(16)).toBe('17-20'); // Below minimum
-    expect(getAgeGroup(100)).toBe('51+');  // Very old
+    expect(getAgeGroup(100)).toBe('51+'); // Very old
   });
 });
 
