@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { AlertCircle, Shield, AlertTriangle } from 'lucide-react';
+import { AlertCircle, Shield, AlertTriangle, FileText } from 'lucide-react';
 
 const Footer = () => {
   const dialogRef = useRef(null);
