@@ -36,13 +36,62 @@ function App() {
                 <Suspense fallback={<PageLoader />}>
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
-                    <Route path="/pt-coach" element={<ErrorBoundary><PTCoach /></ErrorBoundary>} />
-                    <Route path="/exercises" element={<ErrorBoundary><ExerciseLibrary /></ErrorBoundary>} />
-                    <Route path="/pft-prep" element={<ErrorBoundary><PFTPrep /></ErrorBoundary>} />
-                    <Route path="/nutrition" element={<ErrorBoundary><Nutrition /></ErrorBoundary>} />
-                    <Route path="/injury-prevention" element={<ErrorBoundary><InjuryPrevention /></ErrorBoundary>} />
-                    <Route path="/sleep" element={<ErrorBoundary><SleepOptimizer /></ErrorBoundary>} />
-                    <Route path="/body-comp" element={<ErrorBoundary><BodyComp /></ErrorBoundary>} />
+                    <Route
+                      path="/pt-coach"
+                      element={
+                        <ErrorBoundary>
+                          <PTCoach />
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route
+                      path="/exercises"
+                      element={
+                        <ErrorBoundary>
+                          <ExerciseLibrary />
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route
+                      path="/pft-prep"
+                      element={
+                        <ErrorBoundary>
+                          <PFTPrep />
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route
+                      path="/nutrition"
+                      element={
+                        <ErrorBoundary>
+                          <Nutrition />
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route
+                      path="/injury-prevention"
+                      element={
+                        <ErrorBoundary>
+                          <InjuryPrevention />
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route
+                      path="/sleep"
+                      element={
+                        <ErrorBoundary>
+                          <SleepOptimizer />
+                        </ErrorBoundary>
+                      }
+                    />
+                    <Route
+                      path="/body-comp"
+                      element={
+                        <ErrorBoundary>
+                          <BodyComp />
+                        </ErrorBoundary>
+                      }
+                    />
                   </Routes>
                 </Suspense>
               </ErrorBoundary>

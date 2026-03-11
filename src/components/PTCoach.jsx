@@ -24,7 +24,7 @@ import {
   Download,
   Upload,
 } from 'lucide-react';
-import { equipmentTags, goals, hittExercises, categories } from '../data/hittData';
+import { equipmentTags, goals, hittExercises } from '../data/hittData';
 import { generateWorkout } from '../utils/workoutGenerator';
 import { exportToPDF, exportToExcel, exportToWord } from '../utils/workoutExport';
 import { motion, AnimatePresence } from 'framer-motion';

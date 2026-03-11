@@ -90,20 +90,11 @@ export const exportToPDF = async (workout) => {
     // Exercises table
     const tableData = block.exercises.map((ex, idx) => {
       const prescription = ex.prescription || {};
-      const setsReps = prescription.sets && prescription.reps
-        ? `${prescription.sets} x ${prescription.reps}`
-        : '-';
+      const setsReps = prescription.sets && prescription.reps ? `${prescription.sets} x ${prescription.reps}` : '-';
       const rest = prescription.rest || '-';
       const notes = prescription.notes || '';
 
-      return [
-        (idx + 1).toString(),
-        ex.name,
-        ex.equipment || 'Bodyweight',
-        setsReps,
-        rest,
-        notes
-      ];
+      return [(idx + 1).toString(), ex.name, ex.equipment || 'Bodyweight', setsReps, rest, notes];
     });
 
     if (tableData.length > 0) {
@@ -114,15 +105,15 @@ export const exportToPDF = async (workout) => {
         margin: { left: 14, right: 14 },
         styles: {
           fontSize: 9,
-          cellPadding: 3
+          cellPadding: 3,
         },
         headStyles: {
           fillColor: [70, 70, 70],
           textColor: [255, 255, 255],
-          fontStyle: 'bold'
+          fontStyle: 'bold',
         },
         alternateRowStyles: {
-          fillColor: [245, 245, 245]
+          fillColor: [245, 245, 245],
         },
         columnStyles: {
           0: { cellWidth: 10 },
@@ -130,8 +121,8 @@ export const exportToPDF = async (workout) => {
           2: { cellWidth: 30 },
           3: { cellWidth: 25 },
           4: { cellWidth: 20 },
-          5: { cellWidth: 'auto' }
-        }
+          5: { cellWidth: 'auto' },
+        },
       });
 
       yPos = doc.lastAutoTable.finalY + 12;
@@ -178,7 +169,7 @@ export const exportToExcel = async (workout) => {
     ['Total Blocks:', workout.blocks.length],
     ['Total Exercises:', workout.blocks.reduce((sum, b) => sum + b.exercises.length, 0)],
     [''],
-    ['COMBAT FIT. COMBAT READY.']
+    ['COMBAT FIT. COMBAT READY.'],
   ];
 
   const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
@@ -186,9 +177,7 @@ export const exportToExcel = async (workout) => {
   XLSX.utils.book_append_sheet(workbook, summarySheet, 'Summary');
 
   // Full workout sheet
-  const workoutData = [
-    ['#', 'Block', 'Exercise', 'Equipment', 'Sets', 'Reps', 'Rest', 'Notes']
-  ];
+  const workoutData = [['#', 'Block', 'Exercise', 'Equipment', 'Sets', 'Reps', 'Rest', 'Notes']];
 
   let exerciseNum = 1;
   workout.blocks.forEach((block) => {
@@ -202,7 +191,7 @@ export const exportToExcel = async (workout) => {
         prescription.sets || '',
         prescription.reps || '',
         prescription.rest || '',
-        prescription.notes || ''
+        prescription.notes || '',
       ]);
     });
   });
@@ -216,15 +205,13 @@ export const exportToExcel = async (workout) => {
     { wch: 8 },
     { wch: 10 },
     { wch: 10 },
-    { wch: 30 }
+    { wch: 30 },
   ];
   XLSX.utils.book_append_sheet(workbook, workoutSheet, 'Workout');
 
   // Individual block sheets
   workout.blocks.forEach((block) => {
-    const blockData = [
-      ['#', 'Exercise', 'Equipment', 'Sets', 'Reps', 'Rest', 'Notes']
-    ];
+    const blockData = [['#', 'Exercise', 'Equipment', 'Sets', 'Reps', 'Rest', 'Notes']];
 
     block.exercises.forEach((ex, exIdx) => {
       const prescription = ex.prescription || {};
@@ -235,20 +222,12 @@ export const exportToExcel = async (workout) => {
         prescription.sets || '',
         prescription.reps || '',
         prescription.rest || '',
-        prescription.notes || ''
+        prescription.notes || '',
       ]);
     });
 
     const blockSheet = XLSX.utils.aoa_to_sheet(blockData);
-    blockSheet['!cols'] = [
-      { wch: 5 },
-      { wch: 35 },
-      { wch: 15 },
-      { wch: 8 },
-      { wch: 10 },
-      { wch: 10 },
-      { wch: 30 }
-    ];
+    blockSheet['!cols'] = [{ wch: 5 }, { wch: 35 }, { wch: 15 }, { wch: 8 }, { wch: 10 }, { wch: 10 }, { wch: 30 }];
 
     // Truncate sheet name to 31 chars (Excel limit)
     const sheetName = block.name.substring(0, 31);
@@ -269,7 +248,8 @@ export const exportToWord = async (workout) => {
     throw new Error('Invalid workout data for Word export.');
   }
 
-  const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, BorderStyle, WidthType, AlignmentType } = await import('docx');
+  const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, BorderStyle, WidthType, AlignmentType } =
+    await import('docx');
   const { saveAs } = await import('file-saver');
 
   const dateStr = getDateStr(workout);
@@ -283,15 +263,15 @@ export const exportToWord = async (workout) => {
           text: 'MarineFit',
           bold: true,
           size: 36,
-          color: '8B0000'
+          color: '8B0000',
         }),
         new TextRun({
           text: '  |  HITT WORKOUT CARD',
           size: 24,
-          color: '666666'
-        })
+          color: '666666',
+        }),
       ],
-      spacing: { after: 200 }
+      spacing: { after: 200 },
     }),
 
     // Title
@@ -300,10 +280,10 @@ export const exportToWord = async (workout) => {
         new TextRun({
           text: workout.title,
           bold: true,
-          size: 32
-        })
+          size: 32,
+        }),
       ],
-      spacing: { after: 100 }
+      spacing: { after: 100 },
     }),
 
     // Date
@@ -312,11 +292,11 @@ export const exportToWord = async (workout) => {
         new TextRun({
           text: `Date: ${dateStr}`,
           size: 20,
-          color: '666666'
-        })
+          color: '666666',
+        }),
       ],
-      spacing: { after: 300 }
-    })
+      spacing: { after: 300 },
+    }),
   ];
 
   // Add blocks
@@ -329,8 +309,8 @@ export const exportToWord = async (workout) => {
             text: block.name.toUpperCase(),
             bold: true,
             size: 24,
-            color: '8B0000'
-          })
+            color: '8B0000',
+          }),
         ],
         spacing: { before: 300, after: 150 },
         border: {
@@ -338,9 +318,9 @@ export const exportToWord = async (workout) => {
             color: '8B0000',
             size: 24,
             style: BorderStyle.SINGLE,
-            space: 10
-          }
-        }
+            space: 10,
+          },
+        },
       })
     );
 
@@ -350,24 +330,25 @@ export const exportToWord = async (workout) => {
         // Header row
         new TableRow({
           tableHeader: true,
-          children: ['#', 'Exercise', 'Equipment', 'Sets x Reps', 'Rest', 'Notes'].map(text =>
-            new TableCell({
-              children: [new Paragraph({
-                children: [new TextRun({ text, bold: true, size: 20, color: 'FFFFFF' })]
-              })],
-              shading: { fill: '464646' },
-              width: { size: text === 'Exercise' ? 30 : text === 'Notes' ? 20 : 10, type: WidthType.PERCENTAGE }
-            })
-          )
-        })
+          children: ['#', 'Exercise', 'Equipment', 'Sets x Reps', 'Rest', 'Notes'].map(
+            (text) =>
+              new TableCell({
+                children: [
+                  new Paragraph({
+                    children: [new TextRun({ text, bold: true, size: 20, color: 'FFFFFF' })],
+                  }),
+                ],
+                shading: { fill: '464646' },
+                width: { size: text === 'Exercise' ? 30 : text === 'Notes' ? 20 : 10, type: WidthType.PERCENTAGE },
+              })
+          ),
+        }),
       ];
 
       // Data rows
       block.exercises.forEach((ex, idx) => {
         const prescription = ex.prescription || {};
-        const setsReps = prescription.sets && prescription.reps
-          ? `${prescription.sets} x ${prescription.reps}`
-          : '-';
+        const setsReps = prescription.sets && prescription.reps ? `${prescription.sets} x ${prescription.reps}` : '-';
 
         const rowData = [
           (idx + 1).toString(),
@@ -375,20 +356,23 @@ export const exportToWord = async (workout) => {
           ex.equipment || 'Bodyweight',
           setsReps,
           prescription.rest || '-',
-          prescription.notes || ''
+          prescription.notes || '',
         ];
 
         tableRows.push(
           new TableRow({
-            children: rowData.map((text, colIdx) =>
-              new TableCell({
-                children: [new Paragraph({
-                  children: [new TextRun({ text, size: 20 })]
-                })],
-                shading: { fill: idx % 2 === 0 ? 'FFFFFF' : 'F5F5F5' },
-                width: { size: colIdx === 1 ? 30 : colIdx === 5 ? 20 : 10, type: WidthType.PERCENTAGE }
-              })
-            )
+            children: rowData.map(
+              (text, colIdx) =>
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [new TextRun({ text, size: 20 })],
+                    }),
+                  ],
+                  shading: { fill: idx % 2 === 0 ? 'FFFFFF' : 'F5F5F5' },
+                  width: { size: colIdx === 1 ? 30 : colIdx === 5 ? 20 : 10, type: WidthType.PERCENTAGE },
+                })
+            ),
           })
         );
       });
@@ -396,7 +380,7 @@ export const exportToWord = async (workout) => {
       children.push(
         new Table({
           rows: tableRows,
-          width: { size: 100, type: WidthType.PERCENTAGE }
+          width: { size: 100, type: WidthType.PERCENTAGE },
         })
       );
     } else {
@@ -406,9 +390,9 @@ export const exportToWord = async (workout) => {
             new TextRun({
               text: 'No exercises in this block.',
               italics: true,
-              color: '999999'
-            })
-          ]
+              color: '999999',
+            }),
+          ],
         })
       );
     }
@@ -421,19 +405,21 @@ export const exportToWord = async (workout) => {
         new TextRun({
           text: 'Generated by MarineFit - COMBAT FIT. COMBAT READY.',
           size: 16,
-          color: '999999'
-        })
+          color: '999999',
+        }),
       ],
       spacing: { before: 400 },
-      alignment: AlignmentType.CENTER
+      alignment: AlignmentType.CENTER,
     })
   );
 
   const doc = new Document({
-    sections: [{
-      properties: {},
-      children
-    }]
+    sections: [
+      {
+        properties: {},
+        children,
+      },
+    ],
   });
 
   // Generate and save

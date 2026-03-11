@@ -30,15 +30,12 @@ const ExercisePickerModal = ({
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
         className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col"
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold text-gray-900 dark:text-white">Add Exercise</h3>
-            <button
-              onClick={onClose}
-              className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-            >
+            <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
               <X size={20} />
             </button>
           </div>
@@ -61,8 +58,10 @@ const ExercisePickerModal = ({
               className="px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm"
             >
               <option value="">All Categories</option>
-              {allCategories.map(cat => (
-                <option key={cat} value={cat}>{cat}</option>
+              {allCategories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
               ))}
             </select>
           </div>
@@ -93,9 +92,7 @@ const ExercisePickerModal = ({
             ))}
           </div>
           {filteredExercises.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              No exercises found matching your search.
-            </div>
+            <div className="text-center py-8 text-gray-500">No exercises found matching your search.</div>
           )}
         </div>
       </motion.div>
