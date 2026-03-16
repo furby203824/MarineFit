@@ -73,6 +73,8 @@ const PFTPrep = () => {
   const [cftDownloading, setCftDownloading] = useState(false);
 
   // CFT schedule mapping: workout type → card index offset
+  // hexColor is used for jsPDF canvas rendering (must be #hex format)
+  // cssColor is used for inline style backgroundColor (oklch for audit compliance)
   const cftSchedule = {
     days: [
       {
@@ -80,7 +82,8 @@ const PFTPrep = () => {
         type: 'WARRIOR',
         color: 'bg-red-600',
         textColor: 'text-white',
-        hexColor: 'oklch(0.53 0.19 27)',
+        hexColor: '#dc2626',
+        cssColor: 'oklch(0.53 0.19 27)',
         offset: 0,
       },
       {
@@ -88,7 +91,8 @@ const PFTPrep = () => {
         type: 'ATHLETE',
         color: 'bg-blue-600',
         textColor: 'text-white',
-        hexColor: 'oklch(0.50 0.18 260)',
+        hexColor: '#2563eb',
+        cssColor: 'oklch(0.50 0.18 260)',
         offset: 100,
       },
       {
@@ -96,7 +100,8 @@ const PFTPrep = () => {
         type: 'RELOAD',
         color: 'bg-green-600',
         textColor: 'text-white',
-        hexColor: 'oklch(0.55 0.16 145)',
+        hexColor: '#16a34a',
+        cssColor: 'oklch(0.55 0.16 145)',
         offset: 25,
       },
       {
@@ -104,7 +109,8 @@ const PFTPrep = () => {
         type: 'COMBAT',
         color: 'bg-yellow-500',
         textColor: 'text-black',
-        hexColor: 'oklch(0.73 0.16 90)',
+        hexColor: '#eab308',
+        cssColor: 'oklch(0.73 0.16 90)',
         offset: 75,
       },
       {
@@ -112,7 +118,8 @@ const PFTPrep = () => {
         type: 'COMPANY',
         color: 'bg-purple-600',
         textColor: 'text-white',
-        hexColor: 'oklch(0.45 0.20 305)',
+        hexColor: '#9333ea',
+        cssColor: 'oklch(0.45 0.20 305)',
         offset: 50,
       },
       {
@@ -120,7 +127,8 @@ const PFTPrep = () => {
         type: 'RELOAD',
         color: 'bg-green-600',
         textColor: 'text-white',
-        hexColor: 'oklch(0.55 0.16 145)',
+        hexColor: '#16a34a',
+        cssColor: 'oklch(0.55 0.16 145)',
         offset: 25,
       },
       {
@@ -128,7 +136,8 @@ const PFTPrep = () => {
         type: 'REST',
         color: 'bg-gray-400',
         textColor: 'text-white',
-        hexColor: 'oklch(0.70 0.01 250)',
+        hexColor: '#9ca3af',
+        cssColor: 'oklch(0.70 0.01 250)',
         offset: null,
       },
     ],
@@ -995,7 +1004,7 @@ const PFTPrep = () => {
                               style={
                                 !isRest
                                   ? {
-                                      backgroundColor: dayInfo.hexColor,
+                                      backgroundColor: dayInfo.cssColor,
                                       color: dayInfo.day === 'Thu' ? 'oklch(0 0 0)' : 'oklch(1 0 0)',
                                     }
                                   : undefined
@@ -1146,7 +1155,7 @@ const PFTPrep = () => {
                           <div
                             className="px-3 py-2 font-bold text-sm flex items-center gap-2"
                             style={{
-                              backgroundColor: workout.hexColor,
+                              backgroundColor: workout.cssColor,
                               color: workout.day === 'Thu' ? 'oklch(0 0 0)' : 'oklch(1 0 0)',
                             }}
                           >
