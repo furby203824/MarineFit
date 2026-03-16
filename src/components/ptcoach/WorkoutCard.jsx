@@ -109,69 +109,86 @@ const WorkoutCard = ({
         </div>
       </div>
 
-      {workout.blocks.map((block, bIdx) => (
-        <div key={bIdx} className="space-y-3">
-          <h4 className="text-sm font-bold uppercase tracking-wider text-marine-red border-l-4 border-marine-red pl-3">
-            {block.name}
-          </h4>
-          <div className="grid gap-3">
-            {block.exercises.map((ex, idx) => (
-              <motion.div
-                key={ex.id}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.05 }}
-                className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-100 dark:border-gray-600 hover:shadow-sm transition-shadow"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-semibold text-gray-900 dark:text-white">{ex.name}</span>
-                      <span className="text-xs bg-white dark:bg-gray-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-500 text-gray-500">
-                        {ex.equipment}
-                      </span>
-                    </div>
-                    {/* Prescription Display */}
-                    {ex.prescription && (
-                      <div className="flex items-center gap-3 mt-2 text-sm">
-                        <span className="bg-marine-red/10 text-marine-red px-2 py-0.5 rounded font-medium">
-                          {ex.prescription.sets} x {ex.prescription.reps}
-                        </span>
-                        {ex.prescription.rest !== '0s' && (
-                          <span className="text-gray-500">Rest: {ex.prescription.rest}</span>
-                        )}
-                        {ex.prescription.notes && (
-                          <span className="text-gray-400 italic text-xs hidden sm:inline">{ex.prescription.notes}</span>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-1 ml-2">
-                    <button
-                      onClick={() => onSwapExercise(bIdx, idx)}
-                      className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
-                      title="Swap Exercise"
-                    >
-                      <RefreshCw size={18} />
-                    </button>
-                    {ex.url && (
-                      <a
-                        href={ex.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 text-gray-400 hover:text-marine-red hover:bg-white rounded-full transition-colors"
-                        title="Watch Demo"
-                      >
-                        <PlayCircle size={20} />
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+      {workout.blocks.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-12 text-gray-400 dark:text-gray-500">
+          <svg className="w-12 h-12 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+            />
+          </svg>
+          <p className="font-medium">No exercise blocks</p>
+          <p className="text-sm mt-1">Add exercises to build your workout</p>
         </div>
-      ))}
+      ) : (
+        workout.blocks.map((block, bIdx) => (
+          <div key={bIdx} className="space-y-3">
+            <h4 className="text-sm font-bold uppercase tracking-wider text-marine-red border-l-4 border-marine-red pl-3">
+              {block.name}
+            </h4>
+            <div className="grid gap-3">
+              {block.exercises.map((ex, idx) => (
+                <motion.div
+                  key={ex.id}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                  className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-100 dark:border-gray-600 hover:shadow-sm transition-shadow"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-semibold text-gray-900 dark:text-white">{ex.name}</span>
+                        <span className="text-xs bg-white dark:bg-gray-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-500 text-gray-500">
+                          {ex.equipment}
+                        </span>
+                      </div>
+                      {/* Prescription Display */}
+                      {ex.prescription && (
+                        <div className="flex items-center gap-3 mt-2 text-sm">
+                          <span className="bg-marine-red/10 text-marine-red px-2 py-0.5 rounded font-medium">
+                            {ex.prescription.sets} x {ex.prescription.reps}
+                          </span>
+                          {ex.prescription.rest !== '0s' && (
+                            <span className="text-gray-500">Rest: {ex.prescription.rest}</span>
+                          )}
+                          {ex.prescription.notes && (
+                            <span className="text-gray-400 italic text-xs hidden sm:inline">
+                              {ex.prescription.notes}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1 ml-2">
+                      <button
+                        onClick={() => onSwapExercise(bIdx, idx)}
+                        className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                        title="Swap Exercise"
+                      >
+                        <RefreshCw size={18} />
+                      </button>
+                      {ex.url && (
+                        <a
+                          href={ex.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 text-gray-400 hover:text-marine-red hover:bg-white rounded-full transition-colors"
+                          title="Watch Demo"
+                        >
+                          <PlayCircle size={20} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        ))
+      )}
 
       {/* Feedback Loop */}
       <div className="mt-8 pt-6 border-t border-gray-200">

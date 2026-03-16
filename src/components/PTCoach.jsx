@@ -73,6 +73,44 @@ const PTCoach = () => {
   const [workout, setWorkout] = useState(null);
   const [savedWorkouts, setSavedWorkouts] = useState([]);
 
+  // Agentic undo stack — tracks reversible mutations
+  const UNDO_TIMEOUT = 30000;
+  const [undoStack, setUndoStack] = useState([]);
+  const [undoToast, setUndoToast] = useState(null);
+
+  const pushUndo = (label, prevState, restoreFn) => {
+    const entry = {
+      id: Date.now(),
+      label,
+      prevState,
+      restoreFn,
+      status: 'pending',
+      expiresAt: Date.now() + UNDO_TIMEOUT,
+    };
+    setUndoStack((prev) => [...prev, entry]);
+    setUndoToast(entry);
+    setTimeout(() => {
+      setUndoStack((prev) =>
+        prev.map((e) => (e.id === entry.id && e.status === 'pending' ? { ...e, status: 'accepted' } : e))
+      );
+      setUndoToast((current) => (current?.id === entry.id ? null : current));
+    }, UNDO_TIMEOUT);
+    return entry.id;
+  };
+
+  const handleUndo = (entryId) => {
+    setUndoStack((prev) =>
+      prev.map((e) => {
+        if (e.id === entryId && e.status === 'pending') {
+          e.restoreFn(e.prevState);
+          return { ...e, status: 'undone' };
+        }
+        return e;
+      })
+    );
+    setUndoToast(null);
+  };
+
   // Custom Workout Builder State
   const [customWorkout, setCustomWorkout] = useState({
     title: 'Custom Workout',
@@ -158,6 +196,7 @@ const PTCoach = () => {
       console.error('Failed to load user profile:', e);
     }
 
+    const prevWorkout = workout ? structuredClone(workout) : null;
     const newWorkout = generateWorkout({
       time,
       goal,
@@ -167,6 +206,7 @@ const PTCoach = () => {
     setWorkout(newWorkout);
     dispatch({ type: 'TOGGLE_FEEDBACK', payload: false });
     dispatch({ type: 'SET_TAB', payload: 'generator' });
+    pushUndo('Generated workout', prevWorkout, (prev) => setWorkout(prev));
   };
 
   const saveToLocalStorage = (key, data) => {
@@ -186,9 +226,14 @@ const PTCoach = () => {
   };
 
   const deleteWorkout = (id) => {
+    const prevHistory = structuredClone(savedWorkouts);
     const newHistory = savedWorkouts.filter((w) => w.id !== id);
     setSavedWorkouts(newHistory);
     saveToLocalStorage('marine_fitness_history', newHistory);
+    pushUndo('Deleted workout', prevHistory, (prev) => {
+      setSavedWorkouts(prev);
+      saveToLocalStorage('marine_fitness_history', prev);
+    });
   };
 
   const handleSwapExercise = (blockIndex, exerciseIndex) => {
@@ -1092,6 +1137,26 @@ const PTCoach = () => {
           />
         )}
       </AnimatePresence>
+
+      {/* Undo toast */}
+      {undoToast && (
+        <div
+          role="alert"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-6 py-3 rounded-lg shadow-xl flex items-center gap-4"
+        >
+          <span className="text-sm">{undoToast.label}</span>
+          <button onClick={() => handleUndo(undoToast.id)} className="font-bold underline text-sm min-h-0 min-w-0">
+            Undo
+          </button>
+          <button
+            onClick={() => setUndoToast(null)}
+            className="text-gray-400 dark:text-gray-500 hover:text-white dark:hover:text-gray-900 min-h-0 min-w-0"
+            aria-label="Dismiss"
+          >
+            <X size={16} />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

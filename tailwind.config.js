@@ -1,19 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
     extend: {
       colors: {
         marine: {
-          red: '#8B0000', // Scarlet
-          gold: '#FFD700', // Gold
-          dark: '#1a1a1a',
-          light: '#f8f9fa',
-        }
+          red: 'oklch(0.35 0.15 25)',
+          gold: 'oklch(0.87 0.17 85)',
+          dark: 'oklch(0.15 0 0)',
+          light: 'oklch(0.98 0.005 250)',
+        },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -24,4 +21,4 @@ export default {
     },
   },
   plugins: [],
-}
+};
