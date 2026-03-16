@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Activity, Calculator, Heart, Shield, Moon, Utensils, ArrowRight, Library } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
-const container = {
+const containerAnimated = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -12,14 +12,16 @@ const container = {
     },
   },
 };
+const containerStatic = { hidden: {}, show: {} };
 
-const item = {
+const itemAnimated = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0 },
 };
+const itemStatic = { hidden: {}, show: {} };
 
-const DashboardCard = React.memo(({ to, icon: Icon, title, desc, color }) => (
-  <motion.div variants={item}>
+const DashboardCard = React.memo(({ to, icon: Icon, title, desc, color, variants }) => (
+  <motion.div variants={variants}>
     <Link to={to} className="group block h-full">
       <div className="h-full bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
         <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full opacity-10 ${color}`} />
@@ -46,10 +48,14 @@ const DashboardCard = React.memo(({ to, icon: Icon, title, desc, color }) => (
 ));
 
 const Dashboard = () => {
+  const prefersReduced = useReducedMotion();
+  const container = prefersReduced ? containerStatic : containerAnimated;
+  const item = prefersReduced ? itemStatic : itemAnimated;
+
   return (
     <div className="space-y-8">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={prefersReduced ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="relative bg-gradient-to-r from-marine-red to-red-900 rounded-3xl p-8 md:p-12 text-white overflow-hidden shadow-lg"
       >
@@ -91,6 +97,7 @@ const Dashboard = () => {
           title="PT Coach"
           desc="AI-powered HITT workout generation based on your goals and available equipment."
           color="bg-blue-500"
+          variants={item}
         />
         <DashboardCard
           to="/exercises"
@@ -98,6 +105,7 @@ const Dashboard = () => {
           title="Exercise Library"
           desc="Browse 382 official USMC exercises with video demonstrations from Marine Corps Fitness."
           color="bg-teal-500"
+          variants={item}
         />
         <DashboardCard
           to="/pft-prep"
@@ -105,6 +113,7 @@ const Dashboard = () => {
           title="PFT/CFT Prep"
           desc="Calculate scores, track progress, and plan your path to a First Class score."
           color="bg-green-500"
+          variants={item}
         />
         <DashboardCard
           to="/body-comp"
@@ -112,6 +121,7 @@ const Dashboard = () => {
           title="Body Composition"
           desc="USMC WHtR body composition evaluation per MARADMIN 066/26 with body fat and performance considerations."
           color="bg-purple-500"
+          variants={item}
         />
         <DashboardCard
           to="/nutrition"
@@ -119,6 +129,7 @@ const Dashboard = () => {
           title="Nutrition Guide"
           desc="Fuel your performance with mission-ready meal planning and macro tracking."
           color="bg-orange-500"
+          variants={item}
         />
         <DashboardCard
           to="/injury-prevention"
@@ -126,6 +137,7 @@ const Dashboard = () => {
           title="Injury Prevention"
           desc="Pre-habilitation routines, mobility work, and injury management resources."
           color="bg-red-500"
+          variants={item}
         />
         <DashboardCard
           to="/sleep"
@@ -133,6 +145,7 @@ const Dashboard = () => {
           title="Sleep Optimizer"
           desc="Maximize recovery with science-backed sleep strategies and tracking."
           color="bg-indigo-500"
+          variants={item}
         />
       </motion.div>
     </div>
