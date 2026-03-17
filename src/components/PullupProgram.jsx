@@ -44,11 +44,11 @@ const programData = [
 
 // Gradient colors from Marine Red to Gold/Sand
 const barColors = [
-  'linear-gradient(90deg, oklch(0.45 0.2 25) 0%, oklch(0.38 0.17 25) 100%)', // Deep Red
-  'linear-gradient(90deg, oklch(0.50 0.2 28) 0%, oklch(0.43 0.17 28) 100%)', // Lighter Red
-  'linear-gradient(90deg, oklch(0.55 0.18 45) 0%, oklch(0.48 0.15 45) 100%)', // Orange-Red
-  'linear-gradient(90deg, oklch(0.62 0.16 65) 0%, oklch(0.55 0.14 65) 100%)', // Orange-Gold
-  'linear-gradient(90deg, oklch(0.75 0.17 85) 0%, oklch(0.67 0.15 85) 100%)', // Gold
+  'linear-gradient(90deg, #C8102E 0%, #a60d26 100%)', // Deep Red
+  'linear-gradient(90deg, #D62E2E 0%, #b82525 100%)', // Lighter Red
+  'linear-gradient(90deg, #E65C23 0%, #c44d1d 100%)', // Orange-Red
+  'linear-gradient(90deg, #F08C1A 0%, #cf7815 100%)', // Orange-Gold
+  'linear-gradient(90deg, #F9B208 0%, #d49706 100%)', // Gold
 ];
 
 export const MaxRepFinder = ({ onSelectWeek }) => {
@@ -93,11 +93,11 @@ export const MaxRepFinder = ({ onSelectWeek }) => {
   };
 
   return (
-    <div className="bg-gray-900 border border-marine-red/30 rounded-xl p-6 mb-8 relative overflow-hidden">
+    <div className="bg-[#0d1821] border border-[#C8102E]/30 rounded-xl p-6 mb-8 relative overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-marine-red/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+      <div className="absolute top-0 right-0 w-32 h-32 bg-[#C8102E]/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
 
-      <div className="font-bebas text-lg tracking-wider text-marine-red mb-2 flex items-center gap-2">
+      <div className="font-bebas text-lg tracking-wider text-[#C8102E] mb-2 flex items-center gap-2">
         <Target size={20} />
         FIND YOUR STARTING WEEK
       </div>
@@ -114,13 +114,13 @@ export const MaxRepFinder = ({ onSelectWeek }) => {
             value={maxReps}
             onChange={(e) => calculate(e.target.value)}
             placeholder="0"
-            className="w-16 bg-transparent text-white text-xl font-plex-mono font-bold text-center focus:outline-none border-b-2 border-marine-red pb-1"
+            className="w-16 bg-transparent text-white text-xl font-plex-mono font-bold text-center focus:outline-none border-b-2 border-[#C8102E] pb-1"
           />
         </div>
 
         {result && (
           <div className="flex-1 animate-in fade-in slide-in-from-left-2">
-            <div className="inline-flex items-center px-4 py-2 rounded-lg bg-marine-red/10 border border-marine-red/30 text-red-400 font-plex-mono text-sm font-bold">
+            <div className="inline-flex items-center px-4 py-2 rounded-lg bg-[#C8102E]/10 border border-[#C8102E]/30 text-[#ff4d4d] font-plex-mono text-sm font-bold">
               {result.message}
             </div>
           </div>
@@ -179,14 +179,14 @@ const WeekSlider = ({ weeks, selectedWeek, onSelectWeek }) => {
             <div
               className={`
               w-full h-32 rounded-lg relative overflow-hidden transition-all duration-300
-              ${isSelected ? 'bg-gray-800 ring-2 ring-marine-red ring-offset-2 ring-offset-gray-900' : 'bg-gray-800/50'}
+              ${isSelected ? 'bg-gray-800 ring-2 ring-[#C8102E] ring-offset-2 ring-offset-[#0d1821]' : 'bg-gray-800/50'}
             `}
             >
               {/* Fill Bar */}
               <div
                 className={`
                   absolute bottom-0 left-0 w-full transition-all duration-500 ease-out
-                  ${isSelected ? 'bg-marine-red' : 'bg-gray-600'}
+                  ${isSelected ? 'bg-[#C8102E]' : 'bg-gray-600'}
                 `}
                 style={{ height: `${Math.max(15, heightPercent)}%` }}
               ></div>
@@ -196,7 +196,7 @@ const WeekSlider = ({ weeks, selectedWeek, onSelectWeek }) => {
             <span
               className={`
               text-xs font-bebas tracking-wider transition-colors
-              ${isSelected ? 'text-marine-red' : 'text-gray-500'}
+              ${isSelected ? 'text-[#C8102E]' : 'text-gray-500'}
             `}
             >
               W{week.week}
@@ -225,7 +225,7 @@ const WeekDetail = ({ weekData, phase }) => {
         <span className="text-gray-500 font-plex-mono text-sm">Phase {phase} of II</span>
       </div>
 
-      <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800 shadow-xl">
+      <div className="bg-[#0d1821] rounded-2xl p-6 border border-gray-800 shadow-xl">
         <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Set Breakdown</h3>
 
         <div className="space-y-6">
@@ -235,7 +235,7 @@ const WeekDetail = ({ weekData, phase }) => {
                 <span
                   className={`
                   w-12 text-xs font-bold uppercase tracking-wider text-right
-                  ${index === 0 ? 'text-marine-red' : 'text-marine-gold'}
+                  ${index === 0 ? 'text-[#C8102E]' : 'text-[#F9B208]'}
                 `}
                 >
                   Set {index + 1}
@@ -287,26 +287,26 @@ const PullupProgram = () => {
   };
 
   return (
-    <div className="space-y-6 bg-gray-950 p-6 rounded-xl min-h-[600px] text-gray-100">
+    <div className="space-y-6 bg-[#090f14] p-6 rounded-xl min-h-[600px] text-gray-100">
       {/* Header Area */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-800 pb-6">
         <div>
           <h3 className="text-2xl font-bebas tracking-wide text-white flex items-center gap-3">
-            <Trophy className="text-marine-red" size={24} />
+            <Trophy className="text-[#C8102E]" size={24} />
             Recon Pull-up Progression
           </h3>
           <p className="font-plex-sans text-sm text-gray-400 mt-1">38-week linear progression program</p>
         </div>
 
         {/* Phase Toggles */}
-        <div className="flex bg-gray-900 p-1 rounded-lg border border-gray-800">
+        <div className="flex bg-[#0d1821] p-1 rounded-lg border border-gray-800">
           <button
             onClick={() => handlePhaseSwitch(1)}
             className={`
                       px-4 py-2 rounded-md text-sm font-bebas tracking-wider transition-all
                       ${
                         viewPhase === 1
-                          ? 'bg-marine-red text-white shadow-lg shadow-red-900/20'
+                          ? 'bg-[#C8102E] text-white shadow-lg shadow-red-900/20'
                           : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'
                       }
                     `}
@@ -319,7 +319,7 @@ const PullupProgram = () => {
                       px-4 py-2 rounded-md text-sm font-bebas tracking-wider transition-all
                       ${
                         viewPhase === 2
-                          ? 'bg-marine-red text-white shadow-lg shadow-red-900/20'
+                          ? 'bg-[#C8102E] text-white shadow-lg shadow-red-900/20'
                           : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'
                       }
                     `}
@@ -336,8 +336,8 @@ const PullupProgram = () => {
       <div className="relative">
         <WeekSlider weeks={currentWeeks} selectedWeek={selectedWeek} onSelectWeek={handleWeekSelect} />
         {/* Fade edges */}
-        <div className="absolute top-0 left-0 w-8 h-full bg-gradient-to-r from-gray-950 to-transparent pointer-events-none"></div>
-        <div className="absolute top-0 right-0 w-8 h-full bg-gradient-to-l from-gray-950 to-transparent pointer-events-none"></div>
+        <div className="absolute top-0 left-0 w-8 h-full bg-gradient-to-r from-[#090f14] to-transparent pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-8 h-full bg-gradient-to-l from-[#090f14] to-transparent pointer-events-none"></div>
       </div>
 
       {/* Divider */}

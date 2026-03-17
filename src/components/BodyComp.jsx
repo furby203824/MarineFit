@@ -293,14 +293,7 @@ const PrintableReport = React.forwardRef(
 
     return (
       <div ref={ref} className="print-report hidden print:block">
-        <div
-          style={{
-            fontFamily: 'Arial, Helvetica, sans-serif',
-            maxWidth: '7.5in',
-            margin: '0 auto',
-            color: 'oklch(0 0 0)',
-          }}
-        >
+        <div style={{ fontFamily: 'Arial, Helvetica, sans-serif', maxWidth: '7.5in', margin: '0 auto', color: '#000' }}>
           {/* Header */}
           <div
             style={{
@@ -310,38 +303,31 @@ const PrintableReport = React.forwardRef(
               marginBottom: '20px',
             }}
           >
-            <h1 style={{ fontSize: '16pt', fontWeight: 'bold', margin: '0 0 8px 0', letterSpacing: '1px' }}>
+            <h1 style={{ fontSize: '16pt', fontWeight: 'bold', margin: '0 0 4px 0', letterSpacing: '1px' }}>
               UNITED STATES MARINE CORPS
             </h1>
-            <h2 style={{ fontSize: '13pt', fontWeight: 'bold', margin: '0 0 8px 0' }}>
+            <h2 style={{ fontSize: '13pt', fontWeight: 'bold', margin: '0 0 4px 0' }}>
               Body Composition Assessment Report
             </h2>
-            <p style={{ fontSize: '9pt', margin: 0, color: 'oklch(0.45 0 0)' }}>
+            <p style={{ fontSize: '9pt', margin: 0, color: '#555' }}>
               Per MARADMIN 066/26 (as modified by MARADMIN 073/26)
             </p>
           </div>
 
           {/* Marine Information */}
-          <div
-            style={{
-              border: '1px solid oklch(0.85 0 0)',
-              borderRadius: '4px',
-              padding: '16px 16px',
-              marginBottom: '16px',
-            }}
-          >
+          <div style={{ border: '1px solid #ccc', borderRadius: '4px', padding: '12px 16px', marginBottom: '16px' }}>
             <h3
               style={{
                 fontSize: '10pt',
                 fontWeight: 'bold',
                 margin: '0 0 8px 0',
                 textTransform: 'uppercase',
-                color: 'oklch(0.35 0.15 25)',
+                color: '#8b0000',
               }}
             >
               Marine Information
             </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 24px', fontSize: '10pt' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 24px', fontSize: '10pt' }}>
               <div>
                 <strong>Name:</strong> {marineName || '______________________________'}
               </div>
@@ -358,26 +344,19 @@ const PrintableReport = React.forwardRef(
           </div>
 
           {/* WHtR Assessment */}
-          <div
-            style={{
-              border: '1px solid oklch(0.85 0 0)',
-              borderRadius: '4px',
-              padding: '16px 16px',
-              marginBottom: '16px',
-            }}
-          >
+          <div style={{ border: '1px solid #ccc', borderRadius: '4px', padding: '12px 16px', marginBottom: '16px' }}>
             <h3
               style={{
                 fontSize: '10pt',
                 fontWeight: 'bold',
                 margin: '0 0 8px 0',
                 textTransform: 'uppercase',
-                color: 'oklch(0.35 0.15 25)',
+                color: '#8b0000',
               }}
             >
               WHtR Assessment
             </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 24px', fontSize: '10pt' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 24px', fontSize: '10pt' }}>
               <div>
                 <strong>Height:</strong> {result.roundedHeight}" ({inchesToFeetAndInches(result.roundedHeight)})
               </div>
@@ -395,8 +374,8 @@ const PrintableReport = React.forwardRef(
               </div>
               <div>&nbsp;</div>
             </div>
-            <div style={{ margin: '16px 0 8px 0', fontSize: '10pt' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 24px' }}>
+            <div style={{ margin: '12px 0 8px 0', fontSize: '10pt' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 24px' }}>
                 <div>
                   <strong>WHtR:</strong>{' '}
                   <span style={{ fontSize: '14pt', fontWeight: 'bold' }}>{result.whtr.toFixed(2)}</span>
@@ -410,14 +389,14 @@ const PrintableReport = React.forwardRef(
             {/* WHtR Status */}
             <div
               style={{
-                marginTop: '8px',
-                padding: '8px 16px',
-                border: `2px solid ${result.whtr <= WHTR_STANDARD ? 'oklch(0.55 0.16 145)' : 'oklch(0.53 0.19 27)'}`,
+                marginTop: '10px',
+                padding: '8px 12px',
+                border: `2px solid ${result.whtr <= WHTR_STANDARD ? '#16a34a' : '#dc2626'}`,
                 borderRadius: '4px',
                 textAlign: 'center',
                 fontWeight: 'bold',
                 fontSize: '11pt',
-                color: result.whtr <= WHTR_STANDARD ? 'oklch(0.55 0.16 145)' : 'oklch(0.53 0.19 27)',
+                color: result.whtr <= WHTR_STANDARD ? '#16a34a' : '#dc2626',
               }}
             >
               {result.whtr <= WHTR_STANDARD
@@ -428,26 +407,19 @@ const PrintableReport = React.forwardRef(
 
           {/* Body Fat Evaluation — only if WHtR exceeded and BF data present */}
           {result.step === 'bodyFat' && (
-            <div
-              style={{
-                border: '1px solid oklch(0.85 0 0)',
-                borderRadius: '4px',
-                padding: '16px 16px',
-                marginBottom: '16px',
-              }}
-            >
+            <div style={{ border: '1px solid #ccc', borderRadius: '4px', padding: '12px 16px', marginBottom: '16px' }}>
               <h3
                 style={{
                   fontSize: '10pt',
                   fontWeight: 'bold',
                   margin: '0 0 8px 0',
                   textTransform: 'uppercase',
-                  color: 'oklch(0.35 0.15 25)',
+                  color: '#8b0000',
                 }}
               >
                 Body Fat Evaluation
               </h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 24px', fontSize: '10pt' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 24px', fontSize: '10pt' }}>
                 <div>
                   <strong>Gender:</strong> {gender.charAt(0).toUpperCase() + gender.slice(1)}
                 </div>
@@ -469,10 +441,10 @@ const PrintableReport = React.forwardRef(
               {result.usedPerformanceConsideration && (
                 <div
                   style={{
-                    marginTop: '8px',
-                    border: '1px solid oklch(0.85 0 0)',
+                    marginTop: '10px',
+                    border: '1px solid #ccc',
                     borderRadius: '4px',
-                    padding: '8px 16px',
+                    padding: '8px 12px',
                     fontSize: '10pt',
                   }}
                 >
@@ -480,14 +452,14 @@ const PrintableReport = React.forwardRef(
                     style={{
                       fontSize: '9pt',
                       fontWeight: 'bold',
-                      margin: '0 0 8px 0',
+                      margin: '0 0 4px 0',
                       textTransform: 'uppercase',
-                      color: 'oklch(0.45 0 0)',
+                      color: '#555',
                     }}
                   >
                     Physical Performance Consideration Applied
                   </h4>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 24px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 24px' }}>
                     {pftScore && (
                       <div>
                         <strong>PFT Score:</strong> {pftScore}
@@ -505,14 +477,14 @@ const PrintableReport = React.forwardRef(
               {/* Body Fat Status */}
               <div
                 style={{
-                  marginTop: '8px',
-                  padding: '8px 16px',
-                  border: `2px solid ${result.statusLevel === 'pass' ? 'oklch(0.55 0.16 145)' : 'oklch(0.53 0.19 27)'}`,
+                  marginTop: '10px',
+                  padding: '8px 12px',
+                  border: `2px solid ${result.statusLevel === 'pass' ? '#16a34a' : '#dc2626'}`,
                   borderRadius: '4px',
                   textAlign: 'center',
                   fontWeight: 'bold',
                   fontSize: '11pt',
-                  color: result.statusLevel === 'pass' ? 'oklch(0.55 0.16 145)' : 'oklch(0.53 0.19 27)',
+                  color: result.statusLevel === 'pass' ? '#16a34a' : '#dc2626',
                 }}
               >
                 {result.statusLevel === 'pass'
@@ -528,15 +500,15 @@ const PrintableReport = React.forwardRef(
               style={{
                 border: '2px solid #dc2626',
                 borderRadius: '4px',
-                padding: '16px 16px',
+                padding: '12px 16px',
                 marginBottom: '16px',
                 textAlign: 'center',
               }}
             >
-              <p style={{ fontSize: '11pt', fontWeight: 'bold', color: 'oklch(0.53 0.19 27)', margin: '0 0 8px 0' }}>
+              <p style={{ fontSize: '11pt', fontWeight: 'bold', color: '#dc2626', margin: '0 0 4px 0' }}>
                 BCP ASSIGNMENT
               </p>
-              <p style={{ fontSize: '9pt', color: 'oklch(0.45 0 0)', margin: 0 }}>
+              <p style={{ fontSize: '9pt', color: '#555', margin: 0 }}>
                 Exceeds WHtR and body fat standards. Marine shall be processed for the Body Composition Program (BCP)
                 per MCO 6110.3A.
               </p>
@@ -546,15 +518,15 @@ const PrintableReport = React.forwardRef(
           {/* Footer */}
           <div
             style={{
-              borderTop: '1px solid oklch(0.85 0 0)',
-              paddingTop: '8px',
-              marginTop: '24px',
+              borderTop: '1px solid #ccc',
+              paddingTop: '10px',
+              marginTop: '20px',
               fontSize: '8pt',
-              color: 'oklch(0.55 0 0)',
+              color: '#777',
               textAlign: 'center',
             }}
           >
-            <p style={{ margin: '0 0 8px 0' }}>
+            <p style={{ margin: '0 0 2px 0' }}>
               This report is generated for informational purposes only. Official results are determined by unit
               S-3/CPTR.
             </p>
@@ -657,7 +629,7 @@ const BodyComp = () => {
 <html><head><title>Body Composition Assessment Report</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, Helvetica, sans-serif; padding: 0.5in; color: oklch(0 0 0); }
+  body { font-family: Arial, Helvetica, sans-serif; padding: 0.5in; color: #000; }
   @page { margin: 0.5in; size: letter portrait; }
 </style>
 </head><body>${printRef.current.innerHTML}</body></html>`);
