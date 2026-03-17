@@ -15,34 +15,3 @@ if ('serviceWorker' in navigator) {
     registrations.forEach((r) => r.unregister());
   });
 }
-
-// INP (Interaction to Next Paint) monitoring — P75
-if (typeof PerformanceObserver !== 'undefined') {
-  let maxINP = 0;
-  const observer = new PerformanceObserver((list) => {
-    for (const entry of list.getEntries()) {
-      if (entry.interactionId) {
-        const duration = entry.duration;
-        if (duration > maxINP) {
-          maxINP = duration;
-          if (navigator.sendBeacon) {
-            navigator.sendBeacon(
-              '/api/vitals',
-              JSON.stringify({
-                metric: 'INP',
-                value: maxINP,
-                rating: maxINP <= 200 ? 'good' : maxINP <= 500 ? 'needs-improvement' : 'poor',
-                timestamp: Date.now(),
-              })
-            );
-          }
-        }
-      }
-    }
-  });
-  try {
-    observer.observe({ type: 'event', buffered: true, durationThreshold: 16 });
-  } catch (e) {
-    // Event Timing API not supported in this browser
-  }
-}

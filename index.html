@@ -6,35 +6,10 @@
     <title>Marine Fitness Suite</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-    <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    </noscript>
-    <script>
-      // Prevent FOUC: apply theme before React mounts
-      (function() {
-        var t = localStorage.getItem('marinefit_theme');
-        if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        document.documentElement.classList.add(t);
-      })();
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <div id="root">
-      <!-- Static fallback for progressive enhancement -->
-      <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:system-ui,sans-serif">
-        <div style="text-align:center">
-          <h1 style="font-size:1.5rem;font-weight:700;color:oklch(0.35 0.15 25)">Marine Fitness Suite</h1>
-          <p style="color:oklch(0.45 0 0);margin-top:8px">Loading application...</p>
-        </div>
-      </div>
-    </div>
-    <noscript>
-      <div style="padding:32px;text-align:center;font-family:system-ui,sans-serif">
-        <h1>Marine Fitness Suite</h1>
-        <p>This application requires JavaScript to run. Please enable JavaScript in your browser settings.</p>
-      </div>
-    </noscript>
+    <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

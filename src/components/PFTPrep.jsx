@@ -75,62 +75,13 @@ const PFTPrep = () => {
   // CFT schedule mapping: workout type → card index offset
   const cftSchedule = {
     days: [
-      {
-        day: 'Mon',
-        type: 'WARRIOR',
-        color: 'bg-red-600',
-        textColor: 'text-white',
-        hexColor: 'oklch(0.53 0.19 27)',
-        offset: 0,
-      },
-      {
-        day: 'Tue',
-        type: 'ATHLETE',
-        color: 'bg-blue-600',
-        textColor: 'text-white',
-        hexColor: 'oklch(0.50 0.18 260)',
-        offset: 100,
-      },
-      {
-        day: 'Wed',
-        type: 'RELOAD',
-        color: 'bg-green-600',
-        textColor: 'text-white',
-        hexColor: 'oklch(0.55 0.16 145)',
-        offset: 25,
-      },
-      {
-        day: 'Thu',
-        type: 'COMBAT',
-        color: 'bg-yellow-500',
-        textColor: 'text-black',
-        hexColor: 'oklch(0.73 0.16 90)',
-        offset: 75,
-      },
-      {
-        day: 'Fri',
-        type: 'COMPANY',
-        color: 'bg-purple-600',
-        textColor: 'text-white',
-        hexColor: 'oklch(0.45 0.20 305)',
-        offset: 50,
-      },
-      {
-        day: 'Sat',
-        type: 'RELOAD',
-        color: 'bg-green-600',
-        textColor: 'text-white',
-        hexColor: 'oklch(0.55 0.16 145)',
-        offset: 25,
-      },
-      {
-        day: 'Sun',
-        type: 'REST',
-        color: 'bg-gray-400',
-        textColor: 'text-white',
-        hexColor: 'oklch(0.70 0.01 250)',
-        offset: null,
-      },
+      { day: 'Mon', type: 'WARRIOR', color: 'bg-red-600', textColor: 'text-white', hexColor: '#dc2626', offset: 0 },
+      { day: 'Tue', type: 'ATHLETE', color: 'bg-blue-600', textColor: 'text-white', hexColor: '#2563eb', offset: 100 },
+      { day: 'Wed', type: 'RELOAD', color: 'bg-green-600', textColor: 'text-white', hexColor: '#16a34a', offset: 25 },
+      { day: 'Thu', type: 'COMBAT', color: 'bg-yellow-500', textColor: 'text-black', hexColor: '#eab308', offset: 75 },
+      { day: 'Fri', type: 'COMPANY', color: 'bg-purple-600', textColor: 'text-white', hexColor: '#9333ea', offset: 50 },
+      { day: 'Sat', type: 'RELOAD', color: 'bg-green-600', textColor: 'text-white', hexColor: '#16a34a', offset: 25 },
+      { day: 'Sun', type: 'REST', color: 'bg-gray-400', textColor: 'text-white', hexColor: '#9ca3af', offset: null },
     ],
   };
 
@@ -945,7 +896,7 @@ const PFTPrep = () => {
 
               {/* Schedule Table */}
               <div className="overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6">
-                <table className="w-full text-xs border-collapse" style={{ minWidth: '576px' }}>
+                <table className="w-full text-xs border-collapse" style={{ minWidth: '580px' }}>
                   <thead>
                     <tr>
                       <th className="sticky left-0 z-10 bg-gray-700 text-white p-1.5 text-center font-bold border border-gray-600 w-16"></th>
@@ -996,7 +947,7 @@ const PFTPrep = () => {
                                 !isRest
                                   ? {
                                       backgroundColor: dayInfo.hexColor,
-                                      color: dayInfo.day === 'Thu' ? 'oklch(0 0 0)' : 'oklch(1 0 0)',
+                                      color: dayInfo.day === 'Thu' ? '#000' : '#fff',
                                     }
                                   : undefined
                               }
@@ -1123,53 +1074,35 @@ const PFTPrep = () => {
 
                   {/* Cards List */}
                   <div className="overflow-auto flex-1 p-3 space-y-4">
-                    {getWeekWorkouts(cftWeekView).length === 0 ? (
-                      <div className="flex flex-col items-center justify-center py-12 text-gray-400 dark:text-gray-500">
-                        <svg className="w-12 h-12 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.5}
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          />
-                        </svg>
-                        <p className="font-medium">No workouts for this week</p>
-                        <p className="text-sm mt-1">Select a different week to view workouts</p>
-                      </div>
-                    ) : (
-                      getWeekWorkouts(cftWeekView).map((workout) => (
+                    {getWeekWorkouts(cftWeekView).map((workout) => (
+                      <div
+                        key={workout.day}
+                        className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700"
+                      >
+                        {/* Day Header */}
                         <div
-                          key={workout.day}
-                          className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700"
+                          className="px-3 py-2 font-bold text-sm flex items-center gap-2"
+                          style={{ backgroundColor: workout.hexColor, color: workout.day === 'Thu' ? '#000' : '#fff' }}
                         >
-                          {/* Day Header */}
-                          <div
-                            className="px-3 py-2 font-bold text-sm flex items-center gap-2"
-                            style={{
-                              backgroundColor: workout.hexColor,
-                              color: workout.day === 'Thu' ? 'oklch(0 0 0)' : 'oklch(1 0 0)',
-                            }}
-                          >
-                            <span>{workout.day.toUpperCase()}</span>
-                            <span className="opacity-80">—</span>
-                            <span>{workout.label}</span>
-                          </div>
-                          {/* Card Image */}
-                          <div className="bg-gray-50 dark:bg-gray-900 p-2">
-                            <img
-                              src={workout.imgSrc}
-                              alt={workout.label}
-                              loading="lazy"
-                              className="w-full h-auto object-contain"
-                              onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.src = 'https://via.placeholder.com/800x600?text=Image+Not+Found';
-                              }}
-                            />
-                          </div>
+                          <span>{workout.day.toUpperCase()}</span>
+                          <span className="opacity-80">—</span>
+                          <span>{workout.label}</span>
                         </div>
-                      ))
-                    )}
+                        {/* Card Image */}
+                        <div className="bg-gray-50 dark:bg-gray-900 p-2">
+                          <img
+                            src={workout.imgSrc}
+                            alt={workout.label}
+                            loading="lazy"
+                            className="w-full h-auto object-contain"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = 'https://via.placeholder.com/800x600?text=Image+Not+Found';
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ))}
 
                     {/* Rest Day Note */}
                     <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
