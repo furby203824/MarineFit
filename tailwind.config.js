@@ -6,10 +6,10 @@ export default {
     extend: {
       colors: {
         marine: {
-          red: 'oklch(0.35 0.15 25)',
-          gold: 'oklch(0.87 0.17 85)',
-          dark: 'oklch(0.15 0 0)',
-          light: 'oklch(0.98 0.005 250)',
+          red: 'oklch(0.35 0.15 25 / <alpha-value>)',
+          gold: 'oklch(0.87 0.17 85 / <alpha-value>)',
+          dark: 'oklch(0.15 0 0 / <alpha-value>)',
+          light: 'oklch(0.98 0.005 250 / <alpha-value>)',
         },
       },
       fontFamily: {
